@@ -14,5 +14,10 @@ namespace SignalRChat.Hubs
         {
             await Clients.Others.SendAsync("ReceivePlayer2Position", x, y);
         }
+
+        public async Task SendPlayer1Position(int x, int y)
+        {
+            await Clients.Others.SendAsync("ReceivePlayer1Position", x, y);
+        }
     }
 }
