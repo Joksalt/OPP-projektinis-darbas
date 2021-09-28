@@ -190,7 +190,10 @@ namespace PingPong3
                 {
                     _currentY += 30;
                 }
-                _player2.Position = new Point(ScreenWidth - 30, _currentY);
+                //TODO: position
+                var newPosition = new Point(ScreenWidth - 30, _currentY);
+                _player2.Position = newPosition;
+                SendPlayer2Position(newPosition);
             }
             else if (Keyboard.IsKeyDown(Key.W))
             {
@@ -324,11 +327,29 @@ namespace PingPong3
             }
         }
 
+        private async void SendPlayer2Position(Point playerPosition)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendPlayer2Position", playerPosition.X, playerPosition.Y);
+            }
+            catch (Exception ex)
+            {
+                //messagesList.Items.Add(ex.Message);
+            }
+        }
+
         private async void connectButton_Click(object sender, EventArgs e)
         {
             connection.On<string, string>("ReceiveMessage", (user, message) =>
             {
                 //resultTextBox.Text += message;
+            });
+
+            connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
+            {
+                var newPosition = new Point(x, y);
+                _player2.Position = newPosition;
             });
 
             try

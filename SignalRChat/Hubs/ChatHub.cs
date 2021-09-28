@@ -5,11 +5,14 @@ namespace SignalRChat.Hubs
 {
     public class ChatHub : Hub
     {
-        #region snippet_SendMessage
         public async Task SendMessage(string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user,message);
         }
-        #endregion
+
+        public async Task SendPlayer2Position(int x, int y)
+        {
+            await Clients.Others.SendAsync("ReceivePlayer2Position", x, y);
+        }
     }
 }
