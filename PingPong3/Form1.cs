@@ -134,10 +134,10 @@ namespace PingPong3
                 CheckWallOut();
                 CheckPaddleCollision();
             }
-            else if (MouseButtons == MouseButtons.Left)
-            {
-                BeginGame();
-            }
+            //else if (MouseButtons == MouseButtons.Left)
+            //{
+            //    BeginGame();
+            //}
         }
 
         private bool _isGameRunning;
@@ -347,6 +347,14 @@ namespace PingPong3
         private void pbPlayer2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            if (!_isGameRunning)
+            {
+                BeginGame();
+            }   
         }
     }
 }
