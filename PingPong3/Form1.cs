@@ -33,6 +33,13 @@ namespace PingPong3
         {
             InitializeComponent();
 
+            //TODO: Increments by 2. Possible solution - add parameter that checks if it's
+            //P1 or P2 playing and only P1 will send goal signals.
+            lblScore1.Visible = false;
+            lblScore2.Visible = false;
+            label4.Visible = false;
+            //temp univisibility
+
             #region SignalRconnection
             connection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:53353/ChatHub")
@@ -322,21 +329,19 @@ namespace PingPong3
 
         private void CheckWallOut()
         {
-            //BUGBUG: Increments by 2. Possible solution - add parameter that checks if it's
-            //P1 or P2 playing and only P1 will send goal signals.
             if (pbBall.Left < 0)
             {
                 ResetBall();
-                //_scorePlayer2 += 1;
-                //lblScore2.Text = _scorePlayer2.ToString();
-                SendScoreSignal(_scorePlayer2, 1);
+                _scorePlayer2 += 1;
+                lblScore2.Text = _scorePlayer2.ToString();
+                //SendScoreSignal(_scorePlayer2, 1);
             }
             else if (pbBall.Right > ScreenWidth)
             {
                 ResetBall();
-                //_scorePlayer1 += 1;
-                //lblScore1.Text = _scorePlayer1.ToString();
-                SendScoreSignal(_scorePlayer1, 0);
+                _scorePlayer1 += 1;
+                lblScore1.Text = _scorePlayer1.ToString();
+                //SendScoreSignal(_scorePlayer1, 0);
             }
         }
 
@@ -420,19 +425,19 @@ namespace PingPong3
                 _currentBallX = velocityX;
             });
 
-            connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
-            {
-                if (player == 0)
-                {
-                    _scorePlayer1 = score + 1;
-                    lblScore1.Text = _scorePlayer1.ToString();
-                }
-                else
-                {
-                    _scorePlayer2 = score + 1;
-                    lblScore2.Text = _scorePlayer2.ToString();
-                }
-            });
+            //connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
+            //{
+            //    if (player == 0)
+            //    {
+            //        _scorePlayer1 = score + 1;
+            //        lblScore1.Text = _scorePlayer1.ToString();
+            //    }
+            //    else
+            //    {
+            //        _scorePlayer2 = score + 1;
+            //        lblScore2.Text = _scorePlayer2.ToString();
+            //    }
+            //});
 
             connection.On<int, int>("ReceiveBallVelocityDirection1", (velocityX, velocityY) =>
             {
