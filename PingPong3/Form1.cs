@@ -117,6 +117,7 @@ namespace PingPong3
 
         private void LoadGraphicsContent()
         {
+            //TODO: !! Change photos of players
             pbPlayer1.Load("Paddle1.png");
             _player1.Texture = pbPlayer1;
 
