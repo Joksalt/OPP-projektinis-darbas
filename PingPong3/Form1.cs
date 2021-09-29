@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using static PingPong3.Models.Game;
 
 namespace PingPong3
 {
@@ -366,6 +367,12 @@ namespace PingPong3
                 _player1.Position = newPosition;
             });
 
+            connection.On<int>("ReceiveStartSignal", (mode) =>
+            {
+                //TODO: set correct game mode
+                BeginGame();
+            });
+
             try
             {
                 await connection.StartAsync();
@@ -400,6 +407,18 @@ namespace PingPong3
             }
         }
 
+        private async void SendStartSignal(GameMode gameMode)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendStartSignal", ((int)gameMode));
+            }
+            catch (Exception ex)
+            {
+                //messagesList.Items.Add(ex.Message);
+            }
+        }
+
         #endregion
 
         private void pbPlayer2_Click(object sender, EventArgs e)
@@ -411,7 +430,10 @@ namespace PingPong3
         {
             if (!_isGameRunning)
             {
+                SendStartSignal(GameMode.Basic);
                 BeginGame();
+                //TODO: allow to change game mode
+                
             }   
         }
     }

@@ -19,5 +19,10 @@ namespace SignalRChat.Hubs
         {
             await Clients.Others.SendAsync("ReceivePlayer1Position", x, y);
         }
+
+        public async Task SendStartSignal(int gameMode)
+        {
+            await Clients.Others.SendAsync("ReceiveStartSignal", gameMode);
+        }
     }
 }

@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="GameItem.cs" />
     <Compile Include="HubItem.cs" />
+    <Compile Include="Models\Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
