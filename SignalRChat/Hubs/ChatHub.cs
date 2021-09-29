@@ -22,7 +22,7 @@ namespace SignalRChat.Hubs
 
         public async Task SendStartSignal(int gameMode)
         {
-            await Clients.Others.SendAsync("ReceiveStartSignal", gameMode);
+            await Clients.All.SendAsync("ReceiveStartSignal", gameMode);
         }
     }
 }

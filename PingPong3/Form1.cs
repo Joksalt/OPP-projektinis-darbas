@@ -160,7 +160,8 @@ namespace PingPong3
 
         #region Mechanics
 
-        private int _currentY;
+        private int _currentYP1;
+        private int _currentYP2;
 
         
 
@@ -168,64 +169,95 @@ namespace PingPong3
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
-            int playerX = 0 + 30;
-            int playerY = PointToClient(MousePosition).Y;
-            //_player1.Position = new Point(playerX, playerY);
+            //int player1X = 0 + 30;
 
-            
+            //int playerY = PointToClient(MousePosition).Y;
+            ////_player1.Position = new Point(playerX, playerY);
 
-            if (_player1.Texture.Bottom >= ScreenHeight)
-            {
-                //_player1.Position = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
-                var newPosition1 = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
-                _player1.Position = newPosition1;
-                SendPlayer1Position(newPosition1);
-            }
-            else if (_player1.Texture.Top <= 0)
-            {
-                //_player1.Position = new Point(playerX, _player1.Origin.Y + 1);
-                var newPosition1 = new Point(playerX, _player1.Origin.Y + 1);
-                _player1.Position = newPosition1;
-                SendPlayer1Position(newPosition1);
-            }
-            else
-            {
-                var newPosition1 = new Point(playerX, playerY);
-                _player1.Position = newPosition1;
-                SendPlayer1Position(newPosition1);
-            }
 
-            if (Keyboard.IsKeyDown(Key.S))
+
+            //if (_player1.Texture.Bottom >= ScreenHeight)
+            //{
+            //    //_player1.Position = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
+            //    var newPosition1 = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
+            //    _player1.Position = newPosition1;
+            //    SendPlayer1Position(newPosition1);
+            //}
+            //else if (_player1.Texture.Top <= 0)
+            //{
+            //    //_player1.Position = new Point(playerX, _player1.Origin.Y + 1);
+            //    var newPosition1 = new Point(playerX, _player1.Origin.Y + 1);
+            //    _player1.Position = newPosition1;
+            //    SendPlayer1Position(newPosition1);
+            //}
+            //else
+            //{
+            //    var newPosition1 = new Point(playerX, playerY);
+            //    _player1.Position = newPosition1;
+            //    SendPlayer1Position(newPosition1);
+            //}
+
+            //------P1
+
+            int player1X = 0 + 30;
+
+            if (Keyboard.IsKeyDown(Key.Down))
             {
-                SendMessage("s");
-                if (_player2.Texture.Bottom >= ScreenHeight)
+                if (_player1.Texture.Bottom >= ScreenHeight)
                 {
-                    _currentY -= 0;
+                    _currentYP1 -= 0;
                 }
                 else
                 {
-                    _currentY += 30;
+                    _currentYP1 += 30;
                 }
-                var newPosition = new Point(ScreenWidth - 30, _currentY);
+                var newPosition = new Point(player1X, _currentYP1);
+                _player1.Position = newPosition;
+                SendPlayer1Position(newPosition);
+            }
+            else if (Keyboard.IsKeyDown(Key.Up))
+            {
+                if (_player1.Texture.Top <= 0)
+                {
+                    _currentYP1 += 0;
+                }
+                else
+                {
+                    _currentYP1 -= 30;
+                }
+                var newPosition = new Point(player1X, _currentYP1);
+                _player1.Position = newPosition;
+                SendPlayer1Position(newPosition);
+            }
+            //--------P2
+            if (Keyboard.IsKeyDown(Key.S))
+            {
+                if (_player2.Texture.Bottom >= ScreenHeight)
+                {
+                    _currentYP2 -= 0;
+                }
+                else
+                {
+                    _currentYP2 += 30;
+                }
+                var newPosition = new Point(ScreenWidth - 30, _currentYP2);
                 _player2.Position = newPosition;
                 SendPlayer2Position(newPosition);
             }
             else if (Keyboard.IsKeyDown(Key.W))
             {
-                SendMessage("W");
                 if (_player2.Texture.Top <= 0)
                 {
-                    _currentY += 0;
+                    _currentYP2 += 0;
                 }
                 else
                 {
-                    _currentY -= 30;
+                    _currentYP2 -= 30;
                 }
 
                 int player2X = ScreenWidth - 30;
-                int player2Y = _currentY;
                 //_player2.Position = new Point(player2X, player2Y);
-                var newPosition = new Point(player2X, player2Y);
+                var newPosition = new Point(player2X, _currentYP2);
                 _player2.Position = newPosition;
                 SendPlayer2Position(newPosition);
 
@@ -431,9 +463,7 @@ namespace PingPong3
             if (!_isGameRunning)
             {
                 SendStartSignal(GameMode.Basic);
-                BeginGame();
-                //TODO: allow to change game mode
-                
+                //BeginGame();                
             }   
         }
     }
