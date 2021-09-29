@@ -272,11 +272,12 @@ namespace PingPong3
             int velocityY = GenerateBallY();
             int velocityX = GenerateBallX();
 
+            SendResetBallSignal(velocityX, velocityY);
 
-            _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
-            _ball.Velocity = new Point(velocityX, velocityY);
+            //_ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
+            //_ball.Velocity = new Point(velocityX, velocityY);
 
-            _currentBallX = velocityX;
+            //_currentBallX = velocityX;
         }
 
         private int GenerateBallX()
@@ -321,17 +322,21 @@ namespace PingPong3
 
         private void CheckWallOut()
         {
+            //BUGBUG: Increments by 2. Possible solution - add parameter that checks if it's
+            //P1 or P2 playing and only P1 will send goal signals.
             if (pbBall.Left < 0)
             {
                 ResetBall();
-                _scorePlayer2 += 1;
-                lblScore2.Text = _scorePlayer2.ToString();
+                //_scorePlayer2 += 1;
+                //lblScore2.Text = _scorePlayer2.ToString();
+                SendScoreSignal(_scorePlayer2, 1);
             }
             else if (pbBall.Right > ScreenWidth)
             {
                 ResetBall();
-                _scorePlayer1 += 1;
-                lblScore1.Text = _scorePlayer1.ToString();
+                //_scorePlayer1 += 1;
+                //lblScore1.Text = _scorePlayer1.ToString();
+                SendScoreSignal(_scorePlayer1, 0);
             }
         }
 
@@ -341,24 +346,26 @@ namespace PingPong3
                 _ball.LeftBottomCorner.Y > _player1.RightUpCorner.Y &&
                 _ball.LeftUpCorner.Y < _player1.RightBottomCorner.Y)
             {
-                _currentBallX = GenerateBallX();
-                if (_currentBallX < 0)
-                {
-                    _currentBallX *= -1;
-                }
-                _ball.Velocity = new Point(_currentBallX, GenerateBallY());
+                SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
+                //_currentBallX = GenerateBallX();
+                //if (_currentBallX < 0)
+                //{
+                //    _currentBallX *= -1;
+                //}
+                //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
             }
 
             if (_ball.RightUpCorner.X > _player2.LeftUpCorner.X &&
                 _ball.RightBottomCorner.Y > _player2.LeftUpCorner.Y &&
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
-                _currentBallX = GenerateBallX();
-                if (_currentBallX > 0)
-                {
-                    _currentBallX *= -1;
-                }
-                _ball.Velocity = new Point(_currentBallX, GenerateBallY());
+                SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+                //_currentBallX = GenerateBallX();
+                //if (_currentBallX > 0)
+                //{
+                //    _currentBallX *= -1;
+                //}
+                //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
             }
         }
         #endregion
@@ -405,6 +412,50 @@ namespace PingPong3
                 BeginGame();
             });
 
+            connection.On<int, int>("ReceiveResetBallSignal", (velocityX, velocityY) =>
+            {
+                _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
+                _ball.Velocity = new Point(velocityX, velocityY);
+
+                _currentBallX = velocityX;
+            });
+
+            connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
+            {
+                if (player == 0)
+                {
+                    _scorePlayer1 = score + 1;
+                    lblScore1.Text = _scorePlayer1.ToString();
+                }
+                else
+                {
+                    _scorePlayer2 = score + 1;
+                    lblScore2.Text = _scorePlayer2.ToString();
+                }
+            });
+
+            connection.On<int, int>("ReceiveBallVelocityDirection1", (velocityX, velocityY) =>
+            {
+                _currentBallX = velocityX;
+                if (_currentBallX < 0)
+                {
+                    _currentBallX *= -1;
+                }
+                _ball.Velocity = new Point(_currentBallX, velocityY);
+            });
+
+            connection.On<int, int>("ReceiveBallVelocityDirection2", (velocityX, velocityY) =>
+            {
+                _currentBallX = velocityX;
+                if (_currentBallX > 0)
+                {
+                    _currentBallX *= -1;
+                }
+                _ball.Velocity = new Point(_currentBallX, velocityY);
+            });
+
+            
+
             try
             {
                 await connection.StartAsync();
@@ -444,6 +495,59 @@ namespace PingPong3
             try
             {
                 await connection.InvokeAsync("SendStartSignal", ((int)gameMode));
+            }
+            catch (Exception ex)
+            {
+                //messagesList.Items.Add(ex.Message);
+            }
+        }
+
+        private async void SendResetBallSignal(int velocityX, int velocityY)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendResetBallSignal", velocityX, velocityY);
+            }
+            catch (Exception ex)
+            {
+                //messagesList.Items.Add(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="score"></param>
+        /// <param name="player">Equals 0 if for P1, equals 1 if for P2</param>
+        private async void SendScoreSignal(int score, int player)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendScoreSignal", score, player);
+            }
+            catch (Exception ex)
+            {
+                //messagesList.Items.Add(ex.Message);
+            }
+        }
+
+        private async void SendBallVelocityDirection1(int velocityX, int velocityY)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendBallVelocityDirection1", velocityX, velocityY);
+            }
+            catch (Exception ex)
+            {
+                //messagesList.Items.Add(ex.Message);
+            }
+        }
+
+        private async void SendBallVelocityDirection2(int velocityX, int velocityY)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendBallVelocityDirection2", velocityX, velocityY);
             }
             catch (Exception ex)
             {
