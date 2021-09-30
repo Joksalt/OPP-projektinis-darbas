@@ -64,7 +64,7 @@ namespace PingPong3
             _isGameRunning = true;
             ResetBall();
 
-            pbTitleScreen.Hide();
+            //pbTitleScreen.Hide();
 
         }
 
@@ -118,18 +118,25 @@ namespace PingPong3
         private void LoadGraphicsContent()
         {
             //TODO: !! Change photos of players
-            pbPlayer1.Load("Paddle1.png");
-            _player1.Texture = pbPlayer1;
-
-
-            pbPlayer2.Load("Paddle2.png");
-            _player2.Texture = pbPlayer2;
-
-            pbBall.Load("Ball.png");
-            _ball.Texture = pbBall;
 
             pbTitleScreen.Load("Fondo.png");
             _titleScreen.Texture = pbTitleScreen;
+
+            pbPlayer1.Load("Paddle1.png");
+            pbTitleScreen.Controls.Add(pbPlayer1);
+            _player1.Texture = pbPlayer1;
+            pbPlayer1.BackColor = Color.Transparent;
+
+
+            pbPlayer2.Load("Paddle2.png");
+            pbTitleScreen.Controls.Add(pbPlayer2);
+            _player2.Texture = pbPlayer2;
+            pbPlayer2.BackColor = Color.Transparent;
+
+            pbBall.Load("Ball.png");
+            pbTitleScreen.Controls.Add(pbBall);
+            _ball.Texture = pbBall;
+            pbBall.BackColor = Color.Transparent;
         }
 
         private void UpdateScene()
