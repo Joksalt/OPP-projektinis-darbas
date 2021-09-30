@@ -10,7 +10,6 @@ namespace PingPong3.Patterns.Factory
     {
         public PowerUp MakePowerUp(int randomNumber)
         {
-            PowerUp newPowerUp = null;
 
             if (randomNumber == 0)
             {

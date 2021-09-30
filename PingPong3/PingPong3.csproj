@@ -124,7 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BallItem.cs" />
-    <Compile Include="BallzFactory.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,7 +138,6 @@
     <Compile Include="Patterns\Factory\Split.cs" />
     <Compile Include="Patterns\Factory\Explode.cs" />
     <Compile Include="Patterns\Factory\PowerUpFactory.cs" />
-    <Compile Include="PlayerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

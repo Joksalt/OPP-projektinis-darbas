@@ -358,8 +358,9 @@ namespace PingPong3
                 _scorePlayer1 += 1;
                 lblScore1.Text = _scorePlayer1.ToString();
 
-                int random = _random.Next(2);
-                thePowerUp = powerUpFactory.MakePowerUp(random);
+                int randomNum = _random.Next(2);
+                SendPowerUpChange(randomNum);
+                //thePowerUp = powerUpFactory.MakePowerUp(randomNum);
                 if (thePowerUp != null)
                 {
                     pbBall.Load(thePowerUp.GetName());  ///Testing Factory
@@ -424,6 +425,11 @@ namespace PingPong3
             connection.On<string, string>("ReceiveMessage", (user, message) =>
             {
                 //resultTextBox.Text += message;
+            });
+
+            connection.On<int>("RecievePowerUpChange", (random) =>
+            {
+                thePowerUp = powerUpFactory.MakePowerUp(random);
             });
 
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
@@ -497,7 +503,17 @@ namespace PingPong3
             {
             }
         }
-
+        private async void SendPowerUpChange(int randomNum)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendPowerUpChange", randomNum);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
         private async void SendPlayer2Position(Point playerPosition)
         {
             try
