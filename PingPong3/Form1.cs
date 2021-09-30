@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using static PingPong3.Models.Game;
+using PingPong3.Patterns.Factory;
 
 namespace PingPong3
 {
@@ -26,8 +27,13 @@ namespace PingPong3
 
         private Random _random;
 
+        //private PowerUp theSpeed =null;
+        private PowerUpFactory powerUpFactory = new PowerUpFactory();
+        private PowerUp thePowerUp = null;
+
         private int _scorePlayer1;
         private int _scorePlayer2;
+        private string a = "";
 
         public Form1()
         {
@@ -55,6 +61,7 @@ namespace PingPong3
             ClientSize = new Size(ScreenWidth, ScreenHeight);
             Initialize();
             Load += Form1_Load;
+
         }
 
         #region gameplay methods
@@ -115,9 +122,10 @@ namespace PingPong3
             _titleScreen.Height = ScreenHeight;
         }
 
+        
+
         private void LoadGraphicsContent()
         {
-            //TODO: !! Change photos of players
 
             pbTitleScreen.Load("Fondo.png");
             _titleScreen.Texture = pbTitleScreen;
@@ -349,6 +357,17 @@ namespace PingPong3
                 ResetBall();
                 _scorePlayer1 += 1;
                 lblScore1.Text = _scorePlayer1.ToString();
+
+                int random = _random.Next(2);
+                thePowerUp = powerUpFactory.MakePowerUp(random);
+                if (thePowerUp != null)
+                {
+                    pbBall.Load(thePowerUp.GetName());  ///Testing Factory
+                }
+                else
+                {
+                    Console.WriteLine("Something is wrong");
+                }
                 //SendScoreSignal(_scorePlayer1, 0);
             }
         }

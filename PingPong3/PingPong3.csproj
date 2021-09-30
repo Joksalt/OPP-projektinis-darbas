@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BallItem.cs" />
+    <Compile Include="BallzFactory.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +134,12 @@
     <Compile Include="GameItem.cs" />
     <Compile Include="HubItem.cs" />
     <Compile Include="Models\Game.cs" />
+    <Compile Include="Patterns\Factory\PowerUp.cs" />
+    <Compile Include="Patterns\Factory\Speed.cs" />
+    <Compile Include="Patterns\Factory\Split.cs" />
+    <Compile Include="Patterns\Factory\Explode.cs" />
+    <Compile Include="Patterns\Factory\PowerUpFactory.cs" />
+    <Compile Include="PlayerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -161,5 +168,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
