@@ -132,7 +132,7 @@
     </Compile>
     <Compile Include="GameItem.cs" />
     <Compile Include="HubItem.cs" />
-    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\GameSingleton.cs" />
     <Compile Include="Patterns\Factory\PowerUp.cs" />
     <Compile Include="Patterns\Factory\Speed.cs" />
     <Compile Include="Patterns\Factory\Split.cs" />

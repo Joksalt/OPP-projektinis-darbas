@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
-using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 
 namespace PingPong3
@@ -538,7 +537,7 @@ namespace PingPong3
             }
         }
 
-        private async void SendStartSignal(GameMode gameMode)
+        private async void SendStartSignal(Models.GameMode gameMode)
         {
             try
             {
@@ -614,7 +613,7 @@ namespace PingPong3
         {
             if (!_isGameRunning)
             {
-                SendStartSignal(GameMode.Basic);
+                SendStartSignal(Models.GameMode.Basic);
                 //BeginGame();                
             }   
         }
