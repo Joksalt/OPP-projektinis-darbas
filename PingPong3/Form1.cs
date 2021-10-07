@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using static PingPong3.Models.Game;
-using PingPong3.Patterns.Factory;
+using PingPong3.Patterns.AbstractFactory;
 
 namespace PingPong3
 {
@@ -28,7 +28,7 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        private PowerUpFactory powerUpFactory = new PowerUpFactory();
+        private PowerUpFactory WallFactory = new PowerUpFactory();
         private PowerUp thePowerUp = null;
 
         private int _scorePlayer1;
@@ -360,7 +360,7 @@ namespace PingPong3
 
                 int randomNum = _random.Next(2);
                 SendPowerUpChange(randomNum);
-                //thePowerUp = powerUpFactory.MakePowerUp(randomNum);
+                //thePowerUp = WallFactory.MakePowerUp(randomNum);
                 if (thePowerUp != null)
                 {
                     pbBall.Load(thePowerUp.GetName());  ///Testing Factory
@@ -429,7 +429,7 @@ namespace PingPong3
 
             connection.On<int>("RecievePowerUpChange", (random) =>
             {
-                thePowerUp = powerUpFactory.MakePowerUp(random);
+                thePowerUp = WallFactory.MakePowerUp(random);
             });
 
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
