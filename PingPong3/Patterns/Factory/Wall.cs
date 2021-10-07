@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    public abstract class PowerUp
+    public abstract class Wall
     {
         private string name;
         public string GetName()

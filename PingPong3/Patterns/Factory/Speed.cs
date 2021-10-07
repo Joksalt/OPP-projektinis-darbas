@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    class Speed:PowerUp
+    class Speed:Wall
     {
         public Speed()
         {

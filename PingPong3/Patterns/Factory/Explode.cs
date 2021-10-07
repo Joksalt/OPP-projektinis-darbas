@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    class Explode : PowerUp
+    class Explode : Wall
     {
         public Explode()
         {

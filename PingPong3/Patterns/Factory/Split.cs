@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    class Split : PowerUp
+    class Split : Wall
     {
         public Split()
         {

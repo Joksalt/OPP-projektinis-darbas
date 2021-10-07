@@ -8,7 +8,7 @@ namespace PingPong3.Patterns.Factory
 {
     public class WallFactory
     {
-        public PowerUp MakePowerUp(int randomNumber)
+        public Wall MakeWall(int randomNumber)
         {
 
             if (randomNumber == 0)

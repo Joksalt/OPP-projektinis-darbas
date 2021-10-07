@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 using static PingPong3.Models.Game;
-//using PingPong3.Patterns.Factory;
-using PingPong3.Patterns.AbstractFactory;
+using PingPong3.Patterns.Factory;
+//using PingPong3.Patterns.AbstractFactory;
 
 namespace PingPong3
 {
@@ -28,9 +28,9 @@ namespace PingPong3
 
         private Random _random;
 
-        //private PowerUp theSpeed =null;
+        //private Wall theSpeed =null;
         private WallFactory WallFactory = new WallFactory();
-        private PowerUp thePowerUp = null;
+        private Wall theWall = null;
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -360,11 +360,11 @@ namespace PingPong3
                 lblScore1.Text = _scorePlayer1.ToString();
 
                 int randomNum = _random.Next(2);
-                SendPowerUpChange(randomNum);
-                //thePowerUp = WallFactory.MakePowerUp(randomNum);
-                if (thePowerUp != null)
+                SendWallChange(randomNum);
+                //theWall = WallFactory.MakeWall(randomNum);
+                if (theWall != null)
                 {
-                    pbBall.Load(thePowerUp.GetName());  ///Testing Factory
+                    pbBall.Load(theWall.GetName());  ///Testing Factory
                 }
                 else
                 {
@@ -428,9 +428,9 @@ namespace PingPong3
                 //resultTextBox.Text += message;
             });
 
-            connection.On<int>("RecievePowerUpChange", (random) =>
+            connection.On<int>("RecieveWallChange", (random) =>
             {
-                thePowerUp = WallFactory.MakePowerUp(random);
+                theWall = WallFactory.MakeWall(random);
             });
 
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
@@ -504,11 +504,11 @@ namespace PingPong3
             {
             }
         }
-        private async void SendPowerUpChange(int randomNum)
+        private async void SendWallChange(int randomNum)
         {
             try
             {
-                await connection.InvokeAsync("SendPowerUpChange", randomNum);
+                await connection.InvokeAsync("SendWallChange", randomNum);
             }
             catch (Exception ex)
             {

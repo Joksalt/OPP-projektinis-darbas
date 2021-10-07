@@ -9,9 +9,9 @@ namespace SignalRChat.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", user,message);
         }
-        public async Task SendPowerUpChange(int random)
+        public async Task SendWallChange(int random)
         {
-            await Clients.All.SendAsync("RecievePowerUpChange", random);
+            await Clients.All.SendAsync("RecieveWallChange", random);
         }
         public async Task SendPlayer2Position(int x, int y)
         {
