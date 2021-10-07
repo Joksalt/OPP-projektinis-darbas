@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    public class PowerUpFactory
+    public class WallFactory
     {
         public PowerUp MakePowerUp(int randomNumber)
         {

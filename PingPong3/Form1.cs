@@ -29,7 +29,7 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        private PowerUpFactory WallFactory = new PowerUpFactory();
+        private WallFactory WallFactory = new WallFactory();
         private PowerUp thePowerUp = null;
 
         private int _scorePlayer1;
