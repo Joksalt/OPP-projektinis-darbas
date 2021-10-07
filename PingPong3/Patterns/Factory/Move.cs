@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    class Explode : Wall
+    class Move : Wall
     {
-        public Explode()
+        public Move()
         {
+            //explode previously
             SetName("Ball3.png");
         }
 

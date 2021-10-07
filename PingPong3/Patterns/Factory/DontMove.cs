@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Factory
 {
-    class Speed:Wall
+    class DontMove:Wall
     {
-        public Speed()
+        public DontMove()
         {
+            //speed previously
             SetName("Ball1.png");
         }
        

@@ -13,12 +13,12 @@ namespace PingPong3.Patterns.Factory
 
             if (randomNumber == 0)
             {
-                return new Speed();
+                return new DontMove();
 
             }
             else if (randomNumber == 1)
             {
-                return new Explode();
+                return new Move();
             }
             else if (randomNumber == 3)
             {
