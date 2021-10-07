@@ -135,11 +135,11 @@
     <Compile Include="Models\Game.cs" />
     <Compile Include="Patterns\AbstractFactory\Explode.cs" />
     <Compile Include="Patterns\AbstractFactory\PowerUp.cs" />
+    <Compile Include="Patterns\AbstractFactory\PowerUpBuilding.cs" />
     <Compile Include="Patterns\AbstractFactory\PowerUpFactory.cs" />
     <Compile Include="Patterns\AbstractFactory\Speed.cs" />
     <Compile Include="Patterns\AbstractFactory\Split.cs" />
     <Compile Include="Patterns\Factory\DontMove.cs" />
-    <Compile Include="Patterns\Factory\Split.cs" />
     <Compile Include="Patterns\Factory\Move.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />

@@ -10,7 +10,7 @@ namespace PingPong3.Patterns.AbstractFactory
     {
         private string name;
 
-        PUImage image;
+        //PUImage image;
         
         public string GetName()
         {
@@ -20,10 +20,10 @@ namespace PingPong3.Patterns.AbstractFactory
         {
             this.name = NewName;
         }
-        abstract void MakePowerUp();
+        //abstract void MakePowerUp();
         public string ToString()
         {
-            string infoOfPowerUp = "Power up " + name +;
+            string infoOfPowerUp = "Power up " + name +"";
             return infoOfPowerUp;
         }
     }

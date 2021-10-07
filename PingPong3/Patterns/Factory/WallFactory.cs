@@ -16,7 +16,7 @@ namespace PingPong3.Patterns.Factory
                 return new DontMove();
 
             }
-            else if (randoNumbermNumber == 1)
+            else if (Number == 1)
             {
                 return new Move();
             }
