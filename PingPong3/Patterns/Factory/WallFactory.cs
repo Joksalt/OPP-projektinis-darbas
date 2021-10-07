@@ -8,21 +8,17 @@ namespace PingPong3.Patterns.Factory
 {
     public class WallFactory
     {
-        public Wall MakeWall(int randomNumber)
+        public Wall MakeWall(int Number)
         {
 
-            if (randomNumber == 0)
+            if (Number == 0)
             {
                 return new DontMove();
 
             }
-            else if (randomNumber == 1)
+            else if (randoNumbermNumber == 1)
             {
                 return new Move();
-            }
-            else if (randomNumber == 3)
-            {
-                return new Split();
             }
             else return null;
         }
