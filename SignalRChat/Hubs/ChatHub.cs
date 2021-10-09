@@ -48,7 +48,7 @@ namespace SignalRChat.Hubs
 
         public async Task SendScoreSignal(int score, int player)
         {
-            await Clients.Others.SendAsync("ReceiveScoreSignal", score, player);
+            await Clients.All.SendAsync("ReceiveScoreSignal", score, player);
         }
 
         public async Task SendBallVelocityDirection1(int velocityX, int velocityY)
