@@ -42,10 +42,6 @@ namespace PingPong3
 
             //TODO: Increments by 2. Possible solution - add parameter that checks if it's
             //P1 or P2 playing and only P1 will send goal signals.
-            lblScore1.Visible = false;
-            lblScore2.Visible = false;
-            label4.Visible = false;
-            //temp univisibility
 
             #region SignalRconnection
             connection = new HubConnectionBuilder()
@@ -71,7 +67,7 @@ namespace PingPong3
         private void BeginGame()
         {
             _isGameRunning = true;
-            ResetBall();
+            //ResetBall();
         }
 
         //private void EndGame()
@@ -157,10 +153,6 @@ namespace PingPong3
                 CheckWallOut();
                 CheckPaddleCollision();
             }
-            //else if (MouseButtons == MouseButtons.Left)
-            //{
-            //    BeginGame();
-            //}
         }
 
         private bool _isGameRunning;
@@ -191,39 +183,6 @@ namespace PingPong3
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
-            //------P1
-
-            //int player1X = 0 + 30;
-
-            //if (Keyboard.IsKeyDown(Key.Down))
-            //{
-            //    if (_player1.Texture.Bottom >= ScreenHeight)
-            //    {
-            //        _currentYP1 -= 0;
-            //    }
-            //    else
-            //    {
-            //        _currentYP1 += 30;
-            //    }
-            //    var newPosition = new Point(player1X, _currentYP1);
-            //    _player1.Position = newPosition;
-            //    SendPlayer1Position(newPosition);
-            //}
-            //else if (Keyboard.IsKeyDown(Key.Up))
-            //{
-            //    if (_player1.Texture.Top <= 0)
-            //    {
-            //        _currentYP1 += 0;
-            //    }
-            //    else
-            //    {
-            //        _currentYP1 -= 30;
-            //    }
-            //    var newPosition = new Point(player1X, _currentYP1);
-            //    _player1.Position = newPosition;
-            //    SendPlayer1Position(newPosition);
-            //}
-
             //--------P2
             if (Keyboard.IsKeyDown(Key.S))
             {
@@ -268,11 +227,6 @@ namespace PingPong3
             int velocityX = GenerateBallX();
 
             SendResetBallSignal(velocityX, velocityY);
-
-            //_ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
-            //_ball.Velocity = new Point(velocityX, velocityY);
-
-            //_currentBallX = velocityX;
         }
 
         private int GenerateBallX()
@@ -317,31 +271,13 @@ namespace PingPong3
 
         private void CheckWallOut()
         {
+            //P2 goals
             if (pbBall.Left < 0)
             {
                 ResetBall();
                 _scorePlayer2 += 1;
                 lblScore2.Text = _scorePlayer2.ToString();
-                //SendScoreSignal(_scorePlayer2, 1);
-            }
-            else if (pbBall.Right > ScreenWidth)
-            {
-                ResetBall();
-                _scorePlayer1 += 1;
-                lblScore1.Text = _scorePlayer1.ToString();
-
-                int randomNum = _random.Next(2);
-                SendPowerUpChange(randomNum);
-                //thePowerUp = PowerUpFactory.MakePowerUp(randomNum);
-                if (thePowerUp != null)
-                {
-                    pbBall.Load(thePowerUp.GetName());  ///Testing Factory
-                }
-                else
-                {
-                    Console.WriteLine("Something is wrong");
-                }
-                //SendScoreSignal(_scorePlayer1, 0);
+                SendScoreSignal(_scorePlayer2, 1);
             }
         }
 
@@ -352,12 +288,6 @@ namespace PingPong3
                 _ball.LeftUpCorner.Y < _player1.RightBottomCorner.Y)
             {
                 SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
-                //_currentBallX = GenerateBallX();
-                //if (_currentBallX < 0)
-                //{
-                //    _currentBallX *= -1;
-                //}
-                //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
             }
 
             if (_ball.RightUpCorner.X > _player2.LeftUpCorner.X &&
@@ -365,12 +295,6 @@ namespace PingPong3
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
-                //_currentBallX = GenerateBallX();
-                //if (_currentBallX > 0)
-                //{
-                //    _currentBallX *= -1;
-                //}
-                //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
             }
         }
         #endregion
@@ -379,11 +303,6 @@ namespace PingPong3
 
         private async void connectButton_Click(object sender, EventArgs e)
         {
-            connection.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                //resultTextBox.Text += message;
-            });
-
             connection.On<int>("RecievePowerUpChange", (random) =>
             {
                 thePowerUp = PowerUpFactory.MakePowerUp(random);
@@ -415,19 +334,19 @@ namespace PingPong3
                 _currentBallX = velocityX;
             });
 
-            //connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
-            //{
-            //    if (player == 0)
-            //    {
-            //        _scorePlayer1 = score + 1;
-            //        lblScore1.Text = _scorePlayer1.ToString();
-            //    }
-            //    else
-            //    {
-            //        _scorePlayer2 = score + 1;
-            //        lblScore2.Text = _scorePlayer2.ToString();
-            //    }
-            //});
+            connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
+            {
+                if (player == 0)
+                {
+                    _scorePlayer1 = score;
+                    lblScore1.Text = _scorePlayer1.ToString();
+                }
+                else
+                {
+                    _scorePlayer2 = score;
+                    lblScore2.Text = _scorePlayer2.ToString();
+                }
+            });
 
             connection.On<int, int>("ReceiveBallVelocityDirection1", (velocityX, velocityY) =>
             {
