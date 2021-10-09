@@ -14,9 +14,15 @@ namespace PingPong3
         [STAThread]
         static void Main()
         {
+            //FIN: !! Create main method
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            StartForm MainForm = new StartForm(5);
+            Application.Run(MainForm);
+            //P1Form.Show();/
+            //Form1 P2Form = new Form1();
+            //Application.Run(P2Form);
+            //P2Form.Show();
         }
     }
 }

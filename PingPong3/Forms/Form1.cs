@@ -63,6 +63,13 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
+            
+        }
+
+        public void RunAnotherForm()
+        {
+            Form1 P2Form = new Form1();
+            P2Form.Show();
         }
 
         #region gameplay methods
@@ -186,7 +193,8 @@ namespace PingPong3
 
         private int _currentYP1;
         private int _currentYP2;
-
+        //TODO: !! Start two forms from main
+        //TODO: !! Create different forms for p1 and p2
         
 
         //TODO: Add select if you are p1 or p2
