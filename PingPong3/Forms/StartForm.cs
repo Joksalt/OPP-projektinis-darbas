@@ -21,7 +21,7 @@ namespace PingPong3
         {
             Form1 P1Form = new Form1();
             P1Form.Show();
-            Form1 P2Form = new Form1();
+            Form2 P2Form = new Form2();
             P2Form.Show();
         }
     }

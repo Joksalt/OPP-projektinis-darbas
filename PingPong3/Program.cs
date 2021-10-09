@@ -17,12 +17,8 @@ namespace PingPong3
             //FIN: !! Create main method
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            StartForm MainForm = new StartForm(5);
+            StartForm MainForm = new StartForm();
             Application.Run(MainForm);
-            //P1Form.Show();/
-            //Form1 P2Form = new Form1();
-            //Application.Run(P2Form);
-            //P2Form.Show();
         }
     }
 }

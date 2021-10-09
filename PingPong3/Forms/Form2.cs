@@ -10,7 +10,7 @@ using PingPong3.Patterns.AbstractFactory;
 
 namespace PingPong3
 {
-    public partial class Form1 : Form
+    public partial class Form2 : Form
     {
         HubConnection connection;
 
@@ -36,7 +36,7 @@ namespace PingPong3
         private int _scorePlayer2;
         private string a = "";
 
-        public Form1()
+        public Form2()
         {
             InitializeComponent();
 
