@@ -72,9 +72,6 @@ namespace PingPong3
         {
             _isGameRunning = true;
             ResetBall();
-
-            //pbTitleScreen.Hide();
-
         }
 
         //private void EndGame()
@@ -188,73 +185,45 @@ namespace PingPong3
         private int _currentYP1;
         private int _currentYP2;
         //FIN: !! Start two forms from main
-        //TODO: !! Create different forms for p1 and p2
         
 
-        //TODO: Add select if you are p1 or p2
+        //TODO: !! Add select if you are p1 or p2
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
-            //int player1X = 0 + 30;
-
-            //int playerY = PointToClient(MousePosition).Y;
-            ////_player1.Position = new Point(playerX, playerY);
-
-
-
-            //if (_player1.Texture.Bottom >= ScreenHeight)
-            //{
-            //    //_player1.Position = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
-            //    var newPosition1 = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
-            //    _player1.Position = newPosition1;
-            //    SendPlayer1Position(newPosition1);
-            //}
-            //else if (_player1.Texture.Top <= 0)
-            //{
-            //    //_player1.Position = new Point(playerX, _player1.Origin.Y + 1);
-            //    var newPosition1 = new Point(playerX, _player1.Origin.Y + 1);
-            //    _player1.Position = newPosition1;
-            //    SendPlayer1Position(newPosition1);
-            //}
-            //else
-            //{
-            //    var newPosition1 = new Point(playerX, playerY);
-            //    _player1.Position = newPosition1;
-            //    SendPlayer1Position(newPosition1);
-            //}
-
             //------P1
 
-            int player1X = 0 + 30;
+            //int player1X = 0 + 30;
 
-            if (Keyboard.IsKeyDown(Key.Down))
-            {
-                if (_player1.Texture.Bottom >= ScreenHeight)
-                {
-                    _currentYP1 -= 0;
-                }
-                else
-                {
-                    _currentYP1 += 30;
-                }
-                var newPosition = new Point(player1X, _currentYP1);
-                _player1.Position = newPosition;
-                SendPlayer1Position(newPosition);
-            }
-            else if (Keyboard.IsKeyDown(Key.Up))
-            {
-                if (_player1.Texture.Top <= 0)
-                {
-                    _currentYP1 += 0;
-                }
-                else
-                {
-                    _currentYP1 -= 30;
-                }
-                var newPosition = new Point(player1X, _currentYP1);
-                _player1.Position = newPosition;
-                SendPlayer1Position(newPosition);
-            }
+            //if (Keyboard.IsKeyDown(Key.Down))
+            //{
+            //    if (_player1.Texture.Bottom >= ScreenHeight)
+            //    {
+            //        _currentYP1 -= 0;
+            //    }
+            //    else
+            //    {
+            //        _currentYP1 += 30;
+            //    }
+            //    var newPosition = new Point(player1X, _currentYP1);
+            //    _player1.Position = newPosition;
+            //    SendPlayer1Position(newPosition);
+            //}
+            //else if (Keyboard.IsKeyDown(Key.Up))
+            //{
+            //    if (_player1.Texture.Top <= 0)
+            //    {
+            //        _currentYP1 += 0;
+            //    }
+            //    else
+            //    {
+            //        _currentYP1 -= 30;
+            //    }
+            //    var newPosition = new Point(player1X, _currentYP1);
+            //    _player1.Position = newPosition;
+            //    SendPlayer1Position(newPosition);
+            //}
+
             //--------P2
             if (Keyboard.IsKeyDown(Key.S))
             {
@@ -402,21 +371,6 @@ namespace PingPong3
                 //    _currentBallX *= -1;
                 //}
                 //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
-            }
-        }
-        #endregion
-
-        #region TestSignalR
-        private async void SendMessage(string message)
-        {
-            try
-            {
-                await connection.InvokeAsync("SendMessage",
-                    "aa", message);
-            }
-            catch (Exception ex)
-            {
-                //messagesList.Items.Add(ex.Message);
             }
         }
         #endregion
