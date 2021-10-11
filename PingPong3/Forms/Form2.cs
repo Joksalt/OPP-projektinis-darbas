@@ -46,7 +46,7 @@ namespace PingPong3
         {
             InitializeComponent();
 
-            gameLogger.Write($"Form2 start id {gameLogger.id}");
+            gameLogger.Write($"Form2 start");
             //TODO: Increments by 2. Possible solution - add parameter that checks if it's
             //P1 or P2 playing and only P1 will send goal signals.
 
