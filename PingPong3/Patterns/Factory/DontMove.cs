@@ -16,6 +16,7 @@ namespace PingPong3.Patterns.Factory
             SetHeight(10);
             SetWidth(100);
             SetColor(Color.White);
+            SetMoving(false);
         }
        
     }

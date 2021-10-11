@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    public interface PowerUpFactory
+    public class ExplodePowerUpFactory : PowerUpFactory
     {
-        PUEffect addPUEffect();
+        public PUEffect addPUEffect()
+        {
+            return new PUPowerUpEffect();
+        }
     }
 }

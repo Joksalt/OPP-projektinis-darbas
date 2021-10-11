@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    class Explode : PowerUp
+    public class Explode : PowerUp
     {
-        public Explode()
+        PowerUpFactory powerUpFactory;
+
+        public Explode(PowerUpFactory powerUpFactory)
         {
-            SetName("Ball3.png");
+            this.powerUpFactory = powerUpFactory;
+            //SetName("Ball3.png");
+        }
+        void MakePowerUp()
+        {
+            Console.WriteLine("Making power up "+GetName());
+            effect = PowerUpFactory.addPUEffect();
         }
 
     }

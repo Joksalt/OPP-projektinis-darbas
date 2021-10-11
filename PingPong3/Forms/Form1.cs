@@ -36,6 +36,8 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
+        private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
+
         private PowerUpFactory PowerUpFactory = new PowerUpFactory();
         private PowerUp thePowerUp = null;
 
@@ -70,7 +72,8 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
-            
+            PowerUp theGrunt = MakeUFOs.OrderPowerUp("UFO");
+            Console.WriteLine(theGrunt);
         }
 
         #region gameplay methods
@@ -200,6 +203,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
+                MoveWall();
             }
             //else if (MouseButtons == MouseButtons.Left)
             //{
@@ -270,7 +274,35 @@ namespace PingPong3
             }
         }
 
+        private int _currentYW1;
 
+        private void MoveWall()
+        {
+            //------P1
+
+            int wallX = 0 + 30;
+
+                if (_wall.Texture.Bottom >= ScreenHeight)
+                {
+                _currentYW1 -= 0;
+                }
+                else
+                {
+                _currentYW1 += 30;
+                }
+            
+                if (_wall.Texture.Top <= 0)
+                {
+                _currentYW1 += 0;
+                }
+                else
+                {
+                _currentYW1 -= 30;
+                }
+                var newPosition = new Point(wallX, _currentYW1);
+                _wall.Position = newPosition;
+                SendPlayer1Position(newPosition);
+        }
 
         private void ResetBall()
         {

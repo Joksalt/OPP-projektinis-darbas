@@ -13,6 +13,7 @@ namespace PingPong3.Patterns.Factory
         private int width;
         private int height;
         private Color color;
+        private bool moving;
 
         public string GetName()
         {
@@ -46,6 +47,13 @@ namespace PingPong3.Patterns.Factory
         {
             this.color = NewColor;
         }
-
+        public bool GetMoving()
+        {
+            return moving;
+        }
+        public void SetMoving(bool Moving)
+        {
+            this.moving = Moving;
+        }
     }
 }
