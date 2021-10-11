@@ -7,12 +7,18 @@ using System.Windows.Input;
 using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
+using PingPong3.Patterns.Singleton_logger;
 
 namespace PingPong3
 {
     public partial class Form1 : Form
     {
         HubConnection connection;
+
+        //---------
+        public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
+        private string LOG_SENDER = "P1";
+        //---------
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -44,12 +50,9 @@ namespace PingPong3
         {
             InitializeComponent();
 
+            gameLogger.Write(LOG_SENDER, "start");
             //TODO: Increments by 2. Possible solution - add parameter that checks if it's
             //P1 or P2 playing and only P1 will send goal signals.
-            lblScore1.Visible = false;
-            lblScore2.Visible = false;
-            label4.Visible = false;
-            //temp univisibility
 
             #region SignalRconnection
             connection = new HubConnectionBuilder()
@@ -67,6 +70,7 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
+            
         }
 
         #region gameplay methods
@@ -232,41 +236,13 @@ namespace PingPong3
 
         private int _currentYP1;
         private int _currentYP2;
-
+        //FIN: !! Start two forms from main
+        //FIN: !! Create different forms for p1 and p2
         
 
-        //TODO: Add select if you are p1 or p2
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
-            //int player1X = 0 + 30;
-
-            //int playerY = PointToClient(MousePosition).Y;
-            ////_player1.Position = new Point(playerX, playerY);
-
-
-
-            //if (_player1.Texture.Bottom >= ScreenHeight)
-            //{
-            //    //_player1.Position = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
-            //    var newPosition1 = new Point(playerX, ScreenHeight - _player1.Origin.Y - 1);
-            //    _player1.Position = newPosition1;
-            //    SendPlayer1Position(newPosition1);
-            //}
-            //else if (_player1.Texture.Top <= 0)
-            //{
-            //    //_player1.Position = new Point(playerX, _player1.Origin.Y + 1);
-            //    var newPosition1 = new Point(playerX, _player1.Origin.Y + 1);
-            //    _player1.Position = newPosition1;
-            //    SendPlayer1Position(newPosition1);
-            //}
-            //else
-            //{
-            //    var newPosition1 = new Point(playerX, playerY);
-            //    _player1.Position = newPosition1;
-            //    SendPlayer1Position(newPosition1);
-            //}
-
             //------P1
 
             int player1X = 0 + 30;
@@ -299,39 +275,6 @@ namespace PingPong3
                 _player1.Position = newPosition;
                 SendPlayer1Position(newPosition);
             }
-            //--------P2
-            if (Keyboard.IsKeyDown(Key.S))
-            {
-                if (_player2.Texture.Bottom >= ScreenHeight)
-                {
-                    _currentYP2 -= 0;
-                }
-                else
-                {
-                    _currentYP2 += 30;
-                }
-                var newPosition = new Point(ScreenWidth - 30, _currentYP2);
-                _player2.Position = newPosition;
-                SendPlayer2Position(newPosition);
-            }
-            else if (Keyboard.IsKeyDown(Key.W))
-            {
-                if (_player2.Texture.Top <= 0)
-                {
-                    _currentYP2 += 0;
-                }
-                else
-                {
-                    _currentYP2 -= 30;
-                }
-
-                int player2X = ScreenWidth - 30;
-                //_player2.Position = new Point(player2X, player2Y);
-                var newPosition = new Point(player2X, _currentYP2);
-                _player2.Position = newPosition;
-                SendPlayer2Position(newPosition);
-
-            }
         }
 
 
@@ -342,12 +285,9 @@ namespace PingPong3
             int velocityY = GenerateBallY();
             int velocityX = GenerateBallX();
 
+            gameLogger.Write(LOG_SENDER, "reset ball");
             SendResetBallSignal(velocityX, velocityY);
 
-            //_ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
-            //_ball.Velocity = new Point(velocityX, velocityY);
-
-            //_currentBallX = velocityX;
         }
 
         private int GenerateBallX()
@@ -394,14 +334,8 @@ namespace PingPong3
 
         private void CheckWallOut()
         {
-            if (pbBall.Left < 0)
-            {
-                ResetBall();
-                _scorePlayer2 += 1;
-                lblScore2.Text = _scorePlayer2.ToString();
-                //SendScoreSignal(_scorePlayer2, 1);
-            }
-            else if (pbBall.Right > ScreenWidth)
+            //P1 goals
+            if (pbBall.Right > ScreenWidth)
             {
                 ResetBall();
                 _scorePlayer1 += 1;
@@ -418,7 +352,8 @@ namespace PingPong3
                 {
                     Console.WriteLine("Something is wrong");
                 }
-                //SendScoreSignal(_scorePlayer1, 0);
+                gameLogger.Write(LOG_SENDER, "score");
+                SendScoreSignal(_scorePlayer1, 0);
             }
         }
 
@@ -429,12 +364,6 @@ namespace PingPong3
                 _ball.LeftUpCorner.Y < _player1.RightBottomCorner.Y)
             {
                 SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
-                //_currentBallX = GenerateBallX();
-                //if (_currentBallX < 0)
-                //{
-                //    _currentBallX *= -1;
-                //}
-                //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
             }
 
             if (_ball.RightUpCorner.X > _player2.LeftUpCorner.X &&
@@ -442,12 +371,6 @@ namespace PingPong3
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
-                //_currentBallX = GenerateBallX();
-                //if (_currentBallX > 0)
-                //{
-                //    _currentBallX *= -1;
-                //}
-                //_ball.Velocity = new Point(_currentBallX, GenerateBallY());
             }
         }
         #endregion
@@ -471,11 +394,6 @@ namespace PingPong3
 
         private async void connectButton_Click(object sender, EventArgs e)
         {
-            connection.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                //resultTextBox.Text += message;
-            });
-
             connection.On<int>("RecievePowerUpChange", (random) =>
             {
                 thePowerUp = PowerUpFactory.MakePowerUp(random);
@@ -507,19 +425,19 @@ namespace PingPong3
                 _currentBallX = velocityX;
             });
 
-            //connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
-            //{
-            //    if (player == 0)
-            //    {
-            //        _scorePlayer1 = score + 1;
-            //        lblScore1.Text = _scorePlayer1.ToString();
-            //    }
-            //    else
-            //    {
-            //        _scorePlayer2 = score + 1;
-            //        lblScore2.Text = _scorePlayer2.ToString();
-            //    }
-            //});
+            connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
+            {
+                if (player == 0)
+                {
+                    _scorePlayer1 = score;
+                    lblScore1.Text = _scorePlayer1.ToString();
+                }
+                else
+                {
+                    _scorePlayer2 = score;
+                    lblScore2.Text = _scorePlayer2.ToString();
+                }
+            });
 
             connection.On<int, int>("ReceiveBallVelocityDirection1", (velocityX, velocityY) =>
             {
