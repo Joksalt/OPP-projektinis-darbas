@@ -22,6 +22,7 @@ namespace PingPong3
 
         private GameItem _player1;
         private GameItem _player2;
+        private GameItem _wall;
         private BallItem _ball;
 
         private HubItem _titleScreen;
@@ -31,6 +32,9 @@ namespace PingPong3
         //private PowerUp theSpeed =null;
         private PowerUpFactory PowerUpFactory = new PowerUpFactory();
         private PowerUp thePowerUp = null;
+
+        private WallFactory WallFactory = new WallFactory();
+        private Wall TheWall = null;
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -88,6 +92,7 @@ namespace PingPong3
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadGraphicsContent();
+           
         }
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
@@ -116,6 +121,10 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
+            _wall = new GameItem
+            {
+                Position = new Point(ScreenWidth - 3, ScreenHeight / 3)
+            };
 
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
@@ -123,7 +132,6 @@ namespace PingPong3
             _titleScreen.Height = ScreenHeight;
         }
 
-        
 
         private void LoadGraphicsContent()
         {
@@ -146,6 +154,43 @@ namespace PingPong3
             pbTitleScreen.Controls.Add(pbBall);
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
+
+            TheWall = WallFactory.MakeWall(0);
+            if (TheWall != null)
+            {
+                
+                PictureBox wallBox = new PictureBox();
+                wallBox.Location = new System.Drawing.Point(79, 40);
+                wallBox.Name = "pbWall";
+                wallBox.Size = new System.Drawing.Size(TheWall.GetHeight(), TheWall.GetWidth());
+                wallBox.BackColor = TheWall.GetColor();
+                _wall.Texture = wallBox;
+                pbTitleScreen.Controls.Add(wallBox);
+                
+
+
+                //pbWall.Load("Paddle2.png");
+                //pbTitleScreen.Controls.Add(pbWall);
+                //_wall.Texture = pbWall;
+                //pbWall.BackColor = Color.Transparent;
+                //pbWall.Size = new System.Drawing.Size();
+            }
+            else
+            {
+                Console.WriteLine("Broken Wall Factory");
+            }
+            
+            int randomNum = _random.Next(2);
+            SendPowerUpChange(randomNum);
+            //thePowerUp = PowerUpFactory.MakePowerUp(randomNum);
+            if (thePowerUp != null)
+            {
+                pbBall.Load(thePowerUp.GetName());  ///Testing Factory
+            }
+            else
+            {
+                Console.WriteLine("Something is wrong");
+            }
         }
 
         private void UpdateScene()
@@ -173,6 +218,7 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
+                _wall.Draw();
             }
             else
             {
@@ -342,6 +388,8 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
+
+            
         }
 
         private void CheckWallOut()
@@ -618,6 +666,11 @@ namespace PingPong3
                 SendStartSignal(GameMode.Basic);
                 //BeginGame();                
             }   
+        }
+
+        private void pbWall_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
