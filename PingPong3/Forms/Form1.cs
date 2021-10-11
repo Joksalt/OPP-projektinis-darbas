@@ -17,7 +17,7 @@ namespace PingPong3
 
         //---------
         public static Logger gameLogger = Logger.LoggerInstance;
-        private string LOG_MESSAGE = "P1:";
+        private string LOG_SENDER = "P1";
         //---------
 
         private const int ScreenWidth = 1024;
@@ -46,7 +46,7 @@ namespace PingPong3
         {
             InitializeComponent();
 
-            gameLogger.Write($"Form1 start");
+            gameLogger.Write(LOG_SENDER, "start");
             //TODO: Increments by 2. Possible solution - add parameter that checks if it's
             //P1 or P2 playing and only P1 will send goal signals.
 
@@ -239,7 +239,7 @@ namespace PingPong3
             int velocityY = GenerateBallY();
             int velocityX = GenerateBallX();
 
-            gameLogger.Write($"{LOG_MESSAGE}reset ball");
+            gameLogger.Write(LOG_SENDER, "reset ball");
             SendResetBallSignal(velocityX, velocityY);
 
         }
@@ -304,7 +304,7 @@ namespace PingPong3
                 {
                     Console.WriteLine("Something is wrong");
                 }
-                gameLogger.Write($"{LOG_MESSAGE}score");
+                gameLogger.Write(LOG_SENDER, "score");
                 SendScoreSignal(_scorePlayer1, 0);
             }
         }
