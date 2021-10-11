@@ -28,9 +28,9 @@ namespace PingPong3.Patterns.Singleton_logger
             internal static readonly Logger instance = new Logger();
         }
 
-        public void Write(String message)
+        public void Write(string sender, string message)
         {
-            StartForm._StartForm.messagesLog.AppendText($"{message}\n");
+            StartForm._StartForm.messagesLog.AppendText($"{sender}:{message}\n");
         }
     }
 }
