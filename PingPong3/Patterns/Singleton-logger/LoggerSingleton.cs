@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace PingPong3.Patterns.Singleton_logger
 {
 
-    public sealed class Logger
+    public sealed class LoggerSingleton
     {
-        private Logger()
+        private LoggerSingleton()
         {
             //var rand = new Random();
             //id = rand.Next();
@@ -17,7 +17,7 @@ namespace PingPong3.Patterns.Singleton_logger
 
         public int id;
 
-        public static Logger LoggerInstance { get { return NestedLogger.instance; } }
+        public static LoggerSingleton LoggerInstance { get { return NestedLogger.instance; } }
 
         private class NestedLogger
         {
@@ -25,7 +25,7 @@ namespace PingPong3.Patterns.Singleton_logger
             {
             }
 
-            internal static readonly Logger instance = new Logger();
+            internal static readonly LoggerSingleton instance = new LoggerSingleton();
         }
 
         public void Write(string sender, string message)

@@ -16,7 +16,7 @@ namespace PingPong3
         HubConnection connection;
 
         //---------
-        public static Logger gameLogger = Logger.LoggerInstance;
+        public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
         private string LOG_SENDER = "P1";
         //---------
 
