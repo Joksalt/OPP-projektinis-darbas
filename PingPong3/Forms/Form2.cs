@@ -7,12 +7,18 @@ using System.Windows.Input;
 using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
+using PingPong3.Patterns.Singleton_logger;
 
 namespace PingPong3
 {
     public partial class Form2 : Form
     {
         HubConnection connection;
+
+        //---------
+        public static Logger gameLogger = Logger.LoggerInstance;
+        private string LOG_MESSAGE = "P2:";
+        //---------
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -40,6 +46,7 @@ namespace PingPong3
         {
             InitializeComponent();
 
+            gameLogger.Write($"Form2 start id {gameLogger.id}");
             //TODO: Increments by 2. Possible solution - add parameter that checks if it's
             //P1 or P2 playing and only P1 will send goal signals.
 
@@ -226,6 +233,7 @@ namespace PingPong3
             int velocityY = GenerateBallY();
             int velocityX = GenerateBallX();
 
+            gameLogger.Write($"{LOG_MESSAGE}reset ball");
             SendResetBallSignal(velocityX, velocityY);
         }
 
@@ -277,6 +285,7 @@ namespace PingPong3
                 ResetBall();
                 _scorePlayer2 += 1;
                 lblScore2.Text = _scorePlayer2.ToString();
+                gameLogger.Write($"{LOG_MESSAGE}score");
                 SendScoreSignal(_scorePlayer2, 1);
             }
         }
