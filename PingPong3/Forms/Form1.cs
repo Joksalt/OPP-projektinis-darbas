@@ -125,9 +125,10 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
+            //wall game item creation
             _wall = new GameItem
             {
-                Position = new Point(ScreenWidth - 3, ScreenHeight / 3)
+                Position = new Point(100, 500)
             };
 
             _titleScreen = new HubItem();
@@ -162,22 +163,14 @@ namespace PingPong3
             TheWall = WallFactory.MakeWall(0);
             if (TheWall != null)
             {
-                
+                //Wall options from wall factory and picture box creation
                 PictureBox wallBox = new PictureBox();
-                wallBox.Location = new System.Drawing.Point(79, 40);
                 wallBox.Name = "pbWall";
                 wallBox.Size = new System.Drawing.Size(TheWall.GetHeight(), TheWall.GetWidth());
                 wallBox.BackColor = TheWall.GetColor();
                 _wall.Texture = wallBox;
+                // add graphics maby, but probz not
                 pbTitleScreen.Controls.Add(wallBox);
-                
-
-
-                //pbWall.Load("Paddle2.png");
-                //pbTitleScreen.Controls.Add(pbWall);
-                //_wall.Texture = pbWall;
-                //pbWall.BackColor = Color.Transparent;
-                //pbWall.Size = new System.Drawing.Size();
             }
             else
             {
@@ -186,10 +179,10 @@ namespace PingPong3
             
             int randomNum = _random.Next(2);
             SendPowerUpChange(randomNum);
-            //thePowerUp = PowerUpFactory.MakePowerUp(randomNum);
+            //thePowerUp = PowerUpFactory.MakePowerUp(randomNum); //this is in the signals
             if (thePowerUp != null)
             {
-                pbBall.Load(thePowerUp.GetName());  ///Testing Factory
+                pbBall.Load(thePowerUp.GetName());  
             }
             else
             {
@@ -371,6 +364,19 @@ namespace PingPong3
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+            }
+            // ball hitting wall on map check
+            if (_ball.RightUpCorner.X > _wall.LeftUpCorner.X &&
+                _ball.RightBottomCorner.Y > _wall.LeftUpCorner.Y &&
+                _ball.RightUpCorner.Y < _wall.LeftBottomCorner.Y)
+            {
+                SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+            }
+            if( _ball.LeftUpCorner.X < _wall.RightUpCorner.X &&
+                _ball.LeftBottomCorner.Y > _wall.RightUpCorner.Y &&
+                _ball.LeftUpCorner.Y < _wall.RightBottomCorner.Y)
+            {
+                SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
             }
         }
         #endregion

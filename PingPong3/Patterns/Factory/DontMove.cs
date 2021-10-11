@@ -13,8 +13,8 @@ namespace PingPong3.Patterns.Factory
         {
             //speed previously
             SetName("Ball1.png");
-            SetHeight(50);
-            SetWidth(500);
+            SetHeight(10);
+            SetWidth(100);
             SetColor(Color.White);
         }
        
