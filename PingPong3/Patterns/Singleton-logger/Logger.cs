@@ -17,11 +17,11 @@ namespace PingPong3.Patterns.Singleton_logger
 
         public int id;
 
-        public static Logger LoggerInstance { get { return Nested.instance; } }
+        public static Logger LoggerInstance { get { return NestedLogger.instance; } }
 
-        private class Nested
+        private class NestedLogger
         {
-            static Nested()
+            static NestedLogger()
             {
             }
 
