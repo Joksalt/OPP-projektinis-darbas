@@ -65,8 +65,6 @@ namespace PingPong3
             ClientSize = new Size(ScreenWidth, ScreenHeight);
             Initialize();
             Load += Form1_Load;
-
-            
         }
 
         #region gameplay methods

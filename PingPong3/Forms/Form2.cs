@@ -65,14 +65,15 @@ namespace PingPong3
             ClientSize = new Size(ScreenWidth, ScreenHeight);
             Initialize();
             Load += Form1_Load;
-
-            
         }
 
         #region gameplay methods
 
         private void BeginGame()
         {
+            lblScore1.BackColor = Color.Transparent;
+            lblScore2.BackColor = Color.Transparent;
+            label4.BackColor = Color.Transparent;
             _isGameRunning = true;
             //ResetBall();
         }
