@@ -128,22 +128,26 @@ namespace PingPong3
 
         private void LoadGraphicsContent()
         {
+            String path = System.IO.Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+            path = path + "Images\\";
 
-            pbTitleScreen.Load("Fondo.png");
+            pbTitleScreen.Load(path + "Fondo.png");
             _titleScreen.Texture = pbTitleScreen;
+            pbTitleScreen.BackColor = Color.Transparent;
 
-            pbPlayer1.Load("Paddle1.png");
+            pbPlayer1.Load(path + "Paddle1.png");
             pbTitleScreen.Controls.Add(pbPlayer1);
             _player1.Texture = pbPlayer1;
             pbPlayer1.BackColor = Color.Transparent;
 
 
-            pbPlayer2.Load("Paddle2.png");
+            pbPlayer2.Load(path + "Paddle2.png");
             pbTitleScreen.Controls.Add(pbPlayer2);
             _player2.Texture = pbPlayer2;
             pbPlayer2.BackColor = Color.Transparent;
 
-            pbBall.Load("Ball.png");
+            pbBall.Load(path + "Ball.png");
             pbTitleScreen.Controls.Add(pbBall);
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
@@ -185,7 +189,6 @@ namespace PingPong3
         private int _currentYP2;
         //FIN: !! Start two forms from main
         
-
         //TODO: !! Add select if you are p1 or p2
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()

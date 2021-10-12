@@ -13,6 +13,5 @@ namespace PingPong3.Patterns.Factory
             //explode previously
             SetName("Ball3.png");
         }
-
     }
 }
