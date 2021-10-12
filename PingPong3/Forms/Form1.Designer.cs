@@ -64,6 +64,7 @@
             // 
             // pbPlayer1
             // 
+            this.pbPlayer1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pbPlayer1.Location = new System.Drawing.Point(12, 178);
             this.pbPlayer1.Name = "pbPlayer1";
             this.pbPlayer1.Size = new System.Drawing.Size(65, 160);
