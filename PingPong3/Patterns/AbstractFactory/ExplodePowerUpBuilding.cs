@@ -8,7 +8,7 @@ namespace PingPong3.Patterns.AbstractFactory
 {
     public class ExplodePowerUpBuilding : PowerUpBuilding
     {
-        protected PowerUp MakePowerUp(String typeOfPowerup)
+        protected override PowerUp MakePowerUp(String typeOfPowerup)
         {
             PowerUp thePowerUp = null;
             if (typeOfPowerup.Equals("UFO"))

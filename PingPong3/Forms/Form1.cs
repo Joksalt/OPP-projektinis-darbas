@@ -284,7 +284,7 @@ namespace PingPong3
 
                 if (_wall.Texture.Bottom >= ScreenHeight)
                 {
-                _currentYW1 -= 0;
+                _currentYW1 -= 30;
                 }
                 else
                 {
@@ -293,7 +293,7 @@ namespace PingPong3
             
                 if (_wall.Texture.Top <= 0)
                 {
-                _currentYW1 += 0;
+                _currentYW1 += 30;
                 }
                 else
                 {

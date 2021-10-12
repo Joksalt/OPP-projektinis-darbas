@@ -15,10 +15,10 @@ namespace PingPong3.Patterns.AbstractFactory
             this.powerUpFactory = powerUpFactory;
             //SetName("Ball3.png");
         }
-        void MakePowerUp()
+        public override void MakePowerUp()
         {
-            Console.WriteLine("Making power up "+GetName());
-            effect = PowerUpFactory.addPUEffect();
+            Console.WriteLine("Making power up " + GetName());
+            effect = powerUpFactory.addPUEffect();
         }
 
     }
