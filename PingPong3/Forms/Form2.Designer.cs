@@ -116,6 +116,7 @@
             // lblScore1
             // 
             this.lblScore1.AutoSize = true;
+            this.lblScore1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblScore1.Font = new System.Drawing.Font("Microsoft Sans Serif", 120F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore1.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.lblScore1.Location = new System.Drawing.Point(197, 50);
@@ -144,7 +145,7 @@
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
-            // Form1
+            // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -159,7 +160,8 @@
             this.Controls.Add(this.pbPlayer1);
             this.Controls.Add(this.pbBall);
             this.Controls.Add(this.pbTitleScreen);
-            this.Name = "Form1";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "Form2";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pbTitleScreen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBall)).EndInit();

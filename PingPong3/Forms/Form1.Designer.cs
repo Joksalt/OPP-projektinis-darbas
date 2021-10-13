@@ -64,6 +64,7 @@
             // 
             // pbPlayer1
             // 
+            this.pbPlayer1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pbPlayer1.Location = new System.Drawing.Point(12, 178);
             this.pbPlayer1.Name = "pbPlayer1";
             this.pbPlayer1.Size = new System.Drawing.Size(65, 160);
@@ -159,6 +160,7 @@
             this.Controls.Add(this.pbPlayer1);
             this.Controls.Add(this.pbBall);
             this.Controls.Add(this.pbTitleScreen);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pbTitleScreen)).EndInit();
