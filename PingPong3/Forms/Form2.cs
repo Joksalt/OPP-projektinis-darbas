@@ -35,7 +35,7 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        private PowerUpFactory PowerUpFactory = new PowerUpFactory();
+        //private PowerUpFactory PowerUpFactory = new PowerUpFactory();
         private PowerUp thePowerUp = null;
 
         private int _scorePlayer1;
@@ -312,10 +312,10 @@ namespace PingPong3
 
         private async void connectButton_Click(object sender, EventArgs e)
         {
-            connection.On<int>("RecievePowerUpChange", (random) =>
-            {
-                thePowerUp = PowerUpFactory.MakePowerUp(random);
-            });
+            //connection.On<int>("RecievePowerUpChange", (random) =>
+            //{
+            //    thePowerUp = PowerUpFactory.MakePowerUp(random);
+            //});
 
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
             {

@@ -37,8 +37,7 @@ namespace PingPong3
 
         //private PowerUp theSpeed =null;
         private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
-
-        private PowerUpFactory PowerUpFactory = new PowerUpFactory();
+       
         private PowerUp thePowerUp = null;
 
         private WallFactory WallFactory = new WallFactory();
@@ -203,7 +202,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
-                MoveWall();
+                //MoveWall();
             }
             //else if (MouseButtons == MouseButtons.Left)
             //{
@@ -278,7 +277,6 @@ namespace PingPong3
 
         private void MoveWall()
         {
-            //------P1
 
             int wallX = 0 + 30;
 
@@ -434,7 +432,7 @@ namespace PingPong3
         {
             connection.On<int>("RecievePowerUpChange", (random) =>
             {
-                thePowerUp = PowerUpFactory.MakePowerUp(random);
+                //thePowerUp = PowerUp.Equals(random);
             });
 
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
