@@ -28,6 +28,7 @@ namespace PingPong3
 
         private GameItem _player1;
         private GameItem _player2;
+        private GameItem _wall;
         private BallItem _ball;
 
         private HubItem _titleScreen;
@@ -35,8 +36,12 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        private PowerUpFactory PowerUpFactory = new PowerUpFactory();
+        private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
+       
         private PowerUp thePowerUp = null;
+
+        private WallFactory WallFactory = new WallFactory();
+        private Wall TheWall = null;
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -65,6 +70,9 @@ namespace PingPong3
             ClientSize = new Size(ScreenWidth, ScreenHeight);
             Initialize();
             Load += Form1_Load;
+
+            //PowerUp theGrunt = MakeUFOs.OrderPowerUp("UFO");
+            //Console.WriteLine(theGrunt);
         }
 
         #region gameplay methods
@@ -90,6 +98,7 @@ namespace PingPong3
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadGraphicsContent();
+           
         }
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
@@ -118,6 +127,11 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
+            //wall game item creation
+            _wall = new GameItem
+            {
+                Position = new Point(100, 500)
+            };
 
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
@@ -125,7 +139,6 @@ namespace PingPong3
             _titleScreen.Height = ScreenHeight;
         }
 
-        
 
         private void LoadGraphicsContent()
         {
@@ -151,6 +164,35 @@ namespace PingPong3
             pbTitleScreen.Controls.Add(pbBall);
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
+
+            TheWall = WallFactory.MakeWall(0);
+            if (TheWall != null)
+            {
+                //Wall options from wall factory and picture box creation
+                PictureBox wallBox = new PictureBox();
+                wallBox.Name = "pbWall";
+                wallBox.Size = new System.Drawing.Size(TheWall.GetHeight(), TheWall.GetWidth());
+                wallBox.BackColor = TheWall.GetColor();
+                _wall.Texture = wallBox;
+                // add graphics maby, but probz not
+                pbTitleScreen.Controls.Add(wallBox);
+            }
+            else
+            {
+                Console.WriteLine("Broken Wall Factory");
+            }
+            
+            int randomNum = _random.Next(2);
+            SendPowerUpChange(randomNum);
+            //thePowerUp = PowerUpFactory.MakePowerUp(randomNum); //this is in the signals
+            if (thePowerUp != null)
+            {
+                pbBall.Load(thePowerUp.GetName());  
+            }
+            else
+            {
+                Console.WriteLine("Something is wrong");
+            }
         }
 
         private void UpdateScene()
@@ -163,6 +205,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
+                //MoveWall();
             }
             //else if (MouseButtons == MouseButtons.Left)
             //{
@@ -178,6 +221,7 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
+                _wall.Draw();
             }
             else
             {
@@ -232,7 +276,34 @@ namespace PingPong3
             }
         }
 
+        private int _currentYW1;
 
+        private void MoveWall()
+        {
+
+            int wallX = 0 + 30;
+
+                if (_wall.Texture.Bottom >= ScreenHeight)
+                {
+                _currentYW1 -= 30;
+                }
+                else
+                {
+                _currentYW1 += 30;
+                }
+            
+                if (_wall.Texture.Top <= 0)
+                {
+                _currentYW1 += 30;
+                }
+                else
+                {
+                _currentYW1 -= 30;
+                }
+                var newPosition = new Point(wallX, _currentYW1);
+                _wall.Position = newPosition;
+                SendPlayer1Position(newPosition);
+        }
 
         private void ResetBall()
         {
@@ -283,6 +354,8 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
+
+            
         }
 
         private void CheckWallOut()
@@ -325,6 +398,19 @@ namespace PingPong3
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
             }
+            // ball hitting wall on map check
+            if (_ball.RightUpCorner.X > _wall.LeftUpCorner.X &&
+                _ball.RightBottomCorner.Y > _wall.LeftUpCorner.Y &&
+                _ball.RightUpCorner.Y < _wall.LeftBottomCorner.Y)
+            {
+                SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+            }
+            if( _ball.LeftUpCorner.X < _wall.RightUpCorner.X &&
+                _ball.LeftBottomCorner.Y > _wall.RightUpCorner.Y &&
+                _ball.LeftUpCorner.Y < _wall.RightBottomCorner.Y)
+            {
+                SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
+            }
         }
         #endregion
 
@@ -349,7 +435,7 @@ namespace PingPong3
         {
             connection.On<int>("RecievePowerUpChange", (random) =>
             {
-                thePowerUp = PowerUpFactory.MakePowerUp(random);
+                //thePowerUp = PowerUp.Equals(random);
             });
 
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
@@ -537,6 +623,11 @@ namespace PingPong3
                 SendStartSignal(GameMode.Basic);
                 //BeginGame();                
             }   
+        }
+
+        private void pbWall_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

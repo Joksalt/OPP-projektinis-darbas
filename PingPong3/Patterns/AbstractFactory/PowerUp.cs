@@ -9,9 +9,12 @@ namespace PingPong3.Patterns.AbstractFactory
     public abstract class PowerUp
     {
         private string name;
+        public PUEffect effect;
 
         //PUImage image;
-        
+
+        public abstract void MakePowerUp();
+
         public string GetName()
         {
             return name;
@@ -20,10 +23,10 @@ namespace PingPong3.Patterns.AbstractFactory
         {
             this.name = NewName;
         }
-        //abstract void MakePowerUp();
-        public string ToString()
+        
+        public string toString()
         {
-            string infoOfPowerUp = "Power up " + name +"";
+            string infoOfPowerUp = "Power up " + name +" with effect "+effect;
             return infoOfPowerUp;
         }
     }
