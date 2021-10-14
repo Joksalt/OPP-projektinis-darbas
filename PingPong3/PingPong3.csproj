@@ -155,7 +155,7 @@
     <Compile Include="Patterns\Factory\Move.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
-    <Compile Include="Patterns\Singleton-logger\LoggerSingleton.cs" />
+    <Compile Include="Patterns\Singleton_logger\Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\StartForm.cs">

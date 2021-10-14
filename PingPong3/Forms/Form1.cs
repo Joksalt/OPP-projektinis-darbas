@@ -36,7 +36,7 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
+        //private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
        
         private PowerUp thePowerUp = null;
 
@@ -71,7 +71,7 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
-            //PowerUp theGrunt = MakeUFOs.OrderPowerUp("UFO");
+            //PowerUp theGrunt = MakeUFOs.OrderPowerUp("E");
             //Console.WriteLine(theGrunt);
         }
 

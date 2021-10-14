@@ -11,11 +11,11 @@ namespace PingPong3.Patterns.AbstractFactory
         protected override PowerUp MakePowerUp(String typeOfPowerup)
         {
             PowerUp thePowerUp = null;
-            if (typeOfPowerup.Equals("UFO"))
+            if (typeOfPowerup.Equals("E"))
             {
                 PowerUpFactory powerUpPartsFactory = new ExplodePowerUpFactory();
                 thePowerUp = new Explode(powerUpPartsFactory);
-                thePowerUp.SetName("UFO GRUNT SHIP");
+                thePowerUp.SetName("EXPLOSION");
             }
             return thePowerUp;
         }
