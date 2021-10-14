@@ -8,6 +8,7 @@ using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
+using System.Collections.Generic;
 
 namespace PingPong3
 {
@@ -29,14 +30,16 @@ namespace PingPong3
         private GameItem _player1;
         private GameItem _player2;
         private BallItem _ball;
-
         private HubItem _titleScreen;
 
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        //private PowerUpFactory PowerUpFactory = new PowerUpFactory();
+        private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
         private PowerUp thePowerUp = null;
+
+        private WallFactory WallFactory = new WallFactory();
+        private List<Wall> Walls = new List<Wall>();
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -95,7 +98,6 @@ namespace PingPong3
         {
             UpdateScene();
         }
-
         private void DrawTimer_Tick(object sender, EventArgs e)
         {
             DrawScene();
@@ -119,14 +121,14 @@ namespace PingPong3
                 Velocity = new Point(2, 5)
             };
 
+            //Add needed walls
+            Walls = WallFactory.Production1();
+
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
             _titleScreen.Width = ScreenWidth;
             _titleScreen.Height = ScreenHeight;
         }
-
-        
-
         private void LoadGraphicsContent()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -142,7 +144,6 @@ namespace PingPong3
             _player1.Texture = pbPlayer1;
             pbPlayer1.BackColor = Color.Transparent;
 
-
             pbPlayer2.Load(path + "Paddle2.png");
             pbTitleScreen.Controls.Add(pbPlayer2);
             _player2.Texture = pbPlayer2;
@@ -152,8 +153,12 @@ namespace PingPong3
             pbTitleScreen.Controls.Add(pbBall);
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
-        }
 
+            foreach (Wall w in Walls)
+            {
+                pbTitleScreen.Controls.Add(w.Texture);
+            }
+        }
         private void UpdateScene()
         {
             if (_isGameRunning)
@@ -164,9 +169,15 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
+                foreach (Wall w in Walls)
+                {
+                    if (w is MovingWall)
+                    {
+                        (w as MovingWall).Move();
+                    }
+                }
             }
         }
-
         private bool _isGameRunning;
         private void DrawScene()
         {
@@ -175,6 +186,11 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
+
+                foreach (Wall w in Walls)
+                {
+                    w.Draw();
+                }
             }
             else
             {
@@ -195,7 +211,7 @@ namespace PingPong3
         private void UpdatePlayer()
         {
             //--------P2
-            if (Keyboard.IsKeyDown(Key.S))
+            if (Keyboard.IsKeyDown(Key.Down))
             {
                 if (_player2.Texture.Bottom >= ScreenHeight)
                 {
@@ -209,7 +225,7 @@ namespace PingPong3
                 _player2.Position = newPosition;
                 SendPlayer2Position(newPosition);
             }
-            else if (Keyboard.IsKeyDown(Key.W))
+            else if (Keyboard.IsKeyDown(Key.Up))
             {
                 if (_player2.Texture.Top <= 0)
                 {
@@ -228,8 +244,6 @@ namespace PingPong3
 
             }
         }
-
-
 
         private void ResetBall()
         {
@@ -309,6 +323,23 @@ namespace PingPong3
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
             }
+
+            foreach (Wall w in Walls)
+            {
+                if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
+                _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
+                _ball.LeftUpCorner.Y < w.RightBottomCorner.Y)
+                {
+                    SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+                }
+                else if (_ball.RightUpCorner.X > w.LeftUpCorner.X &&
+                    _ball.RightBottomCorner.Y > w.LeftUpCorner.Y &&
+                    _ball.RightUpCorner.Y < w.LeftBottomCorner.Y)
+                {
+                    SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
+                }
+            }/**/
+
         }
         #endregion
 

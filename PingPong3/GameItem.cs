@@ -19,7 +19,6 @@ namespace PingPong3
         {
             get { return new Point(Position.X - Origin.X, Position.Y - Origin.Y); }
         }
-
         public Point RightUpCorner
         {
             get { return new Point(Position.X + Origin.X, Position.Y - Origin.Y); }
@@ -28,7 +27,6 @@ namespace PingPong3
         {
             get { return new Point(Position.X - Origin.X, Position.Y + Origin.Y); }
         }
-
         public Point RightBottomCorner
         {
             get { return new Point(Position.X + Origin.X, Position.Y + Origin.Y); }

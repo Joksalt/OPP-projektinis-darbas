@@ -8,6 +8,7 @@ using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
+using System.Collections.Generic;
 
 namespace PingPong3
 {
@@ -28,7 +29,6 @@ namespace PingPong3
 
         private GameItem _player1;
         private GameItem _player2;
-        private GameItem _wall;
         private BallItem _ball;
 
         private HubItem _titleScreen;
@@ -37,11 +37,10 @@ namespace PingPong3
 
         //private PowerUp theSpeed =null;
         private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
-       
         private PowerUp thePowerUp = null;
 
         private WallFactory WallFactory = new WallFactory();
-        private Wall TheWall = null;
+        private List<Wall> Walls = new List<Wall>();
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -127,18 +126,15 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
-            //wall game item creation
-            _wall = new GameItem
-            {
-                Position = new Point(100, 500)
-            };
+
+            //Add needed walls
+            Walls = WallFactory.Production1();
 
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
             _titleScreen.Width = ScreenWidth;
             _titleScreen.Height = ScreenHeight;
         }
-
 
         private void LoadGraphicsContent()
         {
@@ -165,21 +161,9 @@ namespace PingPong3
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
 
-            TheWall = WallFactory.MakeWall(0);
-            if (TheWall != null)
+            foreach(Wall w in Walls)
             {
-                //Wall options from wall factory and picture box creation
-                PictureBox wallBox = new PictureBox();
-                wallBox.Name = "pbWall";
-                wallBox.Size = new System.Drawing.Size(TheWall.GetHeight(), TheWall.GetWidth());
-                wallBox.BackColor = TheWall.GetColor();
-                _wall.Texture = wallBox;
-                // add graphics maby, but probz not
-                pbTitleScreen.Controls.Add(wallBox);
-            }
-            else
-            {
-                Console.WriteLine("Broken Wall Factory");
+                pbTitleScreen.Controls.Add(w.Texture);
             }
             
             int randomNum = _random.Next(2);
@@ -205,6 +189,13 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
+                foreach(Wall w in Walls)
+                {
+                    if(w is MovingWall)
+                    {
+                        (w as MovingWall).Move();
+                    }
+                }
                 //MoveWall();
             }
             //else if (MouseButtons == MouseButtons.Left)
@@ -221,7 +212,12 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
-                _wall.Draw();
+
+                //Obsserver draws
+                foreach(Wall w in Walls)
+                {
+                    w.Draw();
+                }
             }
             else
             {
@@ -246,7 +242,7 @@ namespace PingPong3
 
             int player1X = 0 + 30;
 
-            if (Keyboard.IsKeyDown(Key.Down))
+            if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)
                 {
@@ -260,7 +256,7 @@ namespace PingPong3
                 _player1.Position = newPosition;
                 SendPlayer1Position(newPosition);
             }
-            else if (Keyboard.IsKeyDown(Key.Up))
+            else if (Keyboard.IsKeyDown(Key.W))
             {
                 if (_player1.Texture.Top <= 0)
                 {
@@ -277,33 +273,33 @@ namespace PingPong3
         }
 
         private int _currentYW1;
+        //!!
+        //private void MoveWall()
+        //{
 
-        private void MoveWall()
-        {
+        //    int wallX = 0 + 30;
 
-            int wallX = 0 + 30;
-
-                if (_wall.Texture.Bottom >= ScreenHeight)
-                {
-                _currentYW1 -= 30;
-                }
-                else
-                {
-                _currentYW1 += 30;
-                }
+        //        if (_wall.Texture.Bottom >= ScreenHeight)
+        //        {
+        //        _currentYW1 -= 30;
+        //        }
+        //        else
+        //        {
+        //        _currentYW1 += 30;
+        //        }
             
-                if (_wall.Texture.Top <= 0)
-                {
-                _currentYW1 += 30;
-                }
-                else
-                {
-                _currentYW1 -= 30;
-                }
-                var newPosition = new Point(wallX, _currentYW1);
-                _wall.Position = newPosition;
-                SendPlayer1Position(newPosition);
-        }
+        //        if (_wall.Texture.Top <= 0)
+        //        {
+        //        _currentYW1 += 30;
+        //        }
+        //        else
+        //        {
+        //        _currentYW1 -= 30;
+        //        }
+        //        var newPosition = new Point(wallX, _currentYW1);
+        //        _wall.Position = newPosition;
+        //        SendPlayer1Position(newPosition);
+        //}
 
         private void ResetBall()
         {
@@ -354,8 +350,6 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
-
-            
         }
 
         private void CheckWallOut()
@@ -399,23 +393,28 @@ namespace PingPong3
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
             }
             // ball hitting wall on map check
-            if (_ball.RightUpCorner.X > _wall.LeftUpCorner.X &&
-                _ball.RightBottomCorner.Y > _wall.LeftUpCorner.Y &&
-                _ball.RightUpCorner.Y < _wall.LeftBottomCorner.Y)
-            {
-                SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
-            }
-            if( _ball.LeftUpCorner.X < _wall.RightUpCorner.X &&
-                _ball.LeftBottomCorner.Y > _wall.RightUpCorner.Y &&
-                _ball.LeftUpCorner.Y < _wall.RightBottomCorner.Y)
-            {
-                SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
-            }
-        }
-        #endregion
 
-        #region TestSignalR
-        private async void SendMessage(string message)
+            foreach (Wall w in Walls)
+            {
+                if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
+                _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
+                _ball.LeftUpCorner.Y < w.RightBottomCorner.Y)
+                {
+                    SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+                }
+                else if (_ball.RightUpCorner.X > w.LeftUpCorner.X &&
+                    _ball.RightBottomCorner.Y > w.LeftUpCorner.Y &&
+                    _ball.RightUpCorner.Y < w.LeftBottomCorner.Y)
+                {
+                    SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
+                }
+            }/**/
+                
+            }
+            #endregion
+
+            #region TestSignalR
+            private async void SendMessage(string message)
         {
             try
             {
