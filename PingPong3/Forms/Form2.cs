@@ -122,7 +122,7 @@ namespace PingPong3
             };
 
             //Add needed walls
-            Walls = WallFactory.Production1();
+            Walls = WallFactory.Production3();
 
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
