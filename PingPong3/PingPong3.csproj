@@ -151,11 +151,13 @@
     <Compile Include="Patterns\AbstractFactory\PUPowerUpEffect.cs" />
     <Compile Include="Patterns\AbstractFactory\Speed.cs" />
     <Compile Include="Patterns\AbstractFactory\Split.cs" />
-    <Compile Include="Patterns\Factory\DontMove.cs" />
-    <Compile Include="Patterns\Factory\Move.cs" />
+    <Compile Include="Patterns\Factory\StaticWall.cs" />
+    <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
     <Compile Include="Patterns\Singleton_logger\Logger.cs" />
+    <Compile Include="Patterns\Strategy\HorizontallyMovingWall.cs" />
+    <Compile Include="Patterns\Strategy\VerticallyMovingWall.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\StartForm.cs">
