@@ -156,8 +156,10 @@
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
     <Compile Include="Patterns\Singleton_logger\Logger.cs" />
-    <Compile Include="Patterns\Strategy\HorizontallyMovingWall.cs" />
-    <Compile Include="Patterns\Strategy\VerticallyMovingWall.cs" />
+    <Compile Include="Patterns\Strategy\ChangeSize.cs" />
+    <Compile Include="Patterns\Strategy\MoveHorizontally.cs" />
+    <Compile Include="Patterns\Strategy\Move.cs" />
+    <Compile Include="Patterns\Strategy\MoveVertically.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\StartForm.cs">

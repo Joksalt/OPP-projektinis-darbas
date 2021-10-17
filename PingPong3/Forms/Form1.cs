@@ -14,6 +14,7 @@ namespace PingPong3
 {
     public partial class Form1 : Form
     {
+        #region Variables
         HubConnection connection;
 
         //---------
@@ -24,6 +25,8 @@ namespace PingPong3
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
 
+        private const int BasePlayerSpeed = 30;
+        private int PlayerSpeed = 30;
         private const int BaseBallSpeed = 2;
         private int _level = 7;
 
@@ -44,8 +47,15 @@ namespace PingPong3
 
         private int _scorePlayer1;
         private int _scorePlayer2;
-        private string a = "";
 
+        private bool _isGameRunning;
+
+        private int _currentYP1 = ScreenHeight/2;
+
+        private int _currentBallX;
+        #endregion
+
+        #region FormConstructor
         public Form1()
         {
             InitializeComponent();
@@ -73,18 +83,15 @@ namespace PingPong3
             //PowerUp theGrunt = MakeUFOs.OrderPowerUp("UFO");
             //Console.WriteLine(theGrunt);
         }
+        #endregion
 
-        #region gameplay methods
-
+        #region GameplayMethods
         private void BeginGame()
         {
             _isGameRunning = true;
             ResetBall();
-
             //pbTitleScreen.Hide();
-
         }
-
         //private void EndGame()
         //{
         //    _isGameRunning = false;
@@ -93,49 +100,43 @@ namespace PingPong3
         #endregion
 
         #region Events
-
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadGraphicsContent();
-           
         }
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             UpdateScene();
         }
-
         private void DrawTimer_Tick(object sender, EventArgs e)
         {
             DrawScene();
         }
-
         #endregion
 
         #region EngineMethods
-
         private void Initialize()
         {
             _random = new Random();
-            _player1 = new GameItem();
-
+            _player1 = new GameItem
+            { 
+                Position = new Point(30, _currentYP1)
+            };
             _player2 = new GameItem
             {
-                Position = new Point(ScreenWidth - 3, ScreenHeight / 2)
+                Position = new Point(ScreenWidth - 30, ScreenHeight / 2)
             };
             _ball = new BallItem
             {
                 Velocity = new Point(2, 5)
             };
-
-            //Add needed walls
-            Walls = WallFactory.Production1();
-
-            _titleScreen = new HubItem();
-            _titleScreen.Position = new Point(0, 0);
-            _titleScreen.Width = ScreenWidth;
-            _titleScreen.Height = ScreenHeight;
+            Walls = WallFactory.Production3();
+            _titleScreen = new HubItem { 
+                Position = new Point(0, 0),
+                Width = ScreenWidth,
+                Height = ScreenHeight
+            };
         }
-
         private void LoadGraphicsContent()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -178,7 +179,6 @@ namespace PingPong3
                 Console.WriteLine("Something is wrong");
             }
         }
-
         private void UpdateScene()
         {
             if (_isGameRunning)
@@ -196,15 +196,8 @@ namespace PingPong3
                         (w as MovingWall).Move();
                     }
                 }
-                //MoveWall();
             }
-            //else if (MouseButtons == MouseButtons.Left)
-            //{
-            //    BeginGame();
-            //}
         }
-
-        private bool _isGameRunning;
         private void DrawScene()
         {
             if (_isGameRunning)
@@ -224,24 +217,14 @@ namespace PingPong3
                 _titleScreen.Draw();
             }
         }
-
         #endregion
 
         #region Mechanics
-
-        private int _currentYP1;
-        private int _currentYP2;
-        //FIN: !! Start two forms from main
-        //FIN: !! Create different forms for p1 and p2
-        
-
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
             //------P1
-
-            int player1X = 0 + 30;
-
+            int player1X = 0 + PlayerSpeed;
             if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)
@@ -250,7 +233,7 @@ namespace PingPong3
                 }
                 else
                 {
-                    _currentYP1 += 30;
+                    _currentYP1 += PlayerSpeed;
                 }
                 var newPosition = new Point(player1X, _currentYP1);
                 _player1.Position = newPosition;
@@ -264,43 +247,13 @@ namespace PingPong3
                 }
                 else
                 {
-                    _currentYP1 -= 30;
+                    _currentYP1 -= PlayerSpeed;
                 }
                 var newPosition = new Point(player1X, _currentYP1);
                 _player1.Position = newPosition;
                 SendPlayer1Position(newPosition);
             }
         }
-
-        private int _currentYW1;
-        //!!
-        //private void MoveWall()
-        //{
-
-        //    int wallX = 0 + 30;
-
-        //        if (_wall.Texture.Bottom >= ScreenHeight)
-        //        {
-        //        _currentYW1 -= 30;
-        //        }
-        //        else
-        //        {
-        //        _currentYW1 += 30;
-        //        }
-            
-        //        if (_wall.Texture.Top <= 0)
-        //        {
-        //        _currentYW1 += 30;
-        //        }
-        //        else
-        //        {
-        //        _currentYW1 -= 30;
-        //        }
-        //        var newPosition = new Point(wallX, _currentYW1);
-        //        _wall.Position = newPosition;
-        //        SendPlayer1Position(newPosition);
-        //}
-
         private void ResetBall()
         {
             _level = 7;
@@ -311,7 +264,6 @@ namespace PingPong3
             SendResetBallSignal(velocityX, velocityY);
 
         }
-
         private int GenerateBallX()
         {
             _level += 1;
@@ -322,7 +274,6 @@ namespace PingPong3
             }
             return velocityX;
         }
-
         private int GenerateBallY()
         {
             _level += (int).5;
@@ -333,13 +284,9 @@ namespace PingPong3
             }
             return velocityY;
         }
-
         #endregion
 
         #region Collision
-
-        private int _currentBallX;
-
         private void CheckWallCollision()
         {
             if (pbBall.Bottom >= ScreenHeight)
@@ -350,8 +297,20 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
+            foreach (Wall w in Walls)
+            {
+                if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
+                    _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
+                    _ball.LeftUpCorner.Y < w.RightBottomCorner.Y &&
+                    _ball.RightUpCorner.X > w.LeftUpCorner.X)
+                {
+                    if (_currentBallX < 0)
+                        SendBallVelocityDirection1(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
+                    else
+                        SendBallVelocityDirection2(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
+                }
+            }
         }
-
         private void CheckWallOut()
         {
             //P1 goals
@@ -376,85 +335,60 @@ namespace PingPong3
                 SendScoreSignal(_scorePlayer1, 0);
             }
         }
-
         private void CheckPaddleCollision()
         {
             if (_ball.LeftUpCorner.X < _player1.RightUpCorner.X &&
                 _ball.LeftBottomCorner.Y > _player1.RightUpCorner.Y &&
                 _ball.LeftUpCorner.Y < _player1.RightBottomCorner.Y)
             {
-                SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
+                SendBallVelocityDirection1(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
             }
 
             if (_ball.RightUpCorner.X > _player2.LeftUpCorner.X &&
                 _ball.RightBottomCorner.Y > _player2.LeftUpCorner.Y &&
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
-                SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
+                SendBallVelocityDirection2(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
             }
-            // ball hitting wall on map check
+        }
+        #endregion
 
-            foreach (Wall w in Walls)
-            {
-                if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
-                _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
-                _ball.LeftUpCorner.Y < w.RightBottomCorner.Y)
-                {
-                    SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
-                }
-                else if (_ball.RightUpCorner.X > w.LeftUpCorner.X &&
-                    _ball.RightBottomCorner.Y > w.LeftUpCorner.Y &&
-                    _ball.RightUpCorner.Y < w.LeftBottomCorner.Y)
-                {
-                    SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
-                }
-            }/**/
-                
-            }
-            #endregion
-
-            #region TestSignalR
-            private async void SendMessage(string message)
+        #region TestSignalR
+        private async void SendMessage(string message)
         {
             try
             {
-                await connection.InvokeAsync("SendMessage",
-                    "aa", message);
+                await connection.InvokeAsync("SendMessage", "aa", message);
             }
             catch (Exception ex)
             {
-                //messagesList.Items.Add(ex.Message);
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
         #endregion
 
         #region SignalRMessages
-
         private async void connectButton_Click(object sender, EventArgs e)
         {
             connection.On<int>("RecievePowerUpChange", (random) =>
             {
                 //thePowerUp = PowerUp.Equals(random);
             });
-
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
             {
                 var newPosition = new Point(x, y);
                 _player2.Position = newPosition;
             });
-
             connection.On<int, int>("ReceivePlayer1Position", (x, y) =>
             {
                 var newPosition = new Point(x, y);
                 _player1.Position = newPosition;
             });
-
             connection.On<int>("ReceiveStartSignal", (mode) =>
             {
                 //TODO: set correct game mode
                 BeginGame();
             });
-
             connection.On<int, int>("ReceiveResetBallSignal", (velocityX, velocityY) =>
             {
                 _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
@@ -462,7 +396,6 @@ namespace PingPong3
 
                 _currentBallX = velocityX;
             });
-
             connection.On<int, int>("ReceiveScoreSignal", (score, player) =>
             {
                 if (player == 0)
@@ -476,8 +409,7 @@ namespace PingPong3
                     lblScore2.Text = _scorePlayer2.ToString();
                 }
             });
-
-            connection.On<int, int>("ReceiveBallVelocityDirection1", (velocityX, velocityY) =>
+            connection.On<int, int, int, int>("ReceiveBallVelocityDirection1", (positionX, positionY, velocityX, velocityY) =>
             {
                 _currentBallX = velocityX;
                 if (_currentBallX < 0)
@@ -485,9 +417,9 @@ namespace PingPong3
                     _currentBallX *= -1;
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
+                _ball.Position = new Point(positionX, positionY);
             });
-
-            connection.On<int, int>("ReceiveBallVelocityDirection2", (velocityX, velocityY) =>
+            connection.On<int, int, int, int>("ReceiveBallVelocityDirection2", (positionX, positionY, velocityX, velocityY) =>
             {
                 _currentBallX = velocityX;
                 if (_currentBallX > 0)
@@ -495,10 +427,8 @@ namespace PingPong3
                     _currentBallX *= -1;
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
+                _ball.Position = new Point(positionX, positionY);
             });
-
-            
-
             try
             {
                 await connection.StartAsync();
@@ -506,6 +436,7 @@ namespace PingPong3
             }
             catch (Exception ex)
             {
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
         private async void SendPowerUpChange(int randomNum)
@@ -530,7 +461,6 @@ namespace PingPong3
                 //messagesList.Items.Add(ex.Message);
             }
         }
-
         private async void SendPlayer1Position(Point playerPosition)
         {
             try
@@ -542,7 +472,6 @@ namespace PingPong3
                 //messagesList.Items.Add(ex.Message);
             }
         }
-
         private async void SendStartSignal(GameMode gameMode)
         {
             try
@@ -554,7 +483,6 @@ namespace PingPong3
                 //messagesList.Items.Add(ex.Message);
             }
         }
-
         private async void SendResetBallSignal(int velocityX, int velocityY)
         {
             try
@@ -563,10 +491,9 @@ namespace PingPong3
             }
             catch (Exception ex)
             {
-                //messagesList.Items.Add(ex.Message);
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -580,36 +507,34 @@ namespace PingPong3
             }
             catch (Exception ex)
             {
-                //messagesList.Items.Add(ex.Message);
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
-
-        private async void SendBallVelocityDirection1(int velocityX, int velocityY)
+        private async void SendBallVelocityDirection1(int positionX, int positionY, int velocityX, int velocityY)
         {
             try
             {
-                await connection.InvokeAsync("SendBallVelocityDirection1", velocityX, velocityY);
+                await connection.InvokeAsync("SendBallVelocityDirection1", positionX, positionY, velocityX, velocityY);
             }
             catch (Exception ex)
             {
-                //messagesList.Items.Add(ex.Message);
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
-
-        private async void SendBallVelocityDirection2(int velocityX, int velocityY)
+        private async void SendBallVelocityDirection2(int positionX, int positionY, int velocityX, int velocityY)
         {
             try
             {
-                await connection.InvokeAsync("SendBallVelocityDirection2", velocityX, velocityY);
+                await connection.InvokeAsync("SendBallVelocityDirection2", positionX, positionY, velocityX, velocityY);
             }
             catch (Exception ex)
             {
-                //messagesList.Items.Add(ex.Message);
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
-
         #endregion
 
+        #region ButtonClicks
         private void pbPlayer2_Click(object sender, EventArgs e)
         {
             
@@ -628,5 +553,6 @@ namespace PingPong3
         {
 
         }
+        #endregion
     }
 }
