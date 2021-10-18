@@ -10,7 +10,7 @@ namespace PingPong3.Patterns.AbstractFactory
     {
         public string toString()
         {
-            return "Ballllllllzzz 3";
+            return "x3 Balls";
         }
     }
 }

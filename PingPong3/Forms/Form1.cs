@@ -36,9 +36,9 @@ namespace PingPong3
         private Random _random;
 
         //private PowerUp theSpeed =null;
-        //private PowerUpBuilding MakeUFOs = new ExplodePowerUpBuilding();
+        private PowerUpMaking MakePowerUps = new ExplodePowerUpMaking();
        
-        private PowerUp thePowerUp = null;
+        //private PowerUp thePowerUp = null;
 
         private WallFactory WallFactory = new WallFactory();
         private Wall TheWall = null;
@@ -71,8 +71,8 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
-            //PowerUp theGrunt = MakeUFOs.OrderPowerUp("E");
-            //Console.WriteLine(theGrunt);
+            PowerUp ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+            Console.WriteLine(ExplosionPowerUp.toString());
         }
 
         #region gameplay methods
@@ -185,14 +185,14 @@ namespace PingPong3
             int randomNum = _random.Next(2);
             SendPowerUpChange(randomNum);
             //thePowerUp = PowerUpFactory.MakePowerUp(randomNum); //this is in the signals
-            if (thePowerUp != null)
-            {
-                pbBall.Load(thePowerUp.GetName());  
-            }
-            else
-            {
-                Console.WriteLine("Something is wrong");
-            }
+            //if (thePowerUp != null)
+            //{
+            //    pbBall.Load(thePowerUp.GetName());  
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Something is wrong");
+            //}
         }
 
         private void UpdateScene()
@@ -205,7 +205,8 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
-                //MoveWall();
+                CheckMapWallCollision();
+
             }
             //else if (MouseButtons == MouseButtons.Left)
             //{
@@ -278,33 +279,6 @@ namespace PingPong3
 
         private int _currentYW1;
 
-        private void MoveWall()
-        {
-
-            int wallX = 0 + 30;
-
-                if (_wall.Texture.Bottom >= ScreenHeight)
-                {
-                _currentYW1 -= 30;
-                }
-                else
-                {
-                _currentYW1 += 30;
-                }
-            
-                if (_wall.Texture.Top <= 0)
-                {
-                _currentYW1 += 30;
-                }
-                else
-                {
-                _currentYW1 -= 30;
-                }
-                var newPosition = new Point(wallX, _currentYW1);
-                _wall.Position = newPosition;
-                SendPlayer1Position(newPosition);
-        }
-
         private void ResetBall()
         {
             _level = 7;
@@ -370,14 +344,14 @@ namespace PingPong3
                 int randomNum = _random.Next(2);
                 SendPowerUpChange(randomNum);
                 //thePowerUp = PowerUpFactory.MakePowerUp(randomNum);
-                if (thePowerUp != null)
-                {
-                    pbBall.Load(thePowerUp.GetName());  ///Testing Factory
-                }
-                else
-                {
-                    Console.WriteLine("Something is wrong");
-                }
+                //if (thePowerUp != null)
+                //{
+                //    pbBall.Load(thePowerUp.GetName());  ///Testing Factory
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Something is wrong");
+                //}
                 gameLogger.Write(LOG_SENDER, "score");
                 SendScoreSignal(_scorePlayer1, 0);
             }
@@ -391,21 +365,24 @@ namespace PingPong3
             {
                 SendBallVelocityDirection1(GenerateBallX(), GenerateBallY());
             }
-
+            // something wrong with player two colissions. Each time ball collides with this paddle it gets furter away
             if (_ball.RightUpCorner.X > _player2.LeftUpCorner.X &&
                 _ball.RightBottomCorner.Y > _player2.LeftUpCorner.Y &&
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
             }
-            // ball hitting wall on map check
+        }
+        private void CheckMapWallCollision()
+        {
+            
             if (_ball.RightUpCorner.X > _wall.LeftUpCorner.X &&
                 _ball.RightBottomCorner.Y > _wall.LeftUpCorner.Y &&
                 _ball.RightUpCorner.Y < _wall.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(GenerateBallX(), GenerateBallY());
             }
-            if( _ball.LeftUpCorner.X < _wall.RightUpCorner.X &&
+            if (_ball.LeftUpCorner.X < _wall.RightUpCorner.X &&
                 _ball.LeftBottomCorner.Y > _wall.RightUpCorner.Y &&
                 _ball.LeftUpCorner.Y < _wall.RightBottomCorner.Y)
             {

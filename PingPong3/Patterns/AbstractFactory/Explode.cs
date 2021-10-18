@@ -17,8 +17,10 @@ namespace PingPong3.Patterns.AbstractFactory
         }
         public override void MakePowerUp()
         {
-            Console.WriteLine("Making power up " + GetName());
             effect = powerUpFactory.addPUEffect();
+            image = "Ball2.png";
+            name = "Explosive Power Up";
+            Console.WriteLine("Making power up " + name);
         }
 
     }

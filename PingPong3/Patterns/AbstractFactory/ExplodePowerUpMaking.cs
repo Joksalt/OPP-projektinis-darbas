@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    public class ExplodePowerUpBuilding : PowerUpBuilding
+    public class ExplodePowerUpMaking : PowerUpMaking
     {
         protected override PowerUp MakePowerUp(String typeOfPowerup)
         {
@@ -15,7 +15,7 @@ namespace PingPong3.Patterns.AbstractFactory
             {
                 PowerUpFactory powerUpPartsFactory = new ExplodePowerUpFactory();
                 thePowerUp = new Explode(powerUpPartsFactory);
-                thePowerUp.SetName("EXPLOSION");
+                thePowerUp.name = "EXPLOSION";
             }
             return thePowerUp;
         }

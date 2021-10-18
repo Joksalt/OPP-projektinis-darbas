@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    public abstract class PowerUpBuilding
+    public abstract class PowerUpMaking
     {
         protected abstract PowerUp MakePowerUp(string TypeOfPowerUp);
         public PowerUp OrderPowerUp(string TypeOfPowerUp)
@@ -14,7 +14,6 @@ namespace PingPong3.Patterns.AbstractFactory
             PowerUp ThePowerUp = MakePowerUp(TypeOfPowerUp);
 
             ThePowerUp.MakePowerUp();
-            ThePowerUp.GetName();
 
             return ThePowerUp;
         }
