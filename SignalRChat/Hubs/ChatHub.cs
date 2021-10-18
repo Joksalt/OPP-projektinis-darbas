@@ -17,12 +17,10 @@ namespace SignalRChat.Hubs
         {
             await Clients.Others.SendAsync("ReceivePlayer2Position", x, y);
         }
-
         public async Task SendPlayer1Position(int x, int y)
         {
             await Clients.Others.SendAsync("ReceivePlayer1Position", x, y);
         }
-
         /// <summary>
         /// Send to all, so you would send the signal to yourself as well
         /// And would start the game synchronously
@@ -33,7 +31,6 @@ namespace SignalRChat.Hubs
         {
             await Clients.All.SendAsync("ReceiveStartSignal", gameMode);
         }
-
         /// <summary>
         /// Send to all, so you would send the signal to yourself as well
         /// And would reset the ball synchronously
@@ -45,20 +42,17 @@ namespace SignalRChat.Hubs
         {
             await Clients.All.SendAsync("ReceiveResetBallSignal", velocityX, velocityY);
         }
-
         public async Task SendScoreSignal(int score, int player)
         {
             await Clients.All.SendAsync("ReceiveScoreSignal", score, player);
         }
-
-        public async Task SendBallVelocityDirection1(int velocityX, int velocityY)
+        public async Task SendBallVelocityDirection1(int positionX, int positionY, int velocityX, int velocityY)
         {
-            await Clients.All.SendAsync("ReceiveBallVelocityDirection1", velocityX, velocityY);
+            await Clients.All.SendAsync("ReceiveBallVelocityDirection1", positionX, positionY, velocityX, velocityY);
         }
-
-        public async Task SendBallVelocityDirection2(int velocityX, int velocityY)
+        public async Task SendBallVelocityDirection2(int positionX, int positionY, int velocityX, int velocityY)
         {
-            await Clients.All.SendAsync("ReceiveBallVelocityDirection2", velocityX, velocityY);
+            await Clients.All.SendAsync("ReceiveBallVelocityDirection2", positionX, positionY, velocityX, velocityY);
         }
     }
 }

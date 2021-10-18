@@ -95,6 +95,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 120F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.label4.Location = new System.Drawing.Point(369, 50);
@@ -106,6 +107,7 @@
             // lblScore2
             // 
             this.lblScore2.AutoSize = true;
+            this.lblScore2.BackColor = System.Drawing.Color.Transparent;
             this.lblScore2.Font = new System.Drawing.Font("Microsoft Sans Serif", 120F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore2.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.lblScore2.Location = new System.Drawing.Point(505, 50);
@@ -117,6 +119,7 @@
             // lblScore1
             // 
             this.lblScore1.AutoSize = true;
+            this.lblScore1.BackColor = System.Drawing.Color.Transparent;
             this.lblScore1.Font = new System.Drawing.Font("Microsoft Sans Serif", 120F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore1.ForeColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.lblScore1.Location = new System.Drawing.Point(197, 50);
