@@ -142,11 +142,11 @@
     <Compile Include="HubItem.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Patterns\AbstractFactory\Explode.cs" />
-    <Compile Include="Patterns\AbstractFactory\ExplodePowerUpBuilding.cs" />
     <Compile Include="Patterns\AbstractFactory\ExplodePowerUpFactory.cs" />
+    <Compile Include="Patterns\AbstractFactory\ExplodePowerUpMaking.cs" />
     <Compile Include="Patterns\AbstractFactory\PowerUp.cs" />
-    <Compile Include="Patterns\AbstractFactory\PowerUpBuilding.cs" />
     <Compile Include="Patterns\AbstractFactory\PowerUpFactory.cs" />
+    <Compile Include="Patterns\AbstractFactory\PowerUpMaking.cs" />
     <Compile Include="Patterns\AbstractFactory\PUEffect.cs" />
     <Compile Include="Patterns\AbstractFactory\PUPowerUpEffect.cs" />
     <Compile Include="Patterns\AbstractFactory\Speed.cs" />

@@ -191,7 +191,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
-                CheckMapWallCollision();
+                //CheckMapWallCollision();
                 foreach (Wall w in Walls)
                 {
                     if (w is MovingWall)
