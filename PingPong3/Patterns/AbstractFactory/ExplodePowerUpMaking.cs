@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace PingPong3.Patterns.AbstractFactory
                 PowerUpFactory powerUpPartsFactory = new ExplodePowerUpFactory();
                 thePowerUp = new Explode(powerUpPartsFactory);
                 thePowerUp.name = "EXPLOSION";
+                thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White);
             }
             return thePowerUp;
         }

@@ -54,6 +54,10 @@ namespace PingPong3
         private int _currentYP1 = ScreenHeight/2;
 
         private int _currentBallX;
+
+        private PowerUp ExplosionPowerUp;
+        //private PowerUp ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+
         #endregion
 
         #region FormConstructor
@@ -81,8 +85,7 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
-            PowerUp ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
-            Console.WriteLine(ExplosionPowerUp.toString());
+            
         }
         #endregion
 
@@ -132,6 +135,8 @@ namespace PingPong3
                 Velocity = new Point(2, 5)
             };
             Walls = WallFactory.Production3();
+            ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+
             _titleScreen = new HubItem { 
                 Position = new Point(0, 0),
                 Width = ScreenWidth,
@@ -158,18 +163,20 @@ namespace PingPong3
             _player2.Texture = pbPlayer2;
             pbPlayer2.BackColor = Color.Transparent;
 
+            foreach(Wall w in Walls)
+            {
+                pbTitleScreen.Controls.Add(w.Texture);
+            }
+
+            pbTitleScreen.Controls.Add(ExplosionPowerUp.Texture);
+
             pbBall.Load(path + "Ball.png");
             pbTitleScreen.Controls.Add(pbBall);
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
 
-            foreach(Wall w in Walls)
-            {
-                pbTitleScreen.Controls.Add(w.Texture);
-            }
-            
-            int randomNum = _random.Next(2);
-            SendPowerUpChange(randomNum);
+            //int randomNum = _random.Next(2);
+            //SendPowerUpChange(randomNum);
             //thePowerUp = PowerUpFactory.MakePowerUp(randomNum); //this is in the signals
             //if (thePowerUp != null)
             //{
@@ -208,9 +215,10 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
+                ExplosionPowerUp.Draw();
 
                //Obsserver draws
-                foreach(Wall w in Walls)
+                foreach (Wall w in Walls)
                 {
                     w.Draw();
                 }
@@ -305,6 +313,14 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
+            else if (_ball.LeftUpCorner.X < ExplosionPowerUp.RightUpCorner.X &&
+                    _ball.LeftBottomCorner.Y > ExplosionPowerUp.RightUpCorner.Y &&
+                    _ball.LeftUpCorner.Y < ExplosionPowerUp.RightBottomCorner.Y &&
+                    _ball.RightUpCorner.X > ExplosionPowerUp.LeftUpCorner.X)
+            {
+                //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
+                SendPowerUpChange("E");
+            }
             foreach (Wall w in Walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
@@ -318,6 +334,7 @@ namespace PingPong3
                         SendBallVelocityDirection2(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
                 }
             }
+            
         }
         private void CheckWallOut()
         {
@@ -328,8 +345,8 @@ namespace PingPong3
                 _scorePlayer1 += 1;
                 lblScore1.Text = _scorePlayer1.ToString();
 
-                int randomNum = _random.Next(2);
-                SendPowerUpChange(randomNum);
+                //int randomNum = _random.Next(2);
+                //SendPowerUpChange(randomNum);
                 //thePowerUp = PowerUpFactory.MakePowerUp(randomNum);
                 //if (thePowerUp != null)
                 //{
@@ -378,8 +395,11 @@ namespace PingPong3
         #region SignalRMessages
         private async void connectButton_Click(object sender, EventArgs e)
         {
-            connection.On<int>("RecievePowerUpChange", (random) =>
+            connection.On<string>("RecievePowerUpChange", (powerUp) =>
             {
+                ExplosionPowerUp.toString();
+                ExplosionPowerUp.image = "Ball3.png";
+                ExplosionPowerUp.toString();
                 //thePowerUp = PowerUp.Equals(random);
             });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
@@ -447,11 +467,11 @@ namespace PingPong3
                 gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
-        private async void SendPowerUpChange(int randomNum)
+        private async void SendPowerUpChange(string powerUp)
         {
             try
             {
-                await connection.InvokeAsync("SendPowerUpChange", randomNum);
+                await connection.InvokeAsync("SendPowerUpChange", powerUp);
             }
             catch (Exception ex)
             {
