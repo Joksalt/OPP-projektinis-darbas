@@ -40,6 +40,7 @@ namespace PingPong3
 
         //private PowerUp theSpeed =null;
         private PowerUpMaking MakePowerUps = new ExplodePowerUpMaking();
+        private bool _PowerUpExists = true;
 
         //private PowerUp thePowerUp = null;
 
@@ -135,7 +136,11 @@ namespace PingPong3
                 Velocity = new Point(2, 5)
             };
             Walls = WallFactory.Production3();
-            ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+
+            if (_PowerUpExists)
+            {
+                ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+            }
 
             _titleScreen = new HubItem { 
                 Position = new Point(0, 0),
@@ -167,8 +172,15 @@ namespace PingPong3
             {
                 pbTitleScreen.Controls.Add(w.Texture);
             }
-
-            pbTitleScreen.Controls.Add(ExplosionPowerUp.Texture);
+            if (_PowerUpExists)
+            {
+                ExplosionPowerUp.Texture.Load(path + "PowerUp.png");
+                pbTitleScreen.Controls.Add(ExplosionPowerUp.Texture);
+            }
+            else
+            {
+                pbTitleScreen.Controls.Remove(ExplosionPowerUp.Texture);
+            }
 
             pbBall.Load(path + "Ball.png");
             pbTitleScreen.Controls.Add(pbBall);
@@ -215,7 +227,14 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
-                ExplosionPowerUp.Draw();
+                if (_PowerUpExists)
+                {
+                    ExplosionPowerUp.Draw();
+                }
+                else
+                {
+                    ExplosionPowerUp.Remove();
+                }
 
                //Obsserver draws
                 foreach (Wall w in Walls)
@@ -313,14 +332,21 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
-            else if (_ball.LeftUpCorner.X < ExplosionPowerUp.RightUpCorner.X &&
+
+            if (_PowerUpExists)
+            {
+                if (_ball.LeftUpCorner.X < ExplosionPowerUp.RightUpCorner.X &&
                     _ball.LeftBottomCorner.Y > ExplosionPowerUp.RightUpCorner.Y &&
                     _ball.LeftUpCorner.Y < ExplosionPowerUp.RightBottomCorner.Y &&
                     _ball.RightUpCorner.X > ExplosionPowerUp.LeftUpCorner.X)
-            {
-                //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
-                SendPowerUpChange("E");
+                {
+                    Console.WriteLine("OWW SHIT YOU HIT A POWER UP");
+                    //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
+                    SendPowerUpChange("E");
+                    _PowerUpExists = false;
+                }
             }
+            
             foreach (Wall w in Walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
@@ -397,9 +423,12 @@ namespace PingPong3
         {
             connection.On<string>("RecievePowerUpChange", (powerUp) =>
             {
-                ExplosionPowerUp.toString();
-                ExplosionPowerUp.image = "Ball3.png";
-                ExplosionPowerUp.toString();
+                if (_PowerUpExists)
+                {
+                    ExplosionPowerUp.toString();
+                    ExplosionPowerUp.SetPowerUpImage("Ball2.png");
+                    ExplosionPowerUp.toString();
+                }
                 //thePowerUp = PowerUp.Equals(random);
             });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>

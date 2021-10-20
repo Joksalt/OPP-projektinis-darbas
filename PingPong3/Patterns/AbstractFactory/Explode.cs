@@ -18,9 +18,8 @@ namespace PingPong3.Patterns.AbstractFactory
             this.powerUpFactory = powerUpFactory;
             Position = new Point(500, 500);
             Texture = new PictureBox();
-            Texture.Name = "pbPowerUp Explode ";
-            Texture.Size = new Size(100, 100);
-            Texture.BackColor = Color.Red;
+            Texture.Name = "pbPowerUp Explode";
+            Texture.BackColor = Color.Transparent;
 
             Velocity = new Point(1, 0);
             //SetName("Ball3.png");
@@ -28,10 +27,14 @@ namespace PingPong3.Patterns.AbstractFactory
         public override void MakePowerUp()
         {
             effect = powerUpFactory.addPUEffect();
-            image = "Ball2.png";
+            image = "PowerUp.png";
             name = "Explosive Power Up";
             Console.WriteLine("Making power up " + name);
         }
-
+        //public override PowerUp SetData(Point position) //later for random spawn pos
+        //{
+        //    Position = position;
+        //    return this;
+        //}
     }
 }

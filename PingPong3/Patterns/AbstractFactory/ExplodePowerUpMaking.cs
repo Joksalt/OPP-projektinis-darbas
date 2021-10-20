@@ -16,11 +16,9 @@ namespace PingPong3.Patterns.AbstractFactory
             {
                 PowerUpFactory powerUpPartsFactory = new ExplodePowerUpFactory();
                 thePowerUp = new Explode(powerUpPartsFactory);
-                thePowerUp.name = "EXPLOSION";
-                thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White);
+                //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
             return thePowerUp;
         }
-        
     }
 }

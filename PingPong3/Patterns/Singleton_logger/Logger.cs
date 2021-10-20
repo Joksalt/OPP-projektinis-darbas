@@ -30,7 +30,7 @@ namespace PingPong3.Patterns.Singleton_logger
 
         public void Write(string sender, string message)
         {
-            StartForm._StartForm.messagesLog.AppendText($"{sender}:{message}\n");
+            //StartForm._StartForm.messagesLog.AppendText($"{sender}:{message}\n");
         }
     }
 }

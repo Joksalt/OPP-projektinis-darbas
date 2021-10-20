@@ -16,14 +16,14 @@ namespace PingPong3.Patterns.AbstractFactory
         //PUImage image;
         public abstract void MakePowerUp();
 
-        //public void SetName(string NewName)
-        //{
-        //    this.name = NewName;
-        //}
-        public virtual PowerUp SetData(Point position, Size size, Color color)
+        public void SetPowerUpImage(string NewImage)
         {
-            return null;
+            this.image = NewImage;
         }
+        //public virtual PowerUp SetData(Point position)
+        //{
+        //    return null;
+        //}
 
         public string toString()
         {
