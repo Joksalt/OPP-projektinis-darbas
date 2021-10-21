@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    public class ExplodePowerUpMaking : PowerUpMaking
+    public class ExplodePowerUpFactory : PowerUpFactory
     {
         protected override PowerUp MakePowerUp(int typeOfPowerup)
         {

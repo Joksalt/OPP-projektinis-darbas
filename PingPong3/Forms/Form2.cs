@@ -36,7 +36,7 @@ namespace PingPong3
 
         private Random _random;
 
-        private PowerUpMaking MakePowerUps = new ExplodePowerUpMaking();
+        private PowerUpFactory MakePowerUps = new ExplodePowerUpFactory();
         private bool _PowerUpExists = true;
 
         private WallFactory WallFactory = new WallFactory();

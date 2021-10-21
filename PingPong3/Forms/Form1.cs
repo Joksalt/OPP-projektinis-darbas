@@ -43,7 +43,7 @@ namespace PingPong3
         
 
         //private PowerUp theSpeed =null;
-        private PowerUpMaking MakePowerUps = new ExplodePowerUpMaking();
+        private PowerUpFactory MakePowerUps = new ExplodePowerUpFactory();
         private bool _PowerUpExists = true;
 
         //private PowerUp thePowerUp = null;
