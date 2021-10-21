@@ -9,10 +9,10 @@ namespace PingPong3.Patterns.AbstractFactory
 {
     public class ExplodePowerUpMaking : PowerUpMaking
     {
-        protected override PowerUp MakePowerUp(String typeOfPowerup)
+        protected override PowerUp MakePowerUp(int typeOfPowerup)
         {
             PowerUp thePowerUp = null;
-            if (typeOfPowerup.Equals("E"))
+            if (typeOfPowerup.Equals(0))
             {
                 PowerUpFactory powerUpPartsFactory = new ExplodePowerUpFactory();
                 thePowerUp = new Explode(powerUpPartsFactory);

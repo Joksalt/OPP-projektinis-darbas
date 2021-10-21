@@ -9,8 +9,8 @@ namespace PingPong3.Patterns.AbstractFactory
 {
     public abstract class PowerUpMaking
     {
-        protected abstract PowerUp MakePowerUp(string TypeOfPowerUp);
-        public PowerUp OrderPowerUp(string TypeOfPowerUp)
+        protected abstract PowerUp MakePowerUp(int TypeOfPowerUp);
+        public PowerUp OrderPowerUp(int TypeOfPowerUp)
         {
             PowerUp ThePowerUp = MakePowerUp(TypeOfPowerUp);
 

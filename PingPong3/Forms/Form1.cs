@@ -61,7 +61,6 @@ namespace PingPong3
         private int _currentBallX;
 
         private PowerUp ExplosionPowerUp;
-        //private PowerUp ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
 
         #endregion
 
@@ -143,7 +142,7 @@ namespace PingPong3
 
             if (_PowerUpExists)
             {
-                ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+                ExplosionPowerUp = MakePowerUps.OrderPowerUp(0);
             }
 
             //myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
@@ -290,7 +289,9 @@ namespace PingPong3
         private void DisplayTimeEvent(object source, ElapsedEventArgs e)
         {
             _PowerUpExists = true;
-            ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+            //int randomPowerUp = _random.Next(2); // random powerup spawning
+            //SendPowerUpChange(randomPowerUp);
+            ExplosionPowerUp = MakePowerUps.OrderPowerUp(0);
             if (_PowerUpExists)
             {
                 ExplosionPowerUp.Draw();
@@ -357,7 +358,6 @@ namespace PingPong3
                 {
                     Console.WriteLine("OWW SHIT YOU HIT A POWER UP");
                     //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
-                    SendPowerUpChange("E");
                     _PowerUpExists = false;
                 }
             }
@@ -429,6 +429,7 @@ namespace PingPong3
             {
                 if (_PowerUpExists)
                 {
+                    //ExplosionPowerUp.MakePowerUp(powerUp); //this is where the random power up will be made
                     ExplosionPowerUp.toString();
                     ExplosionPowerUp.SetPowerUpImage("Ball2.png");
                     ExplosionPowerUp.toString();
@@ -500,7 +501,7 @@ namespace PingPong3
                 gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
-        private async void SendPowerUpChange(string powerUp)
+        private async void SendPowerUpChange(int powerUp)
         {
             try
             {

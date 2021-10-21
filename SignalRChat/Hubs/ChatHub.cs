@@ -9,7 +9,7 @@ namespace SignalRChat.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", user,message);
         }
-        public async Task SendPowerUpChange(string powerUp)
+        public async Task SendPowerUpChange(int powerUp)
         {
             await Clients.All.SendAsync("RecievePowerUpChange", powerUp);
         }
