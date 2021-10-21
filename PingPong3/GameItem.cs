@@ -36,5 +36,9 @@ namespace PingPong3
             Texture.Location = new Point(Position.X - Origin.X,
                 Position.Y - Origin.Y);
         }
+        public void Remove()
+        {
+            Texture.Hide();
+        }
     }
 }
