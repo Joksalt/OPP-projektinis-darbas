@@ -17,6 +17,16 @@ namespace PingPong3.Patterns.AbstractFactory
                 thePowerUp = new Explode();
                 //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
+            else if (typeOfPowerup.Equals(1))
+            {
+                thePowerUp = new Speed();
+                //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
+            }
+            else if (typeOfPowerup.Equals(2))
+            {
+                thePowerUp = new Split();
+                //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
+            }
             return thePowerUp;
         }
     }
