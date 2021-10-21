@@ -14,8 +14,7 @@ namespace PingPong3.Patterns.AbstractFactory
             PowerUp thePowerUp = null;
             if (typeOfPowerup.Equals(0))
             {
-                PowerUpFactory powerUpPartsFactory = new ExplodePowerUpFactory();
-                thePowerUp = new Explode(powerUpPartsFactory);
+                thePowerUp = new Explode();
                 //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
             return thePowerUp;

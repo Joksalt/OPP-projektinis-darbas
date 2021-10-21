@@ -10,10 +10,8 @@ namespace PingPong3.Patterns.AbstractFactory
     public abstract class PowerUp : GameItem
     {
         public string name;
-        public PUEffect effect;
         public string image;
 
-        //PUImage image;
         public abstract void MakePowerUp();
 
         public void SetPowerUpImage(string NewImage)
@@ -27,7 +25,7 @@ namespace PingPong3.Patterns.AbstractFactory
 
         public string toString()
         {
-            string infoOfPowerUp = "Power up " + name +" with effect "+ effect.toString()+" with image "+ image;
+            string infoOfPowerUp = "Power up " + name +" with image "+ image;
             return infoOfPowerUp;
         }
     }

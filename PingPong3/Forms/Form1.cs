@@ -301,7 +301,6 @@ namespace PingPong3
                 ExplosionPowerUp.Remove();
             }
         }
-        private int _currentYW1;
 
 
 

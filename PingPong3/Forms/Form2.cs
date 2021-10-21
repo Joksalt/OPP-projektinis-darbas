@@ -35,9 +35,8 @@ namespace PingPong3
 
         private Random _random;
 
-        //private PowerUp theSpeed =null;
-        private PowerUpMaking MakeUFOs = new ExplodePowerUpMaking();
-        private PowerUp thePowerUp = null;
+        //private PowerUpMaking MakeUFOs = new ExplodePowerUpMaking();
+        //private PowerUp thePowerUp = null;
 
         private WallFactory WallFactory = new WallFactory();
         private List<Wall> Walls = new List<Wall>();
