@@ -9,6 +9,7 @@ using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
 using System.Collections.Generic;
+using System.Timers;
 
 namespace PingPong3
 {
@@ -37,6 +38,9 @@ namespace PingPong3
         private HubItem _titleScreen;
 
         private Random _random;
+
+        private System.Timers.Timer myTimer = new System.Timers.Timer();
+        
 
         //private PowerUp theSpeed =null;
         private PowerUpMaking MakePowerUps = new ExplodePowerUpMaking();
@@ -142,6 +146,10 @@ namespace PingPong3
                 ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
             }
 
+            //myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
+            //myTimer.Interval = 10000; // 1000 ms is one second
+            //myTimer.Start();
+
             _titleScreen = new HubItem { 
                 Position = new Point(0, 0),
                 Width = ScreenWidth,
@@ -187,17 +195,6 @@ namespace PingPong3
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
 
-            //int randomNum = _random.Next(2);
-            //SendPowerUpChange(randomNum);
-            //thePowerUp = PowerUpFactory.MakePowerUp(randomNum); //this is in the signals
-            //if (thePowerUp != null)
-            //{
-            //    pbBall.Load(thePowerUp.GetName());  
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Something is wrong");
-            //}
         }
 
         private void UpdateScene()
@@ -285,6 +282,24 @@ namespace PingPong3
             }
         }
 
+        /// <summary>
+        /// Tiemr to spawn power ups. Now not in use. Add in later
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        private void DisplayTimeEvent(object source, ElapsedEventArgs e)
+        {
+            _PowerUpExists = true;
+            ExplosionPowerUp = MakePowerUps.OrderPowerUp("E");
+            if (_PowerUpExists)
+            {
+                ExplosionPowerUp.Draw();
+            }
+            else
+            {
+                ExplosionPowerUp.Remove();
+            }
+        }
         private int _currentYW1;
 
 
@@ -371,17 +386,6 @@ namespace PingPong3
                 _scorePlayer1 += 1;
                 lblScore1.Text = _scorePlayer1.ToString();
 
-                //int randomNum = _random.Next(2);
-                //SendPowerUpChange(randomNum);
-                //thePowerUp = PowerUpFactory.MakePowerUp(randomNum);
-                //if (thePowerUp != null)
-                //{
-                //    pbBall.Load(thePowerUp.GetName());  ///Testing Factory
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Something is wrong");
-                //}
                 gameLogger.Write(LOG_SENDER, "score");
                 SendScoreSignal(_scorePlayer1, 0);
             }
