@@ -8,6 +8,7 @@ using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
+using PingPong3.Patterns.Decorator;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -232,8 +233,6 @@ namespace PingPong3
                 {
                     ExplosionPowerUp.Remove();
                 }
-
-               //Obsserver draws
                 foreach (Wall w in Walls)
                 {
                     w.Draw();
@@ -280,6 +279,13 @@ namespace PingPong3
                 _player1.Position = newPosition;
                 SendPlayer1Position(newPosition);
             }
+            if (Keyboard.IsKeyDown(Key.D2))
+            {
+                Skin basic = new BackgroundSkin(new GameSkin1());
+                Console.WriteLine("Description " + basic.GetDescription());
+                Console.WriteLine("Cost " + basic.GetCost());
+                Console.WriteLine("Decorator");
+            }
         }
 
         /// <summary>
@@ -293,7 +299,7 @@ namespace PingPong3
             //int randomPowerUp = _random.Next(2); // random powerup spawning
             //SendPowerUpChange(randomPowerUp);
             ExplosionPowerUp = MakePowerUps.OrderPowerUp(0);
-            if (_PowerUpExists)
+            if (!_PowerUpExists)
             {
                 ExplosionPowerUp.Draw();
             }

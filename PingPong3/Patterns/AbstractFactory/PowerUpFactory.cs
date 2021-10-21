@@ -17,7 +17,7 @@ namespace PingPong3.Patterns.AbstractFactory
             ThePowerUp.MakePowerUp();
             //Random rand = new Random(); //later for adding random positions for powerups
             //int i = rand.Next(7);
-            //ThePowerUp.SetData(new Point(792 - (30 * i), -90 + (30 * i)), new Size(30, 180), Color.White, -90, 90, new Point(0, 2));
+            //ThePowerUp.SetData(new Point(792 - (30 * i), -90 + (30 * i)));
 
                 return ThePowerUp;
         }
