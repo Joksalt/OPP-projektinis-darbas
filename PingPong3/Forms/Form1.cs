@@ -223,6 +223,7 @@ namespace PingPong3
                 _player1.Draw();
                 _player2.Draw();
                 _ball.Draw();
+
                 if (_PowerUpExists)
                 {
                     ExplosionPowerUp.Draw();
