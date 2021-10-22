@@ -147,6 +147,12 @@
     <Compile Include="Patterns\AbstractFactory\PowerUpFactory.cs" />
     <Compile Include="Patterns\AbstractFactory\Speed.cs" />
     <Compile Include="Patterns\AbstractFactory\Split.cs" />
+    <Compile Include="Patterns\Builder\AdvancedLevelBuilder.cs" />
+    <Compile Include="Patterns\Builder\ClassicLevelBuilder.cs" />
+    <Compile Include="Patterns\Builder\FrenzyLevelBuilder.cs" />
+    <Compile Include="Patterns\Builder\LevelBuilder.cs" />
+    <Compile Include="Patterns\Builder\LevelDirector.cs" />
+    <Compile Include="Patterns\Builder\LevelData.cs" />
     <Compile Include="Patterns\Factory\StaticWall.cs" />
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
@@ -366,7 +372,6 @@
     <Folder Include="bin\Release\" />
     <Folder Include="obj\Debug\" />
     <Folder Include="obj\Release\" />
-    <Folder Include="Patterns\Builder\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,6 +9,7 @@ using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
 using PingPong3.Patterns.Strategy;
+using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -40,7 +41,6 @@ namespace PingPong3
         private bool _PowerUpExists = true;
 
         private WallFactory WallFactory = new WallFactory();
-        private List<Wall> Walls = new List<Wall>();
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -48,6 +48,12 @@ namespace PingPong3
         private int _currentYP2 = ScreenHeight/2;
 
         private PowerUp ExplosionPowerUp;
+
+        private LevelDirector levelDirector;
+        private ClassicLevelBuilder classicLevelBuilder;
+        private AdvancedLevelBuilder advancedLevelBuilder;
+        private FrenzyLevelBuilder frenzyLevelBuilder;
+        private LevelData levelData;
         #endregion
 
         #region Form2 Constructor
@@ -113,6 +119,13 @@ namespace PingPong3
         #region EngineMethods
         private void Initialize()
         {
+            levelDirector = new LevelDirector();
+            classicLevelBuilder = new ClassicLevelBuilder();
+            advancedLevelBuilder = new AdvancedLevelBuilder();
+            frenzyLevelBuilder = new FrenzyLevelBuilder();
+            levelDirector.ConstructWalls(frenzyLevelBuilder);
+            levelData = frenzyLevelBuilder.GetResult();
+
             _random = new Random();
             _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
@@ -122,7 +135,6 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
-            Walls = WallFactory.Production3();
             if (_PowerUpExists)
             {
                 ExplosionPowerUp = MakePowerUps.OrderPowerUp(0);
@@ -157,7 +169,7 @@ namespace PingPong3
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
 
-            foreach (Wall w in Walls)
+            foreach (Wall w in levelData.walls)
             {
                 pbTitleScreen.Controls.Add(w.Texture);
             }
@@ -181,7 +193,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
-                foreach (Wall w in Walls)
+                foreach (Wall w in levelData.walls)
                 {
                     if (w is MovingWall)
                     {
@@ -208,7 +220,7 @@ namespace PingPong3
                     ExplosionPowerUp.Remove();
                 }
 
-                foreach (Wall w in Walls)
+                foreach (Wall w in levelData.walls)
                 {
                     w.Draw();
                 }
@@ -322,7 +334,7 @@ namespace PingPong3
                     _PowerUpExists = false;
                 }
             }
-            foreach (Wall w in Walls)
+            foreach (Wall w in levelData.walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
                     _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
