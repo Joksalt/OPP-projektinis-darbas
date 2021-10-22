@@ -8,6 +8,7 @@ using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
+using PingPong3.Patterns.Strategy;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -29,8 +30,7 @@ namespace PingPong3
         private const int BaseBallSpeed = 2;
         private int _level = 7;
 
-        private GameItem _player1;
-        private GameItem _player2;
+        private MovingWall _player1, _player2;
         private BallItem _ball;
         private HubItem _titleScreen;
 
@@ -114,14 +114,10 @@ namespace PingPong3
         private void Initialize()
         {
             _random = new Random();
-            _player1 = new GameItem
-            {
-                Position = new Point(30, ScreenHeight / 2)
-            };
-            _player2 = new GameItem
-            {
-                Position = new Point(ScreenWidth - 30, _currentYP2)
-            };
+            _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1.SetMove(new PlayerMove(_player1));
+            _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player2.SetMove(new PlayerMove(_player2));
             _ball = new BallItem
             {
                 Velocity = new Point(2, 5)
@@ -233,34 +229,22 @@ namespace PingPong3
             if (Keyboard.IsKeyDown(Key.Down))
             {
                 if (_player2.Texture.Bottom >= ScreenHeight)
-                {
-                    _currentYP2 -= 0;
-                }
+                    _currentYP2 = 0;
                 else
-                {
-                    _currentYP2 += 30;
-                }
-                var newPosition = new Point(ScreenWidth - 30, _currentYP2);
-                _player2.Position = newPosition;
-                SendPlayer2Position(newPosition);
+                    _currentYP2 = 30;
+                _player2.Velocity = new Point(0, _currentYP2);
+                _player2.Move();
+                SendPlayer2Position(_player2.Position);
             }
             else if (Keyboard.IsKeyDown(Key.Up))
             {
                 if (_player2.Texture.Top <= 0)
-                {
-                    _currentYP2 += 0;
-                }
+                    _currentYP2 = 0;
                 else
-                {
-                    _currentYP2 -= 30;
-                }
-
-                int player2X = ScreenWidth - 30;
-                //_player2.Position = new Point(player2X, player2Y);
-                var newPosition = new Point(player2X, _currentYP2);
-                _player2.Position = newPosition;
-                SendPlayer2Position(newPosition);
-
+                    _currentYP2 = -30;
+                _player2.Velocity = new Point(0, _currentYP2);
+                _player2.Move();
+                SendPlayer2Position(_player2.Position);
             }
         }
         /// <summary>

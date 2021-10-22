@@ -156,6 +156,7 @@
     <Compile Include="Patterns\Strategy\MoveHorizontally.cs" />
     <Compile Include="Patterns\Strategy\Move.cs" />
     <Compile Include="Patterns\Strategy\MoveVertically.cs" />
+    <Compile Include="Patterns\Strategy\PlayerMove.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\StartForm.cs">
@@ -365,6 +366,7 @@
     <Folder Include="bin\Release\" />
     <Folder Include="obj\Debug\" />
     <Folder Include="obj\Release\" />
+    <Folder Include="Patterns\Builder\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
