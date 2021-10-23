@@ -8,6 +8,8 @@ using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
+using PingPong3.Patterns.Strategy;
+using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -31,8 +33,7 @@ namespace PingPong3
         private const int BaseBallSpeed = 2;
         private int _level = 7;
 
-        private GameItem _player1;
-        private GameItem _player2;
+        private MovingWall _player1, _player2;
         private BallItem _ball;
 
         private HubItem _titleScreen;
@@ -49,7 +50,6 @@ namespace PingPong3
         //private PowerUp thePowerUp = null;
 
         private WallFactory WallFactory = new WallFactory();
-        private List<Wall> Walls = new List<Wall>();
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -61,6 +61,12 @@ namespace PingPong3
         private int _currentBallX;
 
         private PowerUp ExplosionPowerUp;
+
+        private LevelDirector levelDirector;
+        private ClassicLevelBuilder classicLevelBuilder;
+        private AdvancedLevelBuilder advancedLevelBuilder;
+        private FrenzyLevelBuilder frenzyLevelBuilder;
+        private LevelData levelData;
 
         #endregion
 
@@ -125,20 +131,22 @@ namespace PingPong3
         #region EngineMethods
         private void Initialize()
         {
+            levelDirector = new LevelDirector();
+            classicLevelBuilder = new ClassicLevelBuilder();
+            advancedLevelBuilder = new AdvancedLevelBuilder();
+            frenzyLevelBuilder = new FrenzyLevelBuilder();
+            levelDirector.ConstructWalls(frenzyLevelBuilder);
+            levelData = frenzyLevelBuilder.GetResult();
+
             _random = new Random();
-            _player1 = new GameItem
-            { 
-                Position = new Point(30, _currentYP1)
-            };
-            _player2 = new GameItem
-            {
-                Position = new Point(ScreenWidth - 30, ScreenHeight / 2)
-            };
+            _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1.SetMove(new PlayerMove(_player1));
+            _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player2.SetMove(new PlayerMove(_player2));
             _ball = new BallItem
             {
                 Velocity = new Point(2, 5)
             };
-            Walls = WallFactory.Production3();
 
             if (_PowerUpExists)
             {
@@ -175,10 +183,11 @@ namespace PingPong3
             _player2.Texture = pbPlayer2;
             pbPlayer2.BackColor = Color.Transparent;
 
-            foreach(Wall w in Walls)
+            foreach(Wall w in levelData.walls)
             {
                 pbTitleScreen.Controls.Add(w.Texture);
             }
+
             if (_PowerUpExists)
             {
                 ExplosionPowerUp.Texture.Load(path + "PowerUp.png");
@@ -195,7 +204,6 @@ namespace PingPong3
             pbBall.BackColor = Color.Transparent;
 
         }
-
         private void UpdateScene()
         {
             if (_isGameRunning)
@@ -207,7 +215,7 @@ namespace PingPong3
                 CheckWallOut();
                 CheckPaddleCollision();
                 //CheckMapWallCollision();
-                foreach (Wall w in Walls)
+                foreach (Wall w in levelData.walls)
                 {
                     if (w is MovingWall)
                     {
@@ -234,7 +242,7 @@ namespace PingPong3
                 }
 
                //Obsserver draws
-                foreach (Wall w in Walls)
+                foreach (Wall w in levelData.walls)
                 {
                     w.Draw();
                 }
@@ -251,34 +259,25 @@ namespace PingPong3
         private void UpdatePlayer()
         {
             //------P1
-            int player1X = 0 + PlayerSpeed;
             if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)
-                {
-                    _currentYP1 -= 0;
-                }
+                    _currentYP1 = 0;
                 else
-                {
-                    _currentYP1 += PlayerSpeed;
-                }
-                var newPosition = new Point(player1X, _currentYP1);
-                _player1.Position = newPosition;
-                SendPlayer1Position(newPosition);
+                    _currentYP1 = PlayerSpeed;
+                _player1.Velocity = new Point(0, _currentYP1);
+                _player1.Move();
+                SendPlayer1Position(_player1.Position);
             }
             else if (Keyboard.IsKeyDown(Key.W))
             {
                 if (_player1.Texture.Top <= 0)
-                {
-                    _currentYP1 += 0;
-                }
+                    _currentYP1 = 0;
                 else
-                {
-                    _currentYP1 -= PlayerSpeed;
-                }
-                var newPosition = new Point(player1X, _currentYP1);
-                _player1.Position = newPosition;
-                SendPlayer1Position(newPosition);
+                    _currentYP1 = -PlayerSpeed;
+                _player1.Velocity = new Point(0, _currentYP1);
+                _player1.Move();
+                SendPlayer1Position(_player1.Position);
             }
         }
 
@@ -302,9 +301,6 @@ namespace PingPong3
                 ExplosionPowerUp.Remove();
             }
         }
-
-
-
         private void ResetBall()
         {
             _level = 7;
@@ -362,7 +358,7 @@ namespace PingPong3
                 }
             }
             
-            foreach (Wall w in Walls)
+            foreach (Wall w in levelData.walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
                     _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
@@ -438,13 +434,11 @@ namespace PingPong3
             });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
             {
-                var newPosition = new Point(x, y);
-                _player2.Position = newPosition;
+                _player2.Position = new Point(x, y);
             });
             connection.On<int, int>("ReceivePlayer1Position", (x, y) =>
             {
-                var newPosition = new Point(x, y);
-                _player1.Position = newPosition;
+                _player1.Position = new Point(x, y);
             });
             connection.On<int>("ReceiveStartSignal", (mode) =>
             {

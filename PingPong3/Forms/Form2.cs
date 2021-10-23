@@ -8,6 +8,8 @@ using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
 using PingPong3.Patterns.Singleton_logger;
+using PingPong3.Patterns.Strategy;
+using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -29,8 +31,7 @@ namespace PingPong3
         private const int BaseBallSpeed = 2;
         private int _level = 7;
 
-        private GameItem _player1;
-        private GameItem _player2;
+        private MovingWall _player1, _player2;
         private BallItem _ball;
         private HubItem _titleScreen;
 
@@ -40,7 +41,6 @@ namespace PingPong3
         private bool _PowerUpExists = true;
 
         private WallFactory WallFactory = new WallFactory();
-        private List<Wall> Walls = new List<Wall>();
 
         private int _scorePlayer1;
         private int _scorePlayer2;
@@ -48,6 +48,12 @@ namespace PingPong3
         private int _currentYP2 = ScreenHeight/2;
 
         private PowerUp ExplosionPowerUp;
+
+        private LevelDirector levelDirector;
+        private ClassicLevelBuilder classicLevelBuilder;
+        private AdvancedLevelBuilder advancedLevelBuilder;
+        private FrenzyLevelBuilder frenzyLevelBuilder;
+        private LevelData levelData;
         #endregion
 
         #region Form2 Constructor
@@ -113,20 +119,22 @@ namespace PingPong3
         #region EngineMethods
         private void Initialize()
         {
+            levelDirector = new LevelDirector();
+            classicLevelBuilder = new ClassicLevelBuilder();
+            advancedLevelBuilder = new AdvancedLevelBuilder();
+            frenzyLevelBuilder = new FrenzyLevelBuilder();
+            levelDirector.ConstructWalls(frenzyLevelBuilder);
+            levelData = frenzyLevelBuilder.GetResult();
+
             _random = new Random();
-            _player1 = new GameItem
-            {
-                Position = new Point(30, ScreenHeight / 2)
-            };
-            _player2 = new GameItem
-            {
-                Position = new Point(ScreenWidth - 30, _currentYP2)
-            };
+            _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1.SetMove(new PlayerMove(_player1));
+            _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player2.SetMove(new PlayerMove(_player2));
             _ball = new BallItem
             {
                 Velocity = new Point(2, 5)
             };
-            Walls = WallFactory.Production3();
             if (_PowerUpExists)
             {
                 ExplosionPowerUp = MakePowerUps.OrderPowerUp(0);
@@ -161,7 +169,7 @@ namespace PingPong3
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
 
-            foreach (Wall w in Walls)
+            foreach (Wall w in levelData.walls)
             {
                 pbTitleScreen.Controls.Add(w.Texture);
             }
@@ -185,7 +193,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
-                foreach (Wall w in Walls)
+                foreach (Wall w in levelData.walls)
                 {
                     if (w is MovingWall)
                     {
@@ -212,7 +220,7 @@ namespace PingPong3
                     ExplosionPowerUp.Remove();
                 }
 
-                foreach (Wall w in Walls)
+                foreach (Wall w in levelData.walls)
                 {
                     w.Draw();
                 }
@@ -233,34 +241,22 @@ namespace PingPong3
             if (Keyboard.IsKeyDown(Key.Down))
             {
                 if (_player2.Texture.Bottom >= ScreenHeight)
-                {
-                    _currentYP2 -= 0;
-                }
+                    _currentYP2 = 0;
                 else
-                {
-                    _currentYP2 += 30;
-                }
-                var newPosition = new Point(ScreenWidth - 30, _currentYP2);
-                _player2.Position = newPosition;
-                SendPlayer2Position(newPosition);
+                    _currentYP2 = 30;
+                _player2.Velocity = new Point(0, _currentYP2);
+                _player2.Move();
+                SendPlayer2Position(_player2.Position);
             }
             else if (Keyboard.IsKeyDown(Key.Up))
             {
                 if (_player2.Texture.Top <= 0)
-                {
-                    _currentYP2 += 0;
-                }
+                    _currentYP2 = 0;
                 else
-                {
-                    _currentYP2 -= 30;
-                }
-
-                int player2X = ScreenWidth - 30;
-                //_player2.Position = new Point(player2X, player2Y);
-                var newPosition = new Point(player2X, _currentYP2);
-                _player2.Position = newPosition;
-                SendPlayer2Position(newPosition);
-
+                    _currentYP2 = -30;
+                _player2.Velocity = new Point(0, _currentYP2);
+                _player2.Move();
+                SendPlayer2Position(_player2.Position);
             }
         }
         /// <summary>
@@ -338,7 +334,7 @@ namespace PingPong3
                     _PowerUpExists = false;
                 }
             }
-            foreach (Wall w in Walls)
+            foreach (Wall w in levelData.walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
                     _ball.LeftBottomCorner.Y > w.RightUpCorner.Y &&
