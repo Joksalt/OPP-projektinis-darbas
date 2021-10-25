@@ -12,10 +12,11 @@ using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
+using PingPong3.Patterns.Observer;
 
 namespace PingPong3
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IObserver
     {
         #region Variables
         HubConnection connection;
@@ -24,6 +25,9 @@ namespace PingPong3
         public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
         private string LOG_SENDER = "P1";
         //---------
+
+        //--Observer---
+        private Subject _server;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -261,6 +265,7 @@ namespace PingPong3
             //------P1
             if (Keyboard.IsKeyDown(Key.S))
             {
+                notifyServer("P1Down");
                 if (_player1.Texture.Bottom >= ScreenHeight)
                     _currentYP1 = 0;
                 else
@@ -616,6 +621,29 @@ namespace PingPong3
         {
 
         }
+
+
+        #endregion
+
+        #region ObserverImplementation
+
+        public void setServer(Subject server)
+        {
+            _server = server;
+        }
+
+        public void notifyServer(string result)
+        {
+            _server.receiveFromClient(result);
+        }
+
+        public void update(string msg)
+        {
+            gameLogger.Write(LOG_SENDER, msg);
+        }
+        //TODO: implement basic string sen communication
+        //TODO: send signal with json. First value a string for signal value. by the first value it is known what kind of json you get
+
         #endregion
     }
 }

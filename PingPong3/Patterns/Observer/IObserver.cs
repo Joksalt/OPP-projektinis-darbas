@@ -5,9 +5,9 @@ namespace PingPong3.Patterns.Observer
 	{
 		void setServer( Subject server );
 		
-		void notifyServer(  );
+		void notifyServer(string message);
 		
-		void SendScoreSignal(  );
+		void update(string msg);
 		
 	}
 	

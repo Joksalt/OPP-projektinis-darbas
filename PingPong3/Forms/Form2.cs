@@ -12,10 +12,11 @@ using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
+using PingPong3.Patterns.Observer;
 
 namespace PingPong3
 {
-    public partial class Form2 : Form
+    public partial class Form2 : Form, IObserver
     {
         #region variables
         HubConnection connection;
@@ -24,6 +25,9 @@ namespace PingPong3
         public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
         private string LOG_SENDER = "P2";
         //---------
+
+        //--Observer---
+        private Subject _server;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -565,5 +569,22 @@ namespace PingPong3
             }   
         }
         #endregion
+
+        public void setServer(Subject server)
+        {
+            _server = server;
+        }
+
+        public void notifyServer(string result)
+        {
+            _server.receiveFromClient(result);
+        }
+
+        public void update(string msg)
+        {
+            gameLogger.Write(LOG_SENDER, msg);
+        }
+
+
     }
 }
