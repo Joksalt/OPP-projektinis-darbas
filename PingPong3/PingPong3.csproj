@@ -151,6 +151,7 @@
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
+    <Compile Include="Patterns\Prototype\IPrototype.cs" />
     <Compile Include="Patterns\Singleton_logger\Logger.cs" />
     <Compile Include="Patterns\Strategy\ChangeSize.cs" />
     <Compile Include="Patterns\Strategy\MoveHorizontally.cs" />

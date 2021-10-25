@@ -359,6 +359,13 @@ namespace PingPong3
                     Console.WriteLine("OWW SHIT YOU HIT A POWER UP");
                     //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
                     _PowerUpExists = false;
+
+                    // --- PROTOTYPE PATTERN ---
+                    BallItem ballShallowCopy = (BallItem)_ball.ShallowCopy();
+                    BallItem ballDeepCopy = (BallItem)_ball.DeepCopy();
+                    Console.WriteLine($"This is original Ball. Hash code - {_ball.GetHashCode()}");
+                    Console.WriteLine($"This is a shallow copy of ball. Hash code - {ballShallowCopy.GetHashCode()}");
+                    Console.WriteLine($"This is a deep copy of ball. Hash code {ballDeepCopy.GetHashCode()}");
                 }
             }
             
