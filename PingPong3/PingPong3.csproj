@@ -147,10 +147,11 @@
     <Compile Include="Patterns\AbstractFactory\PowerUpFactory.cs" />
     <Compile Include="Patterns\AbstractFactory\Speed.cs" />
     <Compile Include="Patterns\AbstractFactory\Split.cs" />
-    <Compile Include="Patterns\Decorator\GameDecorator.cs" />
-    <Compile Include="Patterns\Decorator\GameSkin1.cs" />
-    <Compile Include="Patterns\Decorator\BackgroundSkin.cs" />
-    <Compile Include="Patterns\Decorator\Skin.cs" />
+    <Compile Include="Patterns\Decorator\RacketDecorator.cs" />
+    <Compile Include="Patterns\Decorator\DefaultRacketMode.cs" />
+    <Compile Include="Patterns\Decorator\RacketMode1.cs" />
+    <Compile Include="Patterns\Decorator\RacketMode2.cs" />
+    <Compile Include="Patterns\Decorator\RacketStyle.cs" />
     <Compile Include="Patterns\Factory\StaticWall.cs" />
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />

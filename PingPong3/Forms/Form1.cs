@@ -28,7 +28,7 @@ namespace PingPong3
         private const int ScreenHeight = 768;
 
         private const int BasePlayerSpeed = 30;
-        private int PlayerSpeed = 30;
+        //private int PlayerSpeed = 30;
         private const int BaseBallSpeed = 2;
         private int _level = 7;
 
@@ -56,12 +56,17 @@ namespace PingPong3
         private int _scorePlayer2;
 
         private bool _isGameRunning;
+        private string _racketMode1;
 
         private int _currentYP1 = ScreenHeight/2;
 
         private int _currentBallX;
 
         private PowerUp ExplosionPowerUp;
+
+        private static RacketStyle defaultRacket = new DefaultRacketMode();
+        private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
+        private static RacketStyle mediumRacket = new RacketMode2(normalRacket);
 
         #endregion
 
@@ -166,7 +171,7 @@ namespace PingPong3
             _titleScreen.Texture = pbTitleScreen;
             pbTitleScreen.BackColor = Color.Transparent;
 
-            pbPlayer1.Load(path + "Paddle1.png");
+            pbPlayer1.Load(path + defaultRacket.GetSkin()+".png");
             pbTitleScreen.Controls.Add(pbPlayer1);
             _player1.Texture = pbPlayer1;
             pbPlayer1.BackColor = Color.Transparent;
@@ -249,8 +254,11 @@ namespace PingPong3
         //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
+            String path = System.IO.Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+            path = path + "Images\\";
             //------P1
-            int player1X = 0 + PlayerSpeed;
+            int player1X = 0 + defaultRacket.GetSpeed();
             if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)
@@ -259,7 +267,19 @@ namespace PingPong3
                 }
                 else
                 {
-                    _currentYP1 += PlayerSpeed;
+                    switch (_racketMode1)
+                    {
+                        case "normal":
+                            _currentYP1 += normalRacket.GetSpeed();
+                            break;
+                        case "medium":
+                            _currentYP1 += mediumRacket.GetSpeed();
+                            break;
+                        default:
+                            _currentYP1 += defaultRacket.GetSpeed();
+                            break;
+                    }
+                    
                 }
                 var newPosition = new Point(player1X, _currentYP1);
                 _player1.Position = newPosition;
@@ -273,18 +293,38 @@ namespace PingPong3
                 }
                 else
                 {
-                    _currentYP1 -= PlayerSpeed;
+                    switch (_racketMode1)
+                    {
+                        case "normal":
+                            _currentYP1 -= normalRacket.GetSpeed();
+                            break;
+                        case "medium":
+                            _currentYP1 -= mediumRacket.GetSpeed();
+                            break;
+                        default:
+                            _currentYP1 -= defaultRacket.GetSpeed();
+                            break;
+                    }
+
                 }
                 var newPosition = new Point(player1X, _currentYP1);
                 _player1.Position = newPosition;
                 SendPlayer1Position(newPosition);
             }
+            if (Keyboard.IsKeyDown(Key.D1))
+            {
+                _racketMode1 = "default";
+                SendRacketSkin(path + defaultRacket.GetSkin() + ".png");
+            }
             if (Keyboard.IsKeyDown(Key.D2))
             {
-                Skin basic = new BackgroundSkin(new GameSkin1());
-                Console.WriteLine("Description " + basic.GetDescription());
-                Console.WriteLine("Cost " + basic.GetCost());
-                Console.WriteLine("Decorator");
+                _racketMode1 = "normal";
+                SendRacketSkin(path + normalRacket.GetSkin() + ".png");
+            }
+            if (Keyboard.IsKeyDown(Key.D3))
+            {
+                _racketMode1 = "medium";
+                SendRacketSkin(path + mediumRacket.GetSkin() + ".png");
             }
         }
 
@@ -325,6 +365,18 @@ namespace PingPong3
         {
             _level += 1;
             int velocityX = _level;
+            //switch (_racketMode1)
+            //{
+            //    case "normal":
+            //        velocityX = normalRacket.GetSoftness();
+            //        break;
+            //    case "medium":
+            //        velocityX = mediumRacket.GetSoftness();
+            //        break;
+            //    default:
+            //        velocityX = defaultRacket.GetSoftness();
+            //        break;
+            //}
             if (_random.Next(2) == 0)
             {
                 velocityX *= -1;
@@ -442,6 +494,11 @@ namespace PingPong3
                 }
                 //thePowerUp = PowerUp.Equals(random);
             });
+            connection.On<string>("RecieveRacketSkin", (racket) =>
+            {
+                Console.WriteLine(racket);
+                pbPlayer1.Load(racket);
+            });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
             {
                 var newPosition = new Point(x, y);
@@ -512,6 +569,17 @@ namespace PingPong3
             try
             {
                 await connection.InvokeAsync("SendPowerUpChange", powerUp);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        private async void SendRacketSkin(string racket)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendRacketSkin", racket);
             }
             catch (Exception ex)
             {

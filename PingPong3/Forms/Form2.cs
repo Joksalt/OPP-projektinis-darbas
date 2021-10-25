@@ -396,6 +396,11 @@ namespace PingPong3
                 }
                 //thePowerUp = PowerUp.Equals(random);
             });
+            connection.On<string>("RecieveRacketSkin", (racket) =>
+            {
+                Console.WriteLine(racket);
+                pbPlayer1.Load(racket);
+            });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
             {
                 var newPosition = new Point(x, y);

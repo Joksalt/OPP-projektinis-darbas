@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Decorator
 {
-    public interface Skin
+    public abstract class RacketStyle
     {
-        string GetDescription();
-        int GetCost();
+        public abstract string GetSkin();
+        public abstract int GetSpeed();
+        public abstract int GetSoftness();
 
     }
 }
