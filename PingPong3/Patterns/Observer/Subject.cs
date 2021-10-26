@@ -26,12 +26,25 @@ namespace PingPong3.Patterns.Observer
 				unit.update(message);
 			}
 		}
-		
+
+		public void notifyAllResetBallSignal(int velocityX, int velocityY)
+		{
+			foreach (var unit in unitList)
+			{
+				unit.updateResetBallSignal(velocityX, velocityY);
+			}
+		}
+
 		public void receiveFromClient(string message)
 		{
 			notifyAll(message);
 		}
-		
+
+		public void receiveResetBallSignal(int velocityX, int velocityY)
+		{
+			notifyAllResetBallSignal(velocityX, velocityY);
+		}
+
 	}
 	
 }

@@ -290,7 +290,7 @@ namespace PingPong3
             int velocityX = GenerateBallX();
 
             gameLogger.Write(LOG_SENDER,"reset ball");
-            SendResetBallSignal(velocityX, velocityY);
+            updateResetBallSignal(velocityX, velocityY);
         }
         private int GenerateBallX()
         {
@@ -580,6 +580,15 @@ namespace PingPong3
             _server.receiveFromClient(result);
         }
 
+        public void notifyResetBallSignal(int velocityX, int velocityY)
+        {
+            _server.receiveResetBallSignal(velocityX, velocityY);
+        }
+
+        public void updateResetBallSignal(int velocityX, int velocityY)
+        {
+            SendResetBallSignal(velocityX, velocityY);
+        }
         public void update(string msg)
         {
             gameLogger.Write(LOG_SENDER, msg);
