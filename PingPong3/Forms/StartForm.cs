@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingPong3.Patterns.Observer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,7 @@ namespace PingPong3
 {
     public partial class StartForm : Form
     {
-
+        Subject server = new Server();
         public static StartForm _StartForm;
         public StartForm()
         {
@@ -24,8 +25,10 @@ namespace PingPong3
         private void StartButton_Click(object sender, EventArgs e)
         {
             Form1 P1Form = new Form1();
+            server.attach(P1Form);
             P1Form.Show();
             Form2 P2Form = new Form2();
+            server.attach(P2Form);
             P2Form.Show();
         }
 

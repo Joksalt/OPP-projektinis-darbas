@@ -12,10 +12,11 @@ using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
+using PingPong3.Patterns.Observer;
 
 namespace PingPong3
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IObserver
     {
         #region Variables
         HubConnection connection;
@@ -24,6 +25,9 @@ namespace PingPong3
         public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
         private string LOG_SENDER = "P1";
         //---------
+
+        //--Observer---
+        private Subject _server;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -308,7 +312,7 @@ namespace PingPong3
             int velocityX = GenerateBallX();
 
             gameLogger.Write(LOG_SENDER, "reset ball");
-            SendResetBallSignal(velocityX, velocityY);
+            notifyResetBallSignal(velocityX, velocityY);
 
         }
         private int GenerateBallX()
@@ -616,6 +620,30 @@ namespace PingPong3
         {
 
         }
+
+
+        #endregion
+
+        #region ObserverImplementation
+
+        public void setServer(Subject server)
+        {
+            _server = server;
+        }
+
+        public void notifyResetBallSignal(int velocityX, int velocityY)
+        {
+            _server.receiveResetBallSignal(velocityX, velocityY);
+        }
+
+        public void updateResetBallSignal(int velocityX, int velocityY)
+        {
+            _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
+            _ball.Velocity = new Point(velocityX, velocityY);
+
+            _currentBallX = velocityX;
+        }
+
         #endregion
     }
 }

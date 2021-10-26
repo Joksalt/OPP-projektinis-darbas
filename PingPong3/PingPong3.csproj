@@ -157,6 +157,9 @@
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
+    <Compile Include="Patterns\Observer\IObserver.cs" />
+    <Compile Include="Patterns\Observer\Server.cs" />
+    <Compile Include="Patterns\Observer\Subject.cs" />
     <Compile Include="Patterns\Prototype\IPrototype.cs" />
     <Compile Include="Patterns\Singleton_logger\Logger.cs" />
     <Compile Include="Patterns\Strategy\ChangeSize.cs" />
