@@ -16,16 +16,9 @@ namespace PingPong3.Patterns.Observer
 		
 		public void deattach( IObserver unit )
 		{
-			//TODO: cover deaatach method
+			unitList.Remove(unit);
 		}
-		
-		public void notifyAll(string message)
-		{
-            foreach (var unit in unitList)
-            {
-				unit.update(message);
-			}
-		}
+	
 
 		public void notifyAllResetBallSignal(int velocityX, int velocityY)
 		{
@@ -33,11 +26,6 @@ namespace PingPong3.Patterns.Observer
 			{
 				unit.updateResetBallSignal(velocityX, velocityY);
 			}
-		}
-
-		public void receiveFromClient(string message)
-		{
-			notifyAll(message);
 		}
 
 		public void receiveResetBallSignal(int velocityX, int velocityY)

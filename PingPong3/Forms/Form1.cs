@@ -265,7 +265,6 @@ namespace PingPong3
             //------P1
             if (Keyboard.IsKeyDown(Key.S))
             {
-                notifyServer("P1Down");
                 if (_player1.Texture.Bottom >= ScreenHeight)
                     _currentYP1 = 0;
                 else
@@ -313,7 +312,7 @@ namespace PingPong3
             int velocityX = GenerateBallX();
 
             gameLogger.Write(LOG_SENDER, "reset ball");
-            updateResetBallSignal(velocityX, velocityY);
+            notifyResetBallSignal(velocityX, velocityY);
 
         }
         private int GenerateBallX()
@@ -632,11 +631,6 @@ namespace PingPong3
             _server = server;
         }
 
-        public void notifyServer(string result)
-        {
-            _server.receiveFromClient(result);
-        }
-
         public void notifyResetBallSignal(int velocityX, int velocityY)
         {
             _server.receiveResetBallSignal(velocityX, velocityY);
@@ -644,15 +638,11 @@ namespace PingPong3
 
         public void updateResetBallSignal(int velocityX, int velocityY)
         {
-            SendResetBallSignal(velocityX, velocityY);
-        }
+            _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
+            _ball.Velocity = new Point(velocityX, velocityY);
 
-        public void update(string msg)
-        {
-            gameLogger.Write(LOG_SENDER, msg);
+            _currentBallX = velocityX;
         }
-        //TODO: implement basic string sen communication
-        //TODO: send signal with json. First value a string for signal value. by the first value it is known what kind of json you get
 
         #endregion
     }
