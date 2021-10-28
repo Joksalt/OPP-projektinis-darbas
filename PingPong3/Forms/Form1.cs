@@ -272,7 +272,7 @@ namespace PingPong3
             path = path + "Images\\";
             //------P1
             int player1X = 0 + PlayerSpeed;
-           if (Keyboard.IsKeyDown(Key.S))
+            if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)
                     _currentYP1 = 0;
@@ -287,13 +287,8 @@ namespace PingPong3
                 if (_player1.Texture.Top <= 0)
                     _currentYP1 = 0;
                 else
-                
                     _currentYP1 = -PlayerSpeed;
-                    _player1.Velocity = new Point(0, _currentYP1);
-                    _player1.Move();
-                    SendPlayer1Position(_player1.Position);
-
-
+                _player1.Velocity = new Point(0, _currentYP1);
                 _player1.Move();
                 SendPlayer1Position(_player1.Position);
             }
@@ -312,7 +307,7 @@ namespace PingPong3
                 _racketMode1 = "medium";
                 SendRacketSkin(path + mediumRacket.GetSkin() + ".png");
             }
-
+        }
 
             /// <summary>
             /// Tiemr to spawn power ups. Now not in use. Add in later
