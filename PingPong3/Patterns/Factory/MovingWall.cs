@@ -11,10 +11,11 @@ namespace PingPong3.Patterns.Factory
 {
     public class MovingWall : Wall
     {
-        Move move;
+        public const int BaseSpeed = 30;
+        public int CurrentSpeed = BaseSpeed;
+        public Move move;
         public int Start { get; set; }
         public int End { get; set; }
-
         public MovingWall(int i)
         {
             Position = new Point(500, 500);

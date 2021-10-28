@@ -32,8 +32,6 @@ namespace PingPong3
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
 
-        private const int BasePlayerSpeed = 30;
-        private int PlayerSpeed = 30;
         private const int BaseBallSpeed = 2;
         private int _level = 7;
 
@@ -45,10 +43,9 @@ namespace PingPong3
         private Random _random;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
-        
 
         //private PowerUp theSpeed =null;
-        private PowerUpFactory MakePowerUps = new ExplodePowerUpFactory();
+        private PowerUpFactory MakePowerUps = new PositivePowerUpFactory();
         private bool _PowerUpExists = true;
 
         //private PowerUp thePowerUp = null;
@@ -59,8 +56,6 @@ namespace PingPong3
         private int _scorePlayer2;
 
         private bool _isGameRunning;
-
-        private int _currentYP1 = ScreenHeight/2;
 
         private int _currentBallX;
 
@@ -265,21 +260,19 @@ namespace PingPong3
             //------P1
             if (Keyboard.IsKeyDown(Key.S))
             {
-                if (_player1.Texture.Bottom >= ScreenHeight)
-                    _currentYP1 = 0;
+                if (_player1.Texture.Bottom >= ScreenHeight)//ScreenHeight/2;
+                    _player1.Velocity = new Point(0, 0);
                 else
-                    _currentYP1 = PlayerSpeed;
-                _player1.Velocity = new Point(0, _currentYP1);
+                    _player1.Velocity = new Point(0, _player1.CurrentSpeed);
                 _player1.Move();
                 SendPlayer1Position(_player1.Position);
             }
             else if (Keyboard.IsKeyDown(Key.W))
             {
                 if (_player1.Texture.Top <= 0)
-                    _currentYP1 = 0;
+                    _player1.Velocity = new Point(0, 0);
                 else
-                    _currentYP1 = -PlayerSpeed;
-                _player1.Velocity = new Point(0, _currentYP1);
+                    _player1.Velocity = new Point(0, -_player1.CurrentSpeed);
                 _player1.Move();
                 SendPlayer1Position(_player1.Position);
             }
