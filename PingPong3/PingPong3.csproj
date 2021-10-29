@@ -156,6 +156,11 @@
     <Compile Include="Patterns\Builder\LevelBuilder.cs" />
     <Compile Include="Patterns\Builder\LevelDirector.cs" />
     <Compile Include="Patterns\Builder\LevelData.cs" />
+    <Compile Include="Patterns\Decorator\RacketDecorator.cs" />
+    <Compile Include="Patterns\Decorator\DefaultRacketMode.cs" />
+    <Compile Include="Patterns\Decorator\RacketMode1.cs" />
+    <Compile Include="Patterns\Decorator\RacketMode2.cs" />
+    <Compile Include="Patterns\Decorator\RacketStyle.cs" />
     <Compile Include="Patterns\Factory\StaticWall.cs" />
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
