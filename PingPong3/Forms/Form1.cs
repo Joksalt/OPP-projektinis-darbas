@@ -266,7 +266,6 @@ namespace PingPong3
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
             //------P1
-            int player1X = 0 + PlayerSpeed;
             if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)//ScreenHeight/2;
