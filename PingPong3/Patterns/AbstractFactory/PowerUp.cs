@@ -28,5 +28,7 @@ namespace PingPong3.Patterns.AbstractFactory
             string infoOfPowerUp = "Power up " + name +" with image "+ image;
             return infoOfPowerUp;
         }
+
+        public abstract void Activate();
     }
 }

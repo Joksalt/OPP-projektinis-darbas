@@ -19,6 +19,12 @@ namespace PingPong3.Patterns.AbstractFactory
             Texture.BackColor = Color.Transparent;
             Velocity = new Point(1, 0);
         }
+
+        public override void Activate()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void MakePowerUp()
         {
             image = "PowerUp.png";

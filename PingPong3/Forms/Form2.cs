@@ -41,15 +41,13 @@ namespace PingPong3
 
         private Random _random;
 
-        private PowerUpFactory MakePowerUps = new ExplodePowerUpFactory();
+        private PowerUpFactory MakePowerUps = new PositivePowerUpFactory();
         private bool _PowerUpExists = true;
 
         private WallFactory WallFactory = new WallFactory();
 
         private int _scorePlayer1;
         private int _scorePlayer2;
-
-        private int _currentYP2 = ScreenHeight/2;
 
         private PowerUp ExplosionPowerUp;
 
@@ -245,20 +243,18 @@ namespace PingPong3
             if (Keyboard.IsKeyDown(Key.Down))
             {
                 if (_player2.Texture.Bottom >= ScreenHeight)
-                    _currentYP2 = 0;
+                    _player2.Velocity = new Point(0, 0);
                 else
-                    _currentYP2 = 30;
-                _player2.Velocity = new Point(0, _currentYP2);
+                    _player2.Velocity = new Point(0, _player2.CurrentSpeed);
                 _player2.Move();
                 SendPlayer2Position(_player2.Position);
             }
             else if (Keyboard.IsKeyDown(Key.Up))
             {
                 if (_player2.Texture.Top <= 0)
-                    _currentYP2 = 0;
+                    _player2.Velocity = new Point(0, 0);
                 else
-                    _currentYP2 = -30;
-                _player2.Velocity = new Point(0, _currentYP2);
+                    _player2.Velocity = new Point(0, -_player2.CurrentSpeed);
                 _player2.Move();
                 SendPlayer2Position(_player2.Position);
             }
