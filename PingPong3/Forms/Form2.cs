@@ -7,6 +7,7 @@ using System.Windows.Input;
 using static PingPong3.Models.Game;
 using PingPong3.Patterns.Factory;
 using PingPong3.Patterns.AbstractFactory;
+using PingPong3.Patterns.Adapter;
 using PingPong3.Patterns.Singleton_logger;
 using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
@@ -56,6 +57,11 @@ namespace PingPong3
         private AdvancedLevelBuilder advancedLevelBuilder;
         private FrenzyLevelBuilder frenzyLevelBuilder;
         private LevelData levelData;
+
+        private CertainSound WinSound = new CertainSound("Win");
+        private CertainSound HitSound = new CertainSound("Hit");
+        private CertainSound ScoreSound = new CertainSound("Score");
+        private CertainSound MissSound = new CertainSound("Miss");
         #endregion
 
         #region Form2 Constructor
@@ -425,11 +431,13 @@ namespace PingPong3
                 {
                     _scorePlayer1 = score;
                     lblScore1.Text = _scorePlayer1.ToString();
+                    //MissSound.RequestSound();
                 }
                 else
                 {
                     _scorePlayer2 = score;
                     lblScore2.Text = _scorePlayer2.ToString();
+                    //ScoreSound.RequestSound();
                 }
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection1", (positionX, positionY, velocityX, velocityY) =>
@@ -441,6 +449,7 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
+                //HitSound.RequestSound();
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection2", (positionX, positionY, velocityX, velocityY) =>
             {
@@ -451,6 +460,7 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
+                //HitSound.RequestSound();
             });
             try
             {
