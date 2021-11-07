@@ -238,8 +238,10 @@ namespace PingPong3
         {
             if (_isGameRunning)
             {
+                //TODO: P1 move command
                 _player1.Draw();
                 _player2.Draw();
+                //TODO: ball move command
                 _ball.Draw();
 
                 if (_PowerUpExists)
@@ -275,6 +277,7 @@ namespace PingPong3
             if (Keyboard.IsKeyDown(Key.S))
             {
                 if (_player1.Texture.Bottom >= ScreenHeight)//ScreenHeight/2;
+                    //TODO: command change p1 velocity
                     _player1.Velocity = new Point(0, 0);
                 else
                     _player1.Velocity = new Point(0, _player1.CurrentSpeed);
