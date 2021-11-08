@@ -14,10 +14,12 @@ using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
 using PingPong3.Patterns.Observer;
+using PingPong3.Forms;
+using PingPong3.Patterns.Command;
 
 namespace PingPong3
 {
-    public partial class Form2 : Form, IObserver
+    public partial class Form2 : PongForm, IObserver
     {
         #region variables
         HubConnection connection;
@@ -34,10 +36,8 @@ namespace PingPong3
         private const int ScreenHeight = 768;
 
         private const int BaseBallSpeed = 2;
-        private int _level = 7;
 
         private MovingWall _player1, _player2;
-        private BallItem _ball;
         private HubItem _titleScreen;
 
         private Random _random;
@@ -47,8 +47,8 @@ namespace PingPong3
 
         private WallFactory WallFactory = new WallFactory();
 
-        private int _scorePlayer1;
-        private int _scorePlayer2;
+        //private int playerSelfScore;
+        //private int playerOtherScore;
 
         private PowerUp ExplosionPowerUp;
 
@@ -64,14 +64,18 @@ namespace PingPong3
         private CertainSound MissSound = new CertainSound("Miss");
         #endregion
 
+
         #region Form2 Constructor
         public Form2()
         {
+            _level = 7;
+            playerSelfScore = 0;
+            playerOtherScore = 0;
+            _playerSelfIndex = 1;
             InitializeComponent();
 
+
             gameLogger.Write(LOG_SENDER,"start");
-            //TODO: Increments by 2. Possible solution - add parameter that checks if it's
-            //P1 or P2 playing and only P1 will send goal signals.
 
             #region SignalRconnection
             connection = new HubConnectionBuilder()
@@ -88,6 +92,8 @@ namespace PingPong3
             ClientSize = new Size(ScreenWidth, ScreenHeight);
             Initialize();
             Load += Form1_Load;
+
+            _commandController = new GameController();
         }
         #endregion
 
@@ -99,14 +105,9 @@ namespace PingPong3
             lblScore2.BackColor = Color.Transparent;
             label4.BackColor = Color.Transparent;
             _isGameRunning = true;
-            //ResetBall();
+
         }
 
-        //private void EndGame()
-        //{
-        //    _isGameRunning = false;
-        //    pbTitleScreen.Show();
-        //}
         #endregion
 
         #region Events
@@ -241,8 +242,6 @@ namespace PingPong3
         #endregion
 
         #region Mechanics
-        //TODO: !! Add select if you are p1 or p2
-        //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
             //--------P2
@@ -263,6 +262,11 @@ namespace PingPong3
                     _player2.Velocity = new Point(0, -_player2.CurrentSpeed);
                 _player2.Move();
                 SendPlayer2Position(_player2.Position);
+            }
+            //Undo last command
+            if (Keyboard.IsKeyDown(Key.D5))
+            {
+                _commandController.Undo();
             }
         }
         /// <summary>
@@ -287,14 +291,9 @@ namespace PingPong3
         }
         private void ResetBall()
         {
-            _level = 7;
-            int velocityY = GenerateBallY();
-            int velocityX = GenerateBallX();
-
-            gameLogger.Write(LOG_SENDER,"reset ball");
-            notifyResetBallSignal(velocityX, velocityY);
+            _commandController.Run(new BallResetCommand(this));
         }
-        private int GenerateBallX()
+        public override int GenerateBallX()
         {
             _level += 1;
             int velocityX = _level;
@@ -304,7 +303,7 @@ namespace PingPong3
             }
             return velocityX;
         }
-        private int GenerateBallY()
+        public override int GenerateBallY()
         {
             _level += (int).5;
             int velocityY = _random.Next(0, _level);
@@ -360,10 +359,20 @@ namespace PingPong3
             if (pbBall.Left < 0)
             {
                 ResetBall();
-                _scorePlayer2 += 1;
-                lblScore2.Text = _scorePlayer2.ToString();
-                gameLogger.Write(LOG_SENDER,"score");
-                SendScoreSignal(_scorePlayer2, 1);
+
+                //Add command
+                _commandController.Run(new ScoreIncreaseCommand(this));
+                //---
+
+                lblScore2.Text = playerSelfScore.ToString();
+                gameLogger.Write(LOG_SENDER, "score");
+
+
+
+                //playerOtherScore += 1;
+                //lblScore2.Text = playerOtherScore.ToString();
+                //gameLogger.Write(LOG_SENDER,"score");
+                //SendScoreSignal(playerOtherScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -415,7 +424,6 @@ namespace PingPong3
             });
             connection.On<int>("ReceiveStartSignal", (mode) =>
             {
-                //TODO: set correct game mode
                 BeginGame();
             });
             connection.On<int, int>("ReceiveResetBallSignal", (velocityX, velocityY) =>
@@ -429,14 +437,14 @@ namespace PingPong3
             {
                 if (player == 0)
                 {
-                    _scorePlayer1 = score;
-                    lblScore1.Text = _scorePlayer1.ToString();
+                    playerSelfScore = score;
+                    lblScore1.Text = playerSelfScore.ToString();
                     //MissSound.RequestSound();
                 }
                 else
                 {
-                    _scorePlayer2 = score;
-                    lblScore2.Text = _scorePlayer2.ToString();
+                    playerOtherScore = score;
+                    lblScore2.Text = playerOtherScore.ToString();
                     //ScoreSound.RequestSound();
                 }
             });
@@ -531,7 +539,7 @@ namespace PingPong3
         /// </summary>
         /// <param name="score"></param>
         /// <param name="player">Equals 0 if for P1, equals 1 if for P2</param>
-        private async void SendScoreSignal(int score, int player)
+        public override async void SendScoreSignal(int score, int player)
         {
             try
             {
@@ -586,7 +594,7 @@ namespace PingPong3
             _server = server;
         }
 
-        public void notifyResetBallSignal(int velocityX, int velocityY)
+        public override void notifyResetBallSignal(int velocityX, int velocityY)
         {
             _server.receiveResetBallSignal(velocityX, velocityY);
         }

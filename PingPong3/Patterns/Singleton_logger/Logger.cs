@@ -11,8 +11,6 @@ namespace PingPong3.Patterns.Singleton_logger
     {
         private LoggerSingleton()
         {
-            //var rand = new Random();
-            //id = rand.Next();
         }
 
         public int id;
