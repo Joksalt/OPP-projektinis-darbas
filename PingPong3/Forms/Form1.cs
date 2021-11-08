@@ -35,7 +35,7 @@ namespace PingPong3
         private const int ScreenHeight = 768;
 
         private const int BaseBallSpeed = 2;
-        private int _level = 7;
+        public int _level = 7;
 
         private MovingWall _player1, _player2;
         private BallItem _ball;
@@ -86,8 +86,6 @@ namespace PingPong3
             InitializeComponent();
 
             gameLogger.Write(LOG_SENDER, "start");
-            //TODO: Increments by 2. Possible solution - add parameter that checks if it's
-            //P1 or P2 playing and only P1 will send goal signals.
 
             #region SignalRconnection
             connection = new HubConnectionBuilder()
@@ -267,7 +265,6 @@ namespace PingPong3
         #endregion
 
         #region Mechanics
-        //TODO: Allow start only when two are connected
         private void UpdatePlayer()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -332,6 +329,7 @@ namespace PingPong3
         }
         private void ResetBall()
         {
+            //BUGBUG: Later add level
             _level = 7;
             int velocityY = GenerateBallY();
             int velocityX = GenerateBallX();
@@ -340,7 +338,7 @@ namespace PingPong3
             notifyResetBallSignal(velocityX, velocityY);
 
         }
-        private int GenerateBallX()
+        public int GenerateBallX()
         {
             _level += 1;
             int velocityX = _level;
@@ -362,7 +360,7 @@ namespace PingPong3
             }
             return velocityX;
         }
-        private int GenerateBallY()
+        public int GenerateBallY()
         {
             _level += (int).5;
             int velocityY = _random.Next(0, _level);
@@ -495,7 +493,6 @@ namespace PingPong3
             });
             connection.On<int>("ReceiveStartSignal", (mode) =>
             {
-                //TODO: set correct game mode
                 BeginGame();
             });
             connection.On<int, int>("ReceiveResetBallSignal", (velocityX, velocityY) =>

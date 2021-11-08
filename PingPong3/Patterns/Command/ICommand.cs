@@ -4,8 +4,9 @@ namespace PingPong3.Patterns.Command
 {
 	public abstract class ICommand
 	{
-		protected BallItem target;
-		protected BallItem targetCopy;
+		//BUGBUG: make abstract form class that could be used here
+		protected Form1 target;
+		protected Form1 targetCopy;
 
 		public abstract void Execute();
 

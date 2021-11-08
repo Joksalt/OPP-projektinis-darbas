@@ -1,7 +1,7 @@
-namespace PingPong3.Patterns.Command
-{
-	public class MoveCommand : ICommand
-	{
-	}
+//namespace PingPong3.Patterns.Command
+//{
+//	public class MoveCommand : ICommand
+//	{
+//	}
 	
-}
+//}
