@@ -15,6 +15,7 @@ using PingPong3.Patterns.Decorator;
 using System.Collections.Generic;
 using System.Timers;
 using PingPong3.Patterns.Observer;
+using PingPong3.Patterns.Command;
 
 namespace PingPong3
 {
@@ -30,6 +31,8 @@ namespace PingPong3
 
         //--Observer---
         private Subject _server;
+        //---command----
+        private GameController _commandController;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -103,6 +106,7 @@ namespace PingPong3
             Initialize();
             Load += Form1_Load;
 
+            _commandController = new GameController();
             
         }
         #endregion
@@ -112,7 +116,7 @@ namespace PingPong3
         {
             _isGameRunning = true;
             ResetBall();
-            //pbTitleScreen.Hide();
+            
         }
         //private void EndGame()
         //{
@@ -329,13 +333,15 @@ namespace PingPong3
         }
         private void ResetBall()
         {
-            //BUGBUG: Later add level
-            _level = 7;
-            int velocityY = GenerateBallY();
-            int velocityX = GenerateBallX();
+            _commandController.Run(new BallResetCommand(this));
 
-            gameLogger.Write(LOG_SENDER, "reset ball");
-            notifyResetBallSignal(velocityX, velocityY);
+            //BUGBUG: Later add level
+            //_level = 7;
+            //int velocityY = GenerateBallY();
+            //int velocityX = GenerateBallX();
+
+            //gameLogger.Write(LOG_SENDER, "reset ball");
+            //notifyResetBallSignal(velocityX, velocityY);
 
         }
         public int GenerateBallX()

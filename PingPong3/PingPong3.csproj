@@ -159,7 +159,7 @@
     <Compile Include="Patterns\Builder\LevelBuilder.cs" />
     <Compile Include="Patterns\Builder\LevelDirector.cs" />
     <Compile Include="Patterns\Builder\LevelData.cs" />
-    <Compile Include="Patterns\Command\BallController.cs" />
+    <Compile Include="Patterns\Command\GameController.cs" />
     <Compile Include="Patterns\Command\BallResetCommand.cs" />
     <Compile Include="Patterns\Command\ICommand.cs" />
     <Compile Include="Patterns\Command\MoveCommand.cs" />
