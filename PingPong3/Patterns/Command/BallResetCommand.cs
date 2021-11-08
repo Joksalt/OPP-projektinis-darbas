@@ -1,7 +1,9 @@
+
 namespace PingPong3.Patterns.Command
 {
 	public class BallResetCommand : ICommand
 	{
+        private BallItem BallCopy;
 		public BallResetCommand(Form1 formItem)
         {
 			target = formItem;
@@ -9,6 +11,8 @@ namespace PingPong3.Patterns.Command
 
 		public override void Execute()
         {
+            BallCopy = (BallItem)target._ball.DeepCopy();
+
             target._level = 7;
 
             int velocityY = target.GenerateBallY();
@@ -20,7 +24,9 @@ namespace PingPong3.Patterns.Command
 
         public override void Undo()
         {
-            throw new System.NotImplementedException();
+            target._ball = BallCopy;
+
+            target.notifyResetBallSignal(BallCopy.Velocity.X, BallCopy.Velocity.Y);
         }
     }
 	

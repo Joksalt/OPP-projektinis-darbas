@@ -41,7 +41,7 @@ namespace PingPong3
         public int _level = 7;
 
         private MovingWall _player1, _player2;
-        private BallItem _ball;
+        public BallItem _ball;
 
         private HubItem _titleScreen;
 
@@ -308,6 +308,10 @@ namespace PingPong3
             {
                 _racketMode1 = "medium";
                 SendRacketSkin(path + mediumRacket.GetSkin() + ".png");
+            }
+            if (Keyboard.IsKeyDown(Key.D4))
+            {
+                _commandController.Undo();
             }
         }
 

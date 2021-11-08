@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PingPong3.Patterns.Command
 {
@@ -17,13 +18,12 @@ namespace PingPong3.Patterns.Command
 			cmd.Execute();
 		}
 
-		//public void undo()
-		//{ //removeCommand
-		//	int index = list.size();
-		//	ICommand cmd = list.get(index - 1);
-		//	list.remove(index - 1);
-		//	cmd.undo();
-		//}
-	}
+        public void Undo()
+        {
+			ICommand cmd = commandList.Last();
+			commandList.RemoveLast();
+            cmd.Undo();
+        }
+    }
 	
 }
