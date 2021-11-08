@@ -14,10 +14,12 @@ using PingPong3.Patterns.Builder;
 using System.Collections.Generic;
 using System.Timers;
 using PingPong3.Patterns.Observer;
+using PingPong3.Forms;
+using PingPong3.Patterns.Command;
 
 namespace PingPong3
 {
-    public partial class Form2 : Form, IObserver
+    public partial class Form2 : PongForm, IObserver
     {
         #region variables
         HubConnection connection;
@@ -29,15 +31,17 @@ namespace PingPong3
 
         //--Observer---
         private Subject _server;
+        //---command----
+        //private GameController _commandController;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
 
         private const int BaseBallSpeed = 2;
-        private int _level = 7;
+        //private int _level = 7;
 
         private MovingWall _player1, _player2;
-        private BallItem _ball;
+        //private BallItem _ball;
         private HubItem _titleScreen;
 
         private Random _random;
@@ -67,7 +71,9 @@ namespace PingPong3
         #region Form2 Constructor
         public Form2()
         {
+            _level = 7;
             InitializeComponent();
+
 
             gameLogger.Write(LOG_SENDER,"start");
 
@@ -86,6 +92,8 @@ namespace PingPong3
             ClientSize = new Size(ScreenWidth, ScreenHeight);
             Initialize();
             Load += Form1_Load;
+
+            _commandController = new GameController();
         }
         #endregion
 
@@ -260,6 +268,10 @@ namespace PingPong3
                 _player2.Move();
                 SendPlayer2Position(_player2.Position);
             }
+            if (Keyboard.IsKeyDown(Key.D5))
+            {
+                _commandController.Undo();
+            }
         }
         /// <summary>
         /// Tiemr to spawn power ups. Now not in use. Add in later
@@ -283,14 +295,15 @@ namespace PingPong3
         }
         private void ResetBall()
         {
-            _level = 7;
-            int velocityY = GenerateBallY();
-            int velocityX = GenerateBallX();
+            _commandController.Run(new BallResetCommand(this));
+            //_level = 7;
+            //int velocityY = GenerateBallY();
+            //int velocityX = GenerateBallX();
 
-            gameLogger.Write(LOG_SENDER,"reset ball");
-            notifyResetBallSignal(velocityX, velocityY);
+            //gameLogger.Write(LOG_SENDER,"reset ball");
+            //notifyResetBallSignal(velocityX, velocityY);
         }
-        private int GenerateBallX()
+        public override int GenerateBallX()
         {
             _level += 1;
             int velocityX = _level;
@@ -300,7 +313,7 @@ namespace PingPong3
             }
             return velocityX;
         }
-        private int GenerateBallY()
+        public override int GenerateBallY()
         {
             _level += (int).5;
             int velocityY = _random.Next(0, _level);
@@ -581,7 +594,7 @@ namespace PingPong3
             _server = server;
         }
 
-        public void notifyResetBallSignal(int velocityX, int velocityY)
+        public override void notifyResetBallSignal(int velocityX, int velocityY)
         {
             _server.receiveResetBallSignal(velocityX, velocityY);
         }

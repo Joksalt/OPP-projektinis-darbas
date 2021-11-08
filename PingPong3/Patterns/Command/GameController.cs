@@ -20,9 +20,12 @@ namespace PingPong3.Patterns.Command
 
         public void Undo()
         {
-			ICommand cmd = commandList.Last();
-			commandList.RemoveLast();
-            cmd.Undo();
+			if (commandList.Count > 0)
+			{
+				ICommand cmd = commandList.Last();
+				commandList.RemoveLast();
+				cmd.Undo();
+			}
         }
     }
 	

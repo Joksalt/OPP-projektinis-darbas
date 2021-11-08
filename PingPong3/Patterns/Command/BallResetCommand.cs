@@ -1,10 +1,12 @@
+using PingPong3.Forms;
+using System.Windows.Forms;
 
 namespace PingPong3.Patterns.Command
 {
 	public class BallResetCommand : ICommand
 	{
         private BallItem BallCopy;
-		public BallResetCommand(Form1 formItem)
+		public BallResetCommand(PongForm formItem)
         {
 			target = formItem;
         }

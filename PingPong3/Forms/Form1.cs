@@ -16,10 +16,11 @@ using System.Collections.Generic;
 using System.Timers;
 using PingPong3.Patterns.Observer;
 using PingPong3.Patterns.Command;
+using PingPong3.Forms;
 
 namespace PingPong3
 {
-    public partial class Form1 : Form, IObserver
+    public partial class Form1 : PongForm, IObserver
     {
         #region Variables
         HubConnection connection;
@@ -32,16 +33,16 @@ namespace PingPong3
         //--Observer---
         private Subject _server;
         //---command----
-        private GameController _commandController;
+        //private GameController _commandController;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
 
         private const int BaseBallSpeed = 2;
-        public int _level = 7;
+        //public int _level = 7;
 
         private MovingWall _player1, _player2;
-        public BallItem _ball;
+        //public BallItem _ball;
 
         private HubItem _titleScreen;
 
@@ -86,6 +87,7 @@ namespace PingPong3
         #region FormConstructor
         public Form1()
         {
+            _level = 7;
             InitializeComponent();
 
             gameLogger.Write(LOG_SENDER, "start");
@@ -348,7 +350,7 @@ namespace PingPong3
             //notifyResetBallSignal(velocityX, velocityY);
 
         }
-        public int GenerateBallX()
+        public override int GenerateBallX()
         {
             _level += 1;
             int velocityX = _level;
@@ -370,7 +372,7 @@ namespace PingPong3
             }
             return velocityX;
         }
-        public int GenerateBallY()
+        public override int GenerateBallY()
         {
             _level += (int).5;
             int velocityY = _random.Next(0, _level);
@@ -695,7 +697,7 @@ namespace PingPong3
             _server = server;
         }
 
-        public void notifyResetBallSignal(int velocityX, int velocityY)
+        public override void notifyResetBallSignal(int velocityX, int velocityY)
         {
             _server.receiveResetBallSignal(velocityX, velocityY);
         }
