@@ -15,10 +15,9 @@ namespace PingPong3.Patterns.Command
         }
         public override void Execute()
         {
-            var newScore = target.playerOtherScore + 1;
-            target.playerOtherScore = newScore;            
-            target.selfScoreLabel.Text = newScore.ToString();
-            
+            target.playerSelfScore += 1;
+            target.SendScoreSignal(target.playerSelfScore, target._playerSelfIndex);
+
             //var newScore = target.selfScoreLabel + 1;
             //target._scorePlayer1 = newScore;            
             //target._lblScore1.Text = newScore.ToString();

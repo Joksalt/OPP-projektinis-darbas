@@ -80,14 +80,15 @@ namespace PingPong3
         private CertainSound MissSound = new CertainSound("Miss");
         #endregion
 
+
         #region FormConstructor
         public Form1()
         {
             _level = 7;
-            selfScoreLabel = lblScore1;
-            playerOtherScore = 0;
             playerSelfScore = 0;
+            playerOtherScore = 0;
             _playerSelfIndex = 0;
+
             InitializeComponent();
 
             gameLogger.Write(LOG_SENDER, "start");
@@ -430,11 +431,20 @@ namespace PingPong3
             if (pbBall.Right > ScreenWidth)
             {
                 ResetBall();
-                playerOtherScore += 1;
-                lblScore1.Text = playerOtherScore.ToString();
 
+                //Add command
+                _commandController.Run(new ScoreIncreaseCommand(this));
+                //---
+
+                lblScore1.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
-                SendScoreSignal(playerOtherScore, _playerSelfIndex);
+
+
+
+                //playerSelfScore += 1;
+                //lblScore1.Text = playerSelfScore.ToString();
+                //gameLogger.Write(LOG_SENDER, "score");
+                //SendScoreSignal(playerSelfScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -511,14 +521,14 @@ namespace PingPong3
             {
                 if (player == 0)
                 {
-                    playerOtherScore = score;
-                    lblScore1.Text = playerOtherScore.ToString();
+                    playerSelfScore = score;
+                    lblScore1.Text = playerSelfScore.ToString();
                     //ScoreSound.RequestSound();
                 }
                 else
                 {
-                    playerSelfScore = score;
-                    lblScore2.Text = playerSelfScore.ToString();
+                    playerOtherScore = score;
+                    lblScore2.Text = playerOtherScore.ToString();
                     //MissSound.RequestSound();
                 }
             });
@@ -625,7 +635,7 @@ namespace PingPong3
         /// </summary>
         /// <param name="score"></param>
         /// <param name="player">Equals 0 if for P1, equals 1 if for P2</param>
-        private async void SendScoreSignal(int score, int player)
+        public override async void SendScoreSignal(int score, int player)
         {
             try
             {

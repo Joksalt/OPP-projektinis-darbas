@@ -69,8 +69,8 @@ namespace PingPong3
         public Form2()
         {
             _level = 7;
-            playerOtherScore = 0;
             playerSelfScore = 0;
+            playerOtherScore = 0;
             _playerSelfIndex = 1;
             InitializeComponent();
 
@@ -358,10 +358,20 @@ namespace PingPong3
             if (pbBall.Left < 0)
             {
                 ResetBall();
-                playerSelfScore += 1;
+
+                //Add command
+                _commandController.Run(new ScoreIncreaseCommand(this));
+                //---
+
                 lblScore2.Text = playerSelfScore.ToString();
-                gameLogger.Write(LOG_SENDER,"score");
-                SendScoreSignal(playerSelfScore, _playerSelfIndex);
+                gameLogger.Write(LOG_SENDER, "score");
+
+
+
+                //playerOtherScore += 1;
+                //lblScore2.Text = playerOtherScore.ToString();
+                //gameLogger.Write(LOG_SENDER,"score");
+                //SendScoreSignal(playerOtherScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -426,14 +436,14 @@ namespace PingPong3
             {
                 if (player == 0)
                 {
-                    playerOtherScore = score;
-                    lblScore1.Text = playerOtherScore.ToString();
+                    playerSelfScore = score;
+                    lblScore1.Text = playerSelfScore.ToString();
                     //MissSound.RequestSound();
                 }
                 else
                 {
-                    playerSelfScore = score;
-                    lblScore2.Text = playerSelfScore.ToString();
+                    playerOtherScore = score;
+                    lblScore2.Text = playerOtherScore.ToString();
                     //ScoreSound.RequestSound();
                 }
             });
@@ -528,7 +538,7 @@ namespace PingPong3
         /// </summary>
         /// <param name="score"></param>
         /// <param name="player">Equals 0 if for P1, equals 1 if for P2</param>
-        private async void SendScoreSignal(int score, int player)
+        public override async void SendScoreSignal(int score, int player)
         {
             try
             {
