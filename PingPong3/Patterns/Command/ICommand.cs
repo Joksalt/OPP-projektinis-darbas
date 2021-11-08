@@ -6,7 +6,6 @@ namespace PingPong3.Patterns.Command
 {
 	public abstract class ICommand
 	{
-		//BUGBUG: make abstract form class that could be used here
 		protected PongForm target;
 
 		public abstract void Execute();

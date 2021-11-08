@@ -32,17 +32,13 @@ namespace PingPong3
 
         //--Observer---
         private Subject _server;
-        //---command----
-        //private GameController _commandController;
 
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
 
         private const int BaseBallSpeed = 2;
-        //public int _level = 7;
 
         private MovingWall _player1, _player2;
-        //public BallItem _ball;
 
         private HubItem _titleScreen;
 
@@ -340,14 +336,6 @@ namespace PingPong3
         private void ResetBall()
         {
             _commandController.Run(new BallResetCommand(this));
-
-            //BUGBUG: Later add level
-            //_level = 7;
-            //int velocityY = GenerateBallY();
-            //int velocityX = GenerateBallX();
-
-            //gameLogger.Write(LOG_SENDER, "reset ball");
-            //notifyResetBallSignal(velocityX, velocityY);
 
         }
         public override int GenerateBallX()

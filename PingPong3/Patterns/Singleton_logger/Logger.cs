@@ -11,8 +11,6 @@ namespace PingPong3.Patterns.Singleton_logger
     {
         private LoggerSingleton()
         {
-            //var rand = new Random();
-            //id = rand.Next();
         }
 
         public int id;
@@ -30,8 +28,7 @@ namespace PingPong3.Patterns.Singleton_logger
 
         public void Write(string sender, string message)
         {
-            //BUGBUG: uncomment
-            //StartForm._StartForm.messagesLog.AppendText($"{sender}:{message}\n"); //comment this to debug
+            StartForm._StartForm.messagesLog.AppendText($"{sender}:{message}\n"); //comment this to debug
         }
     }
 }

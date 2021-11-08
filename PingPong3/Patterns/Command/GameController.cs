@@ -7,17 +7,14 @@ namespace PingPong3.Patterns.Command
 	{
 		private LinkedList<ICommand> commandList = new LinkedList<ICommand>();
 
-		//public ArrayList<ICommand> getList()
-		//{
-		//	return list;
-		//}
-
 		public void Run(ICommand cmd)
 		{
 			commandList.AddLast(cmd);
 			cmd.Execute();
 		}
-
+		/// <summary>
+		/// Undo is D5 for Form2 and D4 for Form1
+		/// </summary>
         public void Undo()
         {
 			if (commandList.Count > 0)
