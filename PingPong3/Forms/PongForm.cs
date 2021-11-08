@@ -14,6 +14,10 @@ namespace PingPong3.Forms
         public int _level;
         //---command----
         public GameController _commandController;
+        public int playerOtherScore;
+        public int playerSelfScore;
+        public Label selfScoreLabel;
+        public int _playerSelfIndex;
 
         public abstract int GenerateBallX();
         public abstract int GenerateBallY();

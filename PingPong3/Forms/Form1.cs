@@ -54,8 +54,8 @@ namespace PingPong3
 
         private WallFactory WallFactory = new WallFactory();
 
-        private int _scorePlayer1;
-        private int _scorePlayer2;
+        //private int _scorePlayer1;
+        //private int playerOtherScore;
 
         private bool _isGameRunning;
         private string _racketMode1;
@@ -84,6 +84,10 @@ namespace PingPong3
         public Form1()
         {
             _level = 7;
+            selfScoreLabel = lblScore1;
+            playerOtherScore = 0;
+            playerSelfScore = 0;
+            _playerSelfIndex = 0;
             InitializeComponent();
 
             gameLogger.Write(LOG_SENDER, "start");
@@ -307,6 +311,7 @@ namespace PingPong3
                 _racketMode1 = "medium";
                 SendRacketSkin(path + mediumRacket.GetSkin() + ".png");
             }
+            //Undo
             if (Keyboard.IsKeyDown(Key.D4))
             {
                 _commandController.Undo();
@@ -425,11 +430,11 @@ namespace PingPong3
             if (pbBall.Right > ScreenWidth)
             {
                 ResetBall();
-                _scorePlayer1 += 1;
-                lblScore1.Text = _scorePlayer1.ToString();
+                playerOtherScore += 1;
+                lblScore1.Text = playerOtherScore.ToString();
 
                 gameLogger.Write(LOG_SENDER, "score");
-                SendScoreSignal(_scorePlayer1, 0);
+                SendScoreSignal(playerOtherScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -506,14 +511,14 @@ namespace PingPong3
             {
                 if (player == 0)
                 {
-                    _scorePlayer1 = score;
-                    lblScore1.Text = _scorePlayer1.ToString();
+                    playerOtherScore = score;
+                    lblScore1.Text = playerOtherScore.ToString();
                     //ScoreSound.RequestSound();
                 }
                 else
                 {
-                    _scorePlayer2 = score;
-                    lblScore2.Text = _scorePlayer2.ToString();
+                    playerSelfScore = score;
+                    lblScore2.Text = playerSelfScore.ToString();
                     //MissSound.RequestSound();
                 }
             });

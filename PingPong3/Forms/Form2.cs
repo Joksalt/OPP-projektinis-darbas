@@ -47,8 +47,8 @@ namespace PingPong3
 
         private WallFactory WallFactory = new WallFactory();
 
-        private int _scorePlayer1;
-        private int _scorePlayer2;
+        //private int playerSelfScore;
+        //private int playerOtherScore;
 
         private PowerUp ExplosionPowerUp;
 
@@ -64,10 +64,14 @@ namespace PingPong3
         private CertainSound MissSound = new CertainSound("Miss");
         #endregion
 
+
         #region Form2 Constructor
         public Form2()
         {
             _level = 7;
+            playerOtherScore = 0;
+            playerSelfScore = 0;
+            _playerSelfIndex = 1;
             InitializeComponent();
 
 
@@ -354,10 +358,10 @@ namespace PingPong3
             if (pbBall.Left < 0)
             {
                 ResetBall();
-                _scorePlayer2 += 1;
-                lblScore2.Text = _scorePlayer2.ToString();
+                playerSelfScore += 1;
+                lblScore2.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER,"score");
-                SendScoreSignal(_scorePlayer2, 1);
+                SendScoreSignal(playerSelfScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -422,14 +426,14 @@ namespace PingPong3
             {
                 if (player == 0)
                 {
-                    _scorePlayer1 = score;
-                    lblScore1.Text = _scorePlayer1.ToString();
+                    playerOtherScore = score;
+                    lblScore1.Text = playerOtherScore.ToString();
                     //MissSound.RequestSound();
                 }
                 else
                 {
-                    _scorePlayer2 = score;
-                    lblScore2.Text = _scorePlayer2.ToString();
+                    playerSelfScore = score;
+                    lblScore2.Text = playerSelfScore.ToString();
                     //ScoreSound.RequestSound();
                 }
             });

@@ -166,6 +166,7 @@
     <Compile Include="Patterns\Command\BallResetCommand.cs" />
     <Compile Include="Patterns\Command\ICommand.cs" />
     <Compile Include="Patterns\Command\MoveCommand.cs" />
+    <Compile Include="Patterns\Command\ScoreIncreaseCommand.cs" />
     <Compile Include="Patterns\Decorator\RacketDecorator.cs" />
     <Compile Include="Patterns\Decorator\DefaultRacketMode.cs" />
     <Compile Include="Patterns\Decorator\RacketMode1.cs" />
