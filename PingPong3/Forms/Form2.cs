@@ -263,6 +263,7 @@ namespace PingPong3
                 _player2.Move();
                 SendPlayer2Position(_player2.Position);
             }
+            //Undo last command
             if (Keyboard.IsKeyDown(Key.D5))
             {
                 _commandController.Undo();

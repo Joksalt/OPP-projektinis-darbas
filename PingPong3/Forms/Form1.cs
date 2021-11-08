@@ -312,7 +312,7 @@ namespace PingPong3
                 _racketMode1 = "medium";
                 SendRacketSkin(path + mediumRacket.GetSkin() + ".png");
             }
-            //Undo
+            //Undo last command
             if (Keyboard.IsKeyDown(Key.D4))
             {
                 _commandController.Undo();

@@ -18,14 +18,15 @@ namespace PingPong3.Patterns.Command
             target.playerSelfScore += 1;
             target.SendScoreSignal(target.playerSelfScore, target._playerSelfIndex);
 
-            //var newScore = target.selfScoreLabel + 1;
-            //target._scorePlayer1 = newScore;            
-            //target._lblScore1.Text = newScore.ToString();
         }
 
         public override void Undo()
         {
-            throw new NotImplementedException();
+            if (target.playerSelfScore > 0)
+            {
+                target.playerSelfScore -= 1;
+                target.SendScoreSignal(target.playerSelfScore, target._playerSelfIndex);
+            }
         }
     }
 }
