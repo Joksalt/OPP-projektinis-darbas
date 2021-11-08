@@ -1,8 +1,4 @@
-/**
- * @(#) MoveCommand.cs
- */
-
-namespace Project.ClassDiagram.Command
+namespace PingPong3.Patterns.Command
 {
 	public class MoveCommand : ICommand
 	{

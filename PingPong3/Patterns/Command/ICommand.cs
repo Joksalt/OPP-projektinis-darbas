@@ -1,24 +1,15 @@
-/**
- * @(#) ICommand.cs
- */
+using PingPong3;
 
-namespace Project.ClassDiagram.Command
+namespace PingPong3.Patterns.Command
 {
 	public abstract class ICommand
 	{
-		Project.ClassDiagram.Ball item target;
-		
-		Project.ClassDiagram.Ball item targetCopy;
-		
-		public void execute(  )
-		{
-			
-		}
-		
-		public void undo(  )
-		{
-			
-		}
+		protected BallItem target;
+		protected BallItem targetCopy;
+
+		public abstract void Execute();
+
+		public abstract void Undo();
 		
 	}
 	
