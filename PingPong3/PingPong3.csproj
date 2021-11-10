@@ -156,6 +156,10 @@
     <Compile Include="Patterns\Adapter\CertainSound.cs" />
     <Compile Include="Patterns\Adapter\Sound.cs" />
     <Compile Include="Patterns\Adapter\SoundLibrary.cs" />
+    <Compile Include="Patterns\Bridge\Background.cs" />
+    <Compile Include="Patterns\Bridge\ClassicBackground.cs" />
+    <Compile Include="Patterns\Bridge\DynamicBackground.cs" />
+    <Compile Include="Patterns\Bridge\StaticBackground.cs" />
     <Compile Include="Patterns\Builder\AdvancedLevelBuilder.cs" />
     <Compile Include="Patterns\Builder\ClassicLevelBuilder.cs" />
     <Compile Include="Patterns\Builder\FrenzyLevelBuilder.cs" />
@@ -387,7 +391,9 @@
     <Content Include="Images\Ball1.png" />
     <Content Include="Images\Ball2.png" />
     <Content Include="Images\Ball3.png" />
+    <Content Include="Images\black.png" />
     <Content Include="Images\Fondo.png" />
+    <Content Include="Images\matrix.gif" />
     <Content Include="Images\Paddle1.png" />
     <Content Include="Images\Paddle2.png" />
     <Content Include="Sounds\Hit.wav" />
