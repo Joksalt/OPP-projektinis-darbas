@@ -12,6 +12,7 @@ using PingPong3.Patterns.Singleton_logger;
 using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
 using PingPong3.Patterns.Decorator;
+using PingPong3.Patterns.Bridge;
 using System.Collections.Generic;
 using System.Timers;
 using PingPong3.Patterns.Observer;
@@ -79,7 +80,6 @@ namespace PingPong3
         private CertainSound ScoreSound = new CertainSound("Score");
         private CertainSound MissSound = new CertainSound("Miss");
         #endregion
-
 
         #region FormConstructor
         public Form1()
@@ -184,7 +184,13 @@ namespace PingPong3
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-            pbTitleScreen.Load(path + "Fondo.png");
+            // ----------- BRIDGE PATTERN ----------------
+            //Form's background picture
+            //pbTitleScreen.Load(path + "Fondo.png");
+            setBackgroundTheme();
+            pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+
             _titleScreen.Texture = pbTitleScreen;
             pbTitleScreen.BackColor = Color.Transparent;
 
@@ -714,5 +720,11 @@ namespace PingPong3
         }
 
         #endregion
+
+
+        public override void setBackgroundTheme()
+        {
+            this.background = new DynamicBackground();
+        }
     }
 }
