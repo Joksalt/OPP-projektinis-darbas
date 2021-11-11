@@ -11,6 +11,7 @@ using PingPong3.Patterns.Adapter;
 using PingPong3.Patterns.Singleton_logger;
 using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
+using PingPong3.Patterns.Bridge;
 using System.Collections.Generic;
 using PingPong3.Patterns.Decorator;
 using System.Timers;
@@ -166,7 +167,12 @@ namespace PingPong3
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-            pbTitleScreen.Load(path + "Fondo.png");
+
+            // --------- BRIDGE PATTERN -------------
+            setBackgroundTheme();
+            pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+
             _titleScreen.Texture = pbTitleScreen;
             pbTitleScreen.BackColor = Color.Transparent;
 
@@ -697,6 +703,11 @@ namespace PingPong3
             _ball.Velocity = new Point(velocityX, velocityY);
 
             _currentBallX = velocityX;
+        }
+
+        public override void setBackgroundTheme()
+        {
+            this.background = new ClassicBackground();
         }
 
 
