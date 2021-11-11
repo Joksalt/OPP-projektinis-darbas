@@ -9,10 +9,10 @@ using PingPong3.Patterns.Factory;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    public abstract class Split : PowerUp
+    public abstract class SoftnessPowerUp : PowerUp
     {
         public MovingWall target;
-        public Split()
+        public SoftnessPowerUp()
         {
 
         }

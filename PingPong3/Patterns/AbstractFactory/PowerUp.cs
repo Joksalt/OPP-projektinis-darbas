@@ -29,6 +29,6 @@ namespace PingPong3.Patterns.AbstractFactory
             return infoOfPowerUp;
         }
 
-        public abstract void Activate();
+        //public abstract void Activate();
     }
 }

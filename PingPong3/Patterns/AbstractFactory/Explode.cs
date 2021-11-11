@@ -20,10 +20,7 @@ namespace PingPong3.Patterns.AbstractFactory
             Velocity = new Point(1, 0);
         }
 
-        public override void Activate()
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public override void MakePowerUp()
         {
