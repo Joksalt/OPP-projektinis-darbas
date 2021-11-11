@@ -147,8 +147,10 @@
     <Compile Include="Patterns\AbstractFactory\Explode.cs" />
     <Compile Include="Patterns\AbstractFactory\NegativePowerUpFactory.cs" />
     <Compile Include="Patterns\AbstractFactory\NegativeSpeedPowerUp.cs" />
+    <Compile Include="Patterns\AbstractFactory\NegativeSplitPowerUp.cs" />
     <Compile Include="Patterns\AbstractFactory\PositivePowerUpFactory.cs" />
     <Compile Include="Patterns\AbstractFactory\PositiveSpeedPowerUp.cs" />
+    <Compile Include="Patterns\AbstractFactory\PositiveSplitPowerUp.cs" />
     <Compile Include="Patterns\AbstractFactory\PowerUp.cs" />
     <Compile Include="Patterns\AbstractFactory\PowerUpFactory.cs" />
     <Compile Include="Patterns\AbstractFactory\SpeedPowerUp.cs" />

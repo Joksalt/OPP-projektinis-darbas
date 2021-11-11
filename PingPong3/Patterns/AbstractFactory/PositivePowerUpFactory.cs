@@ -24,7 +24,7 @@ namespace PingPong3.Patterns.AbstractFactory
             }
             else if (typeOfPowerup.Equals(2))
             {
-                thePowerUp = new Split();
+                thePowerUp = new PositiveSplitPowerUp();
                 //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
             return thePowerUp;

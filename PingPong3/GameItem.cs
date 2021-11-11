@@ -8,6 +8,7 @@ namespace PingPong3
         public Point Position { get; set; }
         public Point Velocity { get; set; }
         public PictureBox Texture { get; set; }
+        public bool Player1Hit { get; set; }
         public Point Origin
         {
             get { return new Point(Texture.Width / 2, Texture.Height / 2); }
