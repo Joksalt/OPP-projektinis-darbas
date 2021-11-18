@@ -14,6 +14,7 @@ namespace PingPong3.Forms
         public BallItem _ball;
         public int _level;
         //---command----
+        public Random _random;
         public GameController _commandController;
         public int playerSelfScore;
         public int playerOtherScore;
@@ -33,6 +34,16 @@ namespace PingPong3.Forms
         public virtual void setBackgroundTheme()
         {
             background.setBackgroundTheme();
+        }
+
+        public int GenerateVelocityX(int level)
+        {
+            int velocityX = level;
+            if (_random.Next(2) == 0)
+            {
+                velocityX *= -1;
+            }
+            return velocityX;
         }
     }
 }
