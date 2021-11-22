@@ -19,7 +19,9 @@ namespace SignalRChat.Hubs
         }
         public async Task SendRacketSkin(string racket)
         {
+            //BUGBUG: uncomment. This make power up work for only one
             await Clients.All.SendAsync("RecieveRacketSkin", racket);
+            //await Clients.Others.SendAsync("RecieveRacketSkin", racket);
         }
         public async Task SendRacketSkin2(string racket)
         {

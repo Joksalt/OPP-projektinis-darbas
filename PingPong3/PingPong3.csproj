@@ -126,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BallItem.cs" />
+    <Compile Include="Forms\ClassicForm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ClassicForm1.Designer.cs">
+      <DependentUpon>ClassicForm1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Form2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,9 @@
     <Compile Include="Forms\StartForm.Designer.cs">
       <DependentUpon>StartForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\ClassicForm1.resx">
+      <DependentUpon>ClassicForm1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>

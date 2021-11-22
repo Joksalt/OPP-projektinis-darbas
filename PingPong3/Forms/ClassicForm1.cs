@@ -21,7 +21,7 @@ using PingPong3.Forms;
 
 namespace PingPong3
 {
-    public partial class Form1 : PongForm, IObserver
+    public partial class ClassicForm1 : PongForm, IObserver
     {
         #region Variables
         HubConnection connection;
@@ -84,7 +84,7 @@ namespace PingPong3
         #endregion
 
         #region FormConstructor
-        public Form1()
+        public ClassicForm1()
         {
             _level = 7;
             playerSelfScore = 0;
