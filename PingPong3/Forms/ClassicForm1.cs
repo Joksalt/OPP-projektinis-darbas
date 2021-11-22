@@ -868,7 +868,7 @@ namespace PingPong3
 
         public override void setBackgroundTheme()
         {
-            this.background = new DynamicBackground();
+            this.background = new ClassicBackground();
         }
     }
 }

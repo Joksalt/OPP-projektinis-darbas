@@ -36,5 +36,15 @@ namespace PingPong3
         {
 
         }
+
+        private void ClassicStartButton_Click(object sender, EventArgs e)
+        {
+            ClassicForm1 P1Form = new ClassicForm1();
+            server.attach(P1Form);
+            P1Form.Show();
+            //Form2 P2Form = new Form2();
+            //server.attach(P2Form);
+            //P2Form.Show();
+        }
     }
 }

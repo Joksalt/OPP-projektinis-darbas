@@ -31,6 +31,7 @@ namespace PingPong3
         {
             this.StartButton = new System.Windows.Forms.Button();
             this.messagesLog = new System.Windows.Forms.RichTextBox();
+            this.ClassicStartButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // StartButton
@@ -38,9 +39,9 @@ namespace PingPong3
             this.StartButton.Location = new System.Drawing.Point(277, 88);
             this.StartButton.Margin = new System.Windows.Forms.Padding(2);
             this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(56, 19);
+            this.StartButton.Size = new System.Drawing.Size(136, 19);
             this.StartButton.TabIndex = 0;
-            this.StartButton.Text = "Play";
+            this.StartButton.Text = "Play PowerUp mode";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
@@ -53,11 +54,22 @@ namespace PingPong3
             this.messagesLog.Text = "";
             this.messagesLog.TextChanged += new System.EventHandler(this.messagesLog_TextChanged);
             // 
+            // ClassicStartButton
+            // 
+            this.ClassicStartButton.Location = new System.Drawing.Point(56, 88);
+            this.ClassicStartButton.Name = "ClassicStartButton";
+            this.ClassicStartButton.Size = new System.Drawing.Size(107, 23);
+            this.ClassicStartButton.TabIndex = 2;
+            this.ClassicStartButton.Text = "Play classic mode";
+            this.ClassicStartButton.UseVisualStyleBackColor = true;
+            this.ClassicStartButton.Click += new System.EventHandler(this.ClassicStartButton_Click);
+            // 
             // StartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 366);
+            this.Controls.Add(this.ClassicStartButton);
             this.Controls.Add(this.messagesLog);
             this.Controls.Add(this.StartButton);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -71,5 +83,6 @@ namespace PingPong3
 
         private System.Windows.Forms.Button StartButton;
         public System.Windows.Forms.RichTextBox messagesLog;
+        private System.Windows.Forms.Button ClassicStartButton;
     }
 }

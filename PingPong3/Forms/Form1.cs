@@ -18,10 +18,13 @@ using System.Timers;
 using PingPong3.Patterns.Observer;
 using PingPong3.Patterns.Command;
 using PingPong3.Forms;
+using PingPong3.Patterns.Template;
 
 namespace PingPong3
 {
-    public partial class Form1 : PongForm, IObserver
+    //public partial class Form1 : PongForm, IObserver
+    //BUGBUG: change inherits
+    public partial class Form1 :  GoalTemplate, IObserver
     {
         #region Variables
         HubConnection connection;
@@ -120,6 +123,7 @@ namespace PingPong3
         private void BeginGame()
         {
             _isGameRunning = true;
+            _commandController.Run(new BallResetCommand(this));
             ResetBall();
             
         }
@@ -442,7 +446,7 @@ namespace PingPong3
         }
         private void ResetBall()
         {
-            _commandController.Run(new BallResetCommand(this));
+            //_commandController.Run(new BallResetCommand(this));
             _racketMode1 = "default";
             //RacketSkinReseter();
             RacketSkinSender(defaultRacket.GetSkin());
@@ -543,10 +547,9 @@ namespace PingPong3
             //P1 goals
             if (pbBall.Right > ScreenWidth)
             {
+                GoalProcess();
                 ResetBall();
-
-                //Add command
-                _commandController.Run(new ScoreIncreaseCommand(this));
+                //_commandController.Run(new ScoreIncreaseCommand(this));
                 //---
 
                 lblScore1.Text = playerSelfScore.ToString();
