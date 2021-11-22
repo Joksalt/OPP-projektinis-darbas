@@ -773,6 +773,13 @@ namespace PingPong3
             _currentBallX = velocityX;
         }
 
+        #region TemplateImplementation
+        public override bool NeedToRemovePowers()
+        {
+            return true;
+        }
+        #endregion
+
         public override void setBackgroundTheme()
         {
             this.background = new ClassicBackground();

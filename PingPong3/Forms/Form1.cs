@@ -868,6 +868,12 @@ namespace PingPong3
 
         #endregion
 
+        #region TemplateImplementation
+        public override bool NeedToRemovePowers()
+        {
+            return true;
+        }
+        #endregion
 
         public override void setBackgroundTheme()
         {
