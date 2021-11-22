@@ -17,14 +17,13 @@ namespace PingPong3.Patterns.Template
             ResetBall();
             if (NeedToRemovePowers())
             {
-                //TODO: Continue from here
                 _racketMode1 = "default";
-                //RacketSkinReseter();
+                ////RacketSkinReseter();
                 RacketSkinSender(defaultRacket.GetSkin());
-                //PowerUpMaking();
-                Console.WriteLine("b" + _PowerUpExists);
+                ////PowerUpMaking();
+                //Console.WriteLine("b" + _PowerUpExists);
                 _PowerUpExists = true;
-                Console.WriteLine("a" + _PowerUpExists);
+                //Console.WriteLine("a" + _PowerUpExists);
             }
         }
 

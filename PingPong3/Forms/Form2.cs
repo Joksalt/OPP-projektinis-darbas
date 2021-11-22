@@ -40,7 +40,7 @@ namespace PingPong3
 
         private const int BaseBallSpeed = 2;
 
-        private string _racketMode1;
+        //private string _racketMode1;
 
         private MovingWall _player1, _player2;
         private HubItem _titleScreen;
@@ -51,7 +51,7 @@ namespace PingPong3
 
         private PowerUpFactory MakePowerUpPositive = new PositivePowerUpFactory();
         private PowerUpFactory MakePowerUpNegative = new NegativePowerUpFactory();
-        private bool _PowerUpExists = true;
+        //private bool _PowerUpExists = true;
 
         private WallFactory WallFactory = new WallFactory();
 
@@ -60,9 +60,9 @@ namespace PingPong3
 
         private PowerUp SimplePowerUp;
 
-        private static RacketStyle defaultRacket = new DefaultRacketMode();
-        private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
-        private static RacketStyle devRacket = new RacketMode2(normalRacket);
+        //private static RacketStyle defaultRacket = new DefaultRacketMode();
+        //private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
+        //private static RacketStyle devRacket = new RacketMode2(normalRacket);
 
         private LevelDirector levelDirector;
         private ClassicLevelBuilder classicLevelBuilder;
@@ -84,6 +84,14 @@ namespace PingPong3
             playerSelfScore = 0;
             playerOtherScore = 0;
             _playerSelfIndex = 1;
+
+            //--template--
+            _racketMode1 = "default";
+            defaultRacket = new DefaultRacketMode();
+            normalRacket = new RacketMode1(defaultRacket);
+            devRacket = new RacketMode2(normalRacket);
+            _PowerUpExists = true;
+
             InitializeComponent();
 
 
@@ -376,14 +384,14 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
-        private void RacketSkinSender(string picture)
-        {
-            String path = System.IO.Directory.GetCurrentDirectory();
-            path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-            path = path + "Images\\";
+        //private void RacketSkinSender(string picture)
+        //{
+        //    String path = System.IO.Directory.GetCurrentDirectory();
+        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+        //    path = path + "Images\\";
 
-            SendRacketSkin2(path + picture + ".png");
-        }
+        //    SendRacketSkin2(path + picture + ".png");
+        //}
         private void RacketSkinReseter()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -485,7 +493,7 @@ namespace PingPong3
             if (pbBall.Left < 0)
             {
                 GoalProcess();
-                ResetBall();
+                //ResetBall();
 
                 lblScore2.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
@@ -634,7 +642,7 @@ namespace PingPong3
                 Console.WriteLine(ex.Message);
             }
         }
-        private async void SendRacketSkin(string racket)
+        public override async void SendRacketSkin(string racket)
         {
             try
             {

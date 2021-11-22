@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PingPong3.Patterns.Decorator;
 
 namespace PingPong3.Forms
 {
@@ -19,11 +20,18 @@ namespace PingPong3.Forms
         public int playerOtherScore;
         public int _playerSelfIndex;
         protected Background background;
+        //----template---
+        public string _racketMode1;
+        public RacketStyle defaultRacket;
+        public RacketMode1 normalRacket;
+        public RacketMode2 devRacket;
+        public bool _PowerUpExists;
 
         public abstract int GenerateBallX();
         public abstract int GenerateBallY();
         public abstract void notifyResetBallSignal(int velocityX, int velocityY);
         public abstract void SendScoreSignal(int score, int player);
+        public abstract void SendRacketSkin(string racket);
 
         public Background Background
         {
@@ -33,6 +41,16 @@ namespace PingPong3.Forms
         public virtual void setBackgroundTheme()
         {
             background.setBackgroundTheme();
+        }
+
+        //---template--
+        public void RacketSkinSender(string picture)
+        {
+            String path = System.IO.Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+            path = path + "Images\\";
+
+            SendRacketSkin(path + picture + ".png");
         }
     }
 }

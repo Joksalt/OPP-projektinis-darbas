@@ -54,7 +54,7 @@ namespace PingPong3
         private PowerUpFactory MakePowerUpPositive = new PositivePowerUpFactory();
         private PowerUpFactory MakePowerUpNegative = new NegativePowerUpFactory();
 
-        private bool _PowerUpExists = true;
+        //private bool _PowerUpExists = true;
 
         //private PowerUp thePowerUp = null;
 
@@ -64,7 +64,7 @@ namespace PingPong3
         //private int playerOtherScore;
 
         private bool _isGameRunning;
-        private string _racketMode1;
+        //private string _racketMode1;
 
         private int _currentBallX;
 
@@ -76,9 +76,9 @@ namespace PingPong3
         private FrenzyLevelBuilder frenzyLevelBuilder;
         private LevelData levelData;
 
-        private static RacketStyle defaultRacket = new DefaultRacketMode();
-        private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
-        private static RacketStyle devRacket = new RacketMode2(normalRacket);
+        //private static RacketStyle defaultRacket = new DefaultRacketMode();
+        //private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
+        //private static RacketStyle devRacket = new RacketMode2(normalRacket);
 
         private CertainSound WinSound = new CertainSound("Win");
         private CertainSound HitSound = new CertainSound("Hit");
@@ -93,6 +93,13 @@ namespace PingPong3
             playerSelfScore = 0;
             playerOtherScore = 0;
             _playerSelfIndex = 0;
+
+            //--template--
+            _racketMode1 = "default";
+            defaultRacket = new DefaultRacketMode();
+            normalRacket = new RacketMode1(defaultRacket);
+            devRacket = new RacketMode2(normalRacket);
+            _PowerUpExists = true;
 
             InitializeComponent();
 
@@ -124,7 +131,13 @@ namespace PingPong3
         {
             _isGameRunning = true;
             _commandController.Run(new BallResetCommand(this));
-            ResetBall();
+            
+            _racketMode1 = "default";
+            RacketSkinSender(defaultRacket.GetSkin());
+            _PowerUpExists = true;
+
+            
+            //ResetBall();
             
         }
         //private void EndGame()
@@ -373,6 +386,7 @@ namespace PingPong3
             }
             if (!_PowerUpExists)
             {
+                //TODO: Last edit. loops around here
                 switch (_racketMode1)
                 {
                     case "+normal":
@@ -417,14 +431,14 @@ namespace PingPong3
             int randomPowerUp = _random.Next(2);
             SendPowerUpChange(randomPowerUp);
         }
-        private void RacketSkinSender(string picture)
-        {
-            String path = System.IO.Directory.GetCurrentDirectory();
-            path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-            path = path + "Images\\";
+        //private void RacketSkinSender(string picture)
+        //{
+        //    String path = System.IO.Directory.GetCurrentDirectory();
+        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+        //    path = path + "Images\\";
 
-            SendRacketSkin(path + picture + ".png");
-        }
+        //    SendRacketSkin(path + picture + ".png");
+        //}
         private void RacketSkinReseter()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -446,16 +460,26 @@ namespace PingPong3
         }
         private void ResetBall()
         {
-            //_commandController.Run(new BallResetCommand(this));
             _racketMode1 = "default";
             //RacketSkinReseter();
             RacketSkinSender(defaultRacket.GetSkin());
             //PowerUpMaking();
-            Console.WriteLine("b"+_PowerUpExists);
+            Console.WriteLine("b" + _PowerUpExists);
             _PowerUpExists = true;
-            Console.WriteLine("a"+_PowerUpExists);
+            Console.WriteLine("a" + _PowerUpExists);
 
         }
+        //private void ResetBall()
+        //{
+        //    _racketMode1 = "default";
+        //    //RacketSkinReseter();
+        //    RacketSkinSender(defaultRacket.GetSkin());
+        //    //PowerUpMaking();
+        //    Console.WriteLine("b"+_PowerUpExists);
+        //    _PowerUpExists = true;
+        //    Console.WriteLine("a"+_PowerUpExists);
+
+        //}
         public override int GenerateBallX()
         {
             _level += 1;
@@ -548,9 +572,7 @@ namespace PingPong3
             if (pbBall.Right > ScreenWidth)
             {
                 GoalProcess();
-                ResetBall();
-                //_commandController.Run(new ScoreIncreaseCommand(this));
-                //---
+                //ResetBall();
 
                 lblScore1.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
@@ -717,7 +739,7 @@ namespace PingPong3
             }
         }
         
-        private async void SendRacketSkin(string racket)
+        public override async void SendRacketSkin(string racket)
         {
             try
             {
@@ -877,7 +899,8 @@ namespace PingPong3
 
         public override void setBackgroundTheme()
         {
-            this.background = new DynamicBackground();
+            //this.background = new DynamicBackground();
+            this.background = new ClassicBackground();
         }
     }
 }

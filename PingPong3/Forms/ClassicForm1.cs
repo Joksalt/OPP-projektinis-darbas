@@ -21,6 +21,7 @@ using PingPong3.Forms;
 
 namespace PingPong3
 {
+    //TODO: Inherit GoalTemplate
     public partial class ClassicForm1 : PongForm, IObserver
     {
         #region Variables
@@ -714,7 +715,7 @@ namespace PingPong3
             }
         }
         
-        private async void SendRacketSkin(string racket)
+        public override async void SendRacketSkin(string racket)
         {
             try
             {
