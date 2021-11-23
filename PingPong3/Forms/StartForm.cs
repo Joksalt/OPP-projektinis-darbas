@@ -42,9 +42,9 @@ namespace PingPong3
             ClassicForm1 P1Form = new ClassicForm1();
             server.attach(P1Form);
             P1Form.Show();
-            //Form2 P2Form = new Form2();
-            //server.attach(P2Form);
-            //P2Form.Show();
+            ClassicForm2 P2Form = new ClassicForm2();
+            server.attach(P2Form);
+            P2Form.Show();
         }
     }
 }
