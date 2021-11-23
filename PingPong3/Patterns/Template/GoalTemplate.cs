@@ -29,10 +29,10 @@ namespace PingPong3.Patterns.Template
             if (NeedToLimitPoints())
             {
                 //Hook method for classic game mode
-                if (score1 || score2 >= 10)
+                if (playerSelfScore >= 3)
                 {
                     SendScoreSignal(0, 0);
-                    SendScoreSignal(1, 0);
+                    SendScoreSignal(0, 1);
                 }
             }
         }
