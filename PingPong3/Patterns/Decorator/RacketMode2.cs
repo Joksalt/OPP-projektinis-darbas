@@ -20,7 +20,7 @@ namespace PingPong3.Patterns.Decorator
         public override int GetSpeed()
         {
             base.GetSpeed();
-            return tempSkin.GetSpeed() + 10;
+            return tempSkin.GetSpeed() + 20;
         }
         public override int GetSoftness()
         {

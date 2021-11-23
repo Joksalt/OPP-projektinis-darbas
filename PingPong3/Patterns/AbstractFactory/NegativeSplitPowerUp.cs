@@ -8,10 +8,9 @@ using System.Windows.Forms;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    public class Split : PowerUp
+    class NegativeSplitPowerUp : PowerUp
     {
-
-        public Split()
+        public NegativeSplitPowerUp()
         {
             Position = new Point(500, 500);
             Texture = new PictureBox();
@@ -19,10 +18,8 @@ namespace PingPong3.Patterns.AbstractFactory
             Texture.BackColor = Color.Transparent;
             Velocity = new Point(1, 0);
         }
-        public override void Activate()
-        {
-            throw new NotImplementedException();
-        }
+
+
 
         public override void MakePowerUp()
         {
@@ -37,3 +34,4 @@ namespace PingPong3.Patterns.AbstractFactory
         //}
     }
 }
+

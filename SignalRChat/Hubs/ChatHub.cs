@@ -13,9 +13,17 @@ namespace SignalRChat.Hubs
         {
             await Clients.All.SendAsync("RecievePowerUpChange", powerUp);
         }
+        public async Task SendPlayer1HitBool(bool Player1Hit)
+        {
+            await Clients.All.SendAsync("RecievePlayer1HitBool", Player1Hit);
+        }
         public async Task SendRacketSkin(string racket)
         {
             await Clients.All.SendAsync("RecieveRacketSkin", racket);
+        }
+        public async Task SendRacketSkin2(string racket)
+        {
+            await Clients.All.SendAsync("RecieveRacketSkin2", racket);
         }
         public async Task SendWallChange(int random)
         {

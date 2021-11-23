@@ -5,24 +5,35 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
-    class PositiveSpeedPowerUp : SpeedPowerUp
+    class PositiveSpeedPowerUp : PowerUp
     {
-        public override void Activate()
+        public PositiveSpeedPowerUp()
         {
-            target.CurrentSpeed = target.CurrentSpeed + 5; ;
+            Position = new Point(500, 500);
+            Texture = new PictureBox();
+            Texture.Name = "pbPowerUp Speedo Positivo";
+            Texture.BackColor = Color.Transparent;
+            Velocity = new Point(1, 0);
         }
+        ~PositiveSpeedPowerUp() { 
+        }
+        //public override void Activate()
+        //{
+        //    target.CurrentSpeed = target.CurrentSpeed + 50; ;
+        //}
         public override void MakePowerUp()
         {
             image = "PowerUp.png";
-            name = "Speed Power Up";
+            name = "+normal";
             Console.WriteLine("Making power up " + name);
         }
-        public override void setTarget(MovingWall target)
-        {
-            this.target = target;
-        }
+        //public override void setTarget(MovingWall target)
+        //{
+        //    this.target = target;
+        //}
     }
 }

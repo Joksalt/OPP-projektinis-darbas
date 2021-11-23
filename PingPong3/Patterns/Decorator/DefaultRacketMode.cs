@@ -19,7 +19,7 @@ namespace PingPong3.Patterns.Decorator
         }
         public override int GetSoftness()
         {
-            return 30;
+            return 0;
         }
     }
 }
