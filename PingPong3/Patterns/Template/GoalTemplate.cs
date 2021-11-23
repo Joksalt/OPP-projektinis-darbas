@@ -26,15 +26,15 @@ namespace PingPong3.Patterns.Template
                 /////////////PowerUpMaking();
                 //_PowerUpExists = true;
             }
-            //if (NeedToLimitGame)
-            //{
-            ////Hook method for classic game mode
-            //    if(score1 || score2 >= 10)
-            //    {
-            //        SendScoreSignal(0, 0);
-            //        SendScoreSignal(1, 0);
-            //    }
-            //}
+            if (NeedToLimitPoints())
+            {
+                //Hook method for classic game mode
+                if (score1 || score2 >= 10)
+                {
+                    SendScoreSignal(0, 0);
+                    SendScoreSignal(1, 0);
+                }
+            }
         }
 
         protected void IncreaseScore()
@@ -48,5 +48,6 @@ namespace PingPong3.Patterns.Template
         }
 
         public abstract bool NeedToRemovePowers();
+        public abstract bool NeedToLimitPoints();
     }
 }

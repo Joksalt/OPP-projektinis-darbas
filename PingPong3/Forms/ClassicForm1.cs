@@ -776,6 +776,11 @@ namespace PingPong3
         {
             return false;
         }
+
+        public override bool NeedToLimitPoints()
+        {
+            return true;
+        }
         #endregion
 
         public override void setBackgroundTheme()
