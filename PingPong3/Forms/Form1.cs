@@ -45,7 +45,7 @@ namespace PingPong3
 
         private HubItem _titleScreen;
 
-        private Random _random;
+        //private Random _random;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
@@ -501,6 +501,31 @@ namespace PingPong3
             }
             return velocityX;
         }
+        
+        //Old version not suitable for testing
+        //----------------
+        //public override int GenerateBallX()
+        //{
+        //    _level += 1;
+        //    int velocityX = _level;
+        //    //switch (_racketMode1)
+        //    //{
+        //    //    case "normal":
+        //    //        velocityX = normalRacket.GetSoftness();
+        //    //        break;
+        //    //    case "medium":
+        //    //        velocityX = mediumRacket.GetSoftness();
+        //    //        break;
+        //    //    default:
+        //    //        velocityX = defaultRacket.GetSoftness();
+        //    //        break;
+        //    //}
+        //    if (_random.Next(2) == 0)
+        //    {
+        //        velocityX *= -1;
+        //    }
+        //    return velocityX;
+        //}
         public override int GenerateBallY()
         {
             _level += (int).5;

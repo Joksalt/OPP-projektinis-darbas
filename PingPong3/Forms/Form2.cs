@@ -45,7 +45,7 @@ namespace PingPong3
         private MovingWall _player1, _player2;
         private HubItem _titleScreen;
 
-        private Random _random;
+        //private Random _random;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 

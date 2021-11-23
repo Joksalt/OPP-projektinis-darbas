@@ -15,6 +15,7 @@ namespace PingPong3.Forms
         public BallItem _ball;
         public int _level;
         //---command----
+        public Random _random;
         public GameController _commandController;
         public int playerSelfScore;
         public int playerOtherScore;
