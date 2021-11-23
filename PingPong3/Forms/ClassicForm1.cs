@@ -49,25 +49,18 @@ namespace PingPong3
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
-        //private PowerUp theSpeed =null;
         private PowerUpFactory MakePowerUpPositive = new PositivePowerUpFactory();
         private PowerUpFactory MakePowerUpNegative = new NegativePowerUpFactory();
 
-        //private bool _PowerUpExists = true;
-
-        //private PowerUp thePowerUp = null;
 
         private WallFactory WallFactory = new WallFactory();
 
-        //private int _scorePlayer1;
-        //private int playerOtherScore;
 
         private bool _isGameRunning;
-        //private string _racketMode1;
+
 
         private int _currentBallX;
 
-        private PowerUp SimplePowerUp;
 
         private LevelDirector levelDirector;
         private ClassicLevelBuilder classicLevelBuilder;
@@ -75,9 +68,6 @@ namespace PingPong3
         private FrenzyLevelBuilder frenzyLevelBuilder;
         private LevelData levelData;
 
-        //private static RacketStyle defaultRacket = new DefaultRacketMode();
-        //private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
-        //private static RacketStyle devRacket = new RacketMode2(normalRacket);
 
         private CertainSound WinSound = new CertainSound("Win");
         private CertainSound HitSound = new CertainSound("Hit");
@@ -93,12 +83,9 @@ namespace PingPong3
             playerOtherScore = 0;
             _playerSelfIndex = 0;
 
-            //--template--
             _racketMode1 = "default";
-            //defaultRacket = new DefaultRacketMode();
-            //normalRacket = new RacketMode1(defaultRacket);
-            //devRacket = new RacketMode2(normalRacket);
-            _PowerUpExists = true;
+            //TODO: different from form1
+            _PowerUpExists = false;
 
             InitializeComponent();
 
@@ -168,8 +155,12 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder);
-            levelData = frenzyLevelBuilder.GetResult();
+
+            //TODO: different from form1
+            levelDirector.ConstructWalls(classicLevelBuilder);
+            levelData = classicLevelBuilder.GetResult();
+            //levelDirector.ConstructWalls(frenzyLevelBuilder);
+            //levelData = frenzyLevelBuilder.GetResult();
 
             _random = new Random();
             _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
@@ -180,11 +171,7 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
-            if (_PowerUpExists)
-            {
-                SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-            }
-            //PowerUpMaking();
+
 
             
 
@@ -225,17 +212,6 @@ namespace PingPong3
                 pbTitleScreen.Controls.Add(w.Texture);
             }
 
-            if (_PowerUpExists)
-            {
-                
-                SimplePowerUp.Texture.Load(path + SimplePowerUp.image);
-                pbTitleScreen.Controls.Add(SimplePowerUp.Texture);
-            }
-            else
-            {
-                pbTitleScreen.Controls.Remove(SimplePowerUp.Texture);
-                //SimplePowerUp.Texture.Dispose();
-            }
 
             pbBall.Load(path + "Ball.png");
             pbTitleScreen.Controls.Add(pbBall);
@@ -263,17 +239,6 @@ namespace PingPong3
                 }
             }
         }
-        //private void DrawPowerUp()
-        //{
-        //    if (_PowerUpExists)
-        //    {
-        //        SimplePowerUp.Draw();
-        //    }
-        //    else
-        //    {
-        //        SimplePowerUp.Remove();
-        //    }
-        //}
         private void DrawScene()
         {
             if (_isGameRunning)
@@ -284,15 +249,6 @@ namespace PingPong3
                 //TODO: ball move command
                 _ball.Draw();
 
-                //DrawPowerUp();
-                if (_PowerUpExists)
-                {
-                    SimplePowerUp.Draw();
-                }
-                else
-                {
-                    SimplePowerUp.Remove();
-                }
 
                 //Obsserver draws
                 foreach (Wall w in levelData.walls)
@@ -430,14 +386,6 @@ namespace PingPong3
             int randomPowerUp = _random.Next(2);
             SendPowerUpChange(randomPowerUp);
         }
-        //private void RacketSkinSender(string picture)
-        //{
-        //    String path = System.IO.Directory.GetCurrentDirectory();
-        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-        //    path = path + "Images\\";
-
-        //    SendRacketSkin(path + picture + ".png");
-        //}
         private void RacketSkinReseter()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -457,44 +405,10 @@ namespace PingPong3
             if (!_PowerUpExists)
                 _PowerUpExists = true;
         }
-        //private void ResetBall()
-        //{
-        //    _racketMode1 = "default";
-        //    //RacketSkinReseter();
-        //    RacketSkinSender(defaultRacket.GetSkin());
-        //    //PowerUpMaking();
-        //    Console.WriteLine("b" + _PowerUpExists);
-        //    _PowerUpExists = true;
-        //    Console.WriteLine("a" + _PowerUpExists);
-
-        //}
-        //private void ResetBall()
-        //{
-        //    _racketMode1 = "default";
-        //    //RacketSkinReseter();
-        //    RacketSkinSender(defaultRacket.GetSkin());
-        //    //PowerUpMaking();
-        //    Console.WriteLine("b"+_PowerUpExists);
-        //    _PowerUpExists = true;
-        //    Console.WriteLine("a"+_PowerUpExists);
-
-        //}
         public override int GenerateBallX()
         {
             _level += 1;
             int velocityX = _level;
-            //switch (_racketMode1)
-            //{
-            //    case "normal":
-            //        velocityX = normalRacket.GetSoftness();
-            //        break;
-            //    case "dev":
-            //        velocityX = mediumRacket.GetSoftness();
-            //        break;
-            //    default:
-            //        velocityX = defaultRacket.GetSoftness();
-            //        break;
-            //}
             if (_random.Next(2) == 0)
             {
                 velocityX *= -1;
@@ -525,30 +439,6 @@ namespace PingPong3
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
 
-            if (_PowerUpExists)
-            {
-                if (_ball.LeftUpCorner.X < SimplePowerUp.RightUpCorner.X &&
-                    _ball.LeftBottomCorner.Y > SimplePowerUp.RightUpCorner.Y &&
-                    _ball.LeftUpCorner.Y < SimplePowerUp.RightBottomCorner.Y &&
-                    _ball.RightUpCorner.X > SimplePowerUp.LeftUpCorner.X)
-                {
-                    Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 1");
-                    //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
-                    _PowerUpExists = false;
-                    //TODO: CHange
-                    _racketMode1 = SimplePowerUp.name;
-                    myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
-                    myTimer.Interval = 5000; // 1000 ms is one second
-                    myTimer.Enabled = true; ;
-
-                    // --- PROTOTYPE PATTERN ---
-                    BallItem ballShallowCopy = (BallItem)_ball.ShallowCopy();
-                    BallItem ballDeepCopy = (BallItem)_ball.DeepCopy();
-                    Console.WriteLine($"This is original Ball. Hash code - {_ball.GetHashCode()}");
-                    Console.WriteLine($"This is a shallow copy of ball. Hash code - {ballShallowCopy.GetHashCode()}");
-                    Console.WriteLine($"This is a deep copy of ball. Hash code {ballDeepCopy.GetHashCode()}");
-                }
-            }
             
             foreach (Wall w in levelData.walls)
             {
@@ -623,15 +513,7 @@ namespace PingPong3
         {
             connection.On<int>("RecievePowerUpChange", (powerUp) =>
             {
-                if (powerUp.Equals(1))
-                {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-                }
-                else
-                {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
-                }
-                //thePowerUp = PowerUp.Equals(random);
+                ////thePowerUp = PowerUp.Equals(random);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {

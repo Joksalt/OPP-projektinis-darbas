@@ -40,7 +40,6 @@ namespace PingPong3
 
         private const int BaseBallSpeed = 2;
 
-        //private string _racketMode1;
 
         private MovingWall _player1, _player2;
         private HubItem _titleScreen;
@@ -51,18 +50,9 @@ namespace PingPong3
 
         private PowerUpFactory MakePowerUpPositive = new PositivePowerUpFactory();
         private PowerUpFactory MakePowerUpNegative = new NegativePowerUpFactory();
-        //private bool _PowerUpExists = true;
 
         private WallFactory WallFactory = new WallFactory();
 
-        //private int playerSelfScore;
-        //private int playerOtherScore;
-
-        private PowerUp SimplePowerUp;
-
-        //private static RacketStyle defaultRacket = new DefaultRacketMode();
-        //private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
-        //private static RacketStyle devRacket = new RacketMode2(normalRacket);
 
         private LevelDirector levelDirector;
         private ClassicLevelBuilder classicLevelBuilder;
@@ -87,10 +77,7 @@ namespace PingPong3
 
             //--template--
             _racketMode1 = "default";
-            //defaultRacket = new DefaultRacketMode();
-            //normalRacket = new RacketMode1(defaultRacket);
-            //devRacket = new RacketMode2(normalRacket);
-            _PowerUpExists = true;
+            _PowerUpExists = false;
 
             InitializeComponent();
 
@@ -152,8 +139,8 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder);
-            levelData = frenzyLevelBuilder.GetResult();
+            levelDirector.ConstructWalls(classicLevelBuilder);
+            levelData = classicLevelBuilder.GetResult();
 
             _random = new Random();
             _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
@@ -164,10 +151,6 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
-            if (_PowerUpExists)
-            {
-                SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-            }
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
             _titleScreen.Width = ScreenWidth;
@@ -207,16 +190,6 @@ namespace PingPong3
             {
                 pbTitleScreen.Controls.Add(w.Texture);
             }
-            if (_PowerUpExists)
-            {
-                SimplePowerUp.Texture.Load(path + SimplePowerUp.image);
-                pbTitleScreen.Controls.Add(SimplePowerUp.Texture);
-            }
-            else
-            {
-                pbTitleScreen.Controls.Remove(SimplePowerUp.Texture);
-                //SimplePowerUp.Texture.Dispose();
-            }
         }
         private void UpdateScene()
         {
@@ -246,14 +219,6 @@ namespace PingPong3
                 _player2.Draw();
                 _ball.Draw();
 
-                if (_PowerUpExists)
-                {
-                    SimplePowerUp.Draw();
-                }
-                else
-                {
-                    SimplePowerUp.Remove();
-                }
 
                 foreach (Wall w in levelData.walls)
                 {
@@ -455,24 +420,6 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
-            if (_PowerUpExists)
-            {
-                if (_ball.LeftUpCorner.X < SimplePowerUp.RightUpCorner.X &&
-                    _ball.LeftBottomCorner.Y > SimplePowerUp.RightUpCorner.Y &&
-                    _ball.LeftUpCorner.Y < SimplePowerUp.RightBottomCorner.Y &&
-                    _ball.RightUpCorner.X > SimplePowerUp.LeftUpCorner.X)
-                {
-                    Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 2");
-                    //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
-                    _PowerUpExists = false;
-                    //activate timer here and _PowerUpExists = true;
-                    _racketMode1 = SimplePowerUp.name;
-                    myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
-                    myTimer.Interval = 5000; // 1000 ms is one second
-                    myTimer.Enabled = true; ;
-
-                }
-            }
             foreach (Wall w in levelData.walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
@@ -493,17 +440,10 @@ namespace PingPong3
             if (pbBall.Left < 0)
             {
                 GoalProcess();
-                //ResetBall();
 
                 lblScore2.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
 
-
-
-                //playerOtherScore += 1;
-                //lblScore2.Text = playerOtherScore.ToString();
-                //gameLogger.Write(LOG_SENDER,"score");
-                //SendScoreSignal(playerOtherScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -531,15 +471,7 @@ namespace PingPong3
         {
             connection.On<string>("RecievePowerUpChange", (powerUp) =>
             {
-                //if (powerUp.Equals(1))
-                //{
-                //    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-                //}
-                //else
-                //{
-                //    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
-                //}
-                //thePowerUp = PowerUp.Equals(random);
+
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
