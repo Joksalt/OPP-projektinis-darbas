@@ -12,6 +12,14 @@ namespace PingPong3.Patterns.Adapter
         {
             soundID = s;
         }
+        public string getSoundID()
+        {
+            return soundID;
+        }
+        public void setSoundID(string id)
+        {
+            soundID = id;
+        }
         public override void RequestSound()
         {
             new SoundLibrary().PlaySound(soundID);

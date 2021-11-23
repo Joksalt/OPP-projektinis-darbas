@@ -44,6 +44,7 @@ namespace PingPong3
         private HubItem _titleScreen;
 
         private Random _random;
+        private int RandomNum = 1;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
@@ -166,9 +167,16 @@ namespace PingPong3
             };
             if (_PowerUpExists)
             {
-                SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                SendPowerUpChange(_random.Next(2));
+                if (RandomNum.Equals(1))
+                {
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                }
+                else
+                {
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                }
             }
-            //PowerUpMaking();
 
             
 
@@ -247,17 +255,6 @@ namespace PingPong3
                 }
             }
         }
-        //private void DrawPowerUp()
-        //{
-        //    if (_PowerUpExists)
-        //    {
-        //        SimplePowerUp.Draw();
-        //    }
-        //    else
-        //    {
-        //        SimplePowerUp.Remove();
-        //    }
-        //}
         private void DrawScene()
         {
             if (_isGameRunning)
@@ -398,6 +395,10 @@ namespace PingPong3
             }
             if (Keyboard.IsKeyDown(Key.D3))
             {
+                _racketMode1 = "-normal";
+            }
+            if (Keyboard.IsKeyDown(Key.D9))
+            {
                 _racketMode1 = "dev";
             }
             //Undo last command
@@ -437,7 +438,7 @@ namespace PingPong3
         private void DisplayTimeEvent(object source, ElapsedEventArgs e)
         {
             if (!_PowerUpExists)
-                _PowerUpExists = true;
+                _PowerUpExists = false;
         }
         private void ResetBall()
         {
@@ -597,29 +598,27 @@ namespace PingPong3
         {
             connection.On<int>("RecievePowerUpChange", (powerUp) =>
             {
-                if (powerUp.Equals(1))
-                {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-                }
-                else
-                {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
-                }
+                RandomNum = powerUp;
+                //if (powerUp.Equals(1))
+                //{
+                //    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                //}
+                //else
+                //{
+                //    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                //}
                 //thePowerUp = PowerUp.Equals(random);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
-                //Console.WriteLine("Plauyer 1 " + Player1Hit);
                 _ball.Player1Hit = Player1Hit;
             });
             connection.On<string>("RecieveRacketSkin", (racket) =>
             {
-                //Console.WriteLine(racket);
                 pbPlayer1.Load(racket);
             });
             connection.On<string>("RecieveRacketSkin2", (racket) =>
             {
-                //Console.WriteLine(racket);
                 pbPlayer2.Load(racket);
             });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
@@ -633,6 +632,7 @@ namespace PingPong3
             connection.On<int>("ReceiveStartSignal", (mode) =>
             {
                 BeginGame();
+                WinSound.RequestSound();
             });
             connection.On<int, int>("ReceiveResetBallSignal", (velocityX, velocityY) =>
             {
@@ -647,14 +647,14 @@ namespace PingPong3
                 {
                     playerSelfScore = score;
                     lblScore1.Text = playerSelfScore.ToString();
-                    //ScoreSound.RequestSound();
+                    ScoreSound.RequestSound();
                 }
                 else
                 {
                     playerOtherScore = score;
                     playerOtherScore = score;
                     lblScore2.Text = playerOtherScore.ToString();
-                    //MissSound.RequestSound();
+                    MissSound.RequestSound();
                 }
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection1", (positionX, positionY, velocityX, velocityY) =>
@@ -666,7 +666,7 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
-                //HitSound.RequestSound();
+                HitSound.RequestSound();
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection2", (positionX, positionY, velocityX, velocityY) =>
             {
@@ -677,7 +677,7 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
-                //HitSound.RequestSound();
+                HitSound.RequestSound();
             });
             try
             {

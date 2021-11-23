@@ -12,7 +12,7 @@ namespace PingPong3.Patterns.AbstractFactory
     {
         public NegativeSplitPowerUp()
         {
-            Position = new Point(500, 500);
+            Position = new Point(550, 500);
             Texture = new PictureBox();
             Texture.Name = "pbPowerUp Split";
             Texture.BackColor = Color.Transparent;

@@ -45,6 +45,7 @@ namespace PingPong3
         private HubItem _titleScreen;
 
         private Random _random;
+        private int RandomNum = 1;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
@@ -157,7 +158,16 @@ namespace PingPong3
             };
             if (_PowerUpExists)
             {
-                SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                
+                SendPowerUpChange(_random.Next(2));
+                if (RandomNum.Equals(1))
+                {
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                }
+                else
+                {
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                }
             }
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
@@ -401,7 +411,7 @@ namespace PingPong3
         {
             Console.WriteLine("Hiiiiiii " + _PowerUpExists);
             if (!_PowerUpExists)
-            _PowerUpExists = true;
+            _PowerUpExists = false; //cia true
             
         }
         private void ResetBall()
@@ -523,8 +533,9 @@ namespace PingPong3
         #region SignalRMessages
         private async void connectButton_Click(object sender, EventArgs e)
         {
-            connection.On<string>("RecievePowerUpChange", (powerUp) =>
+            connection.On<int>("RecievePowerUpChange", (powerUp) =>
             {
+                RandomNum = powerUp;
                 //if (powerUp.Equals(1))
                 //{
                 //    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
