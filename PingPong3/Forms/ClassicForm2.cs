@@ -716,7 +716,7 @@ namespace PingPong3
         #region TemplateImplementation
         public override bool NeedToRemovePowers()
         {
-            return true;
+            return false;
         }
         #endregion
 
