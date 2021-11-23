@@ -11,25 +11,26 @@ using PingPong3.Patterns.Adapter;
 using PingPong3.Patterns.Singleton_logger;
 using PingPong3.Patterns.Strategy;
 using PingPong3.Patterns.Builder;
+using PingPong3.Patterns.Decorator;
 using PingPong3.Patterns.Bridge;
 using System.Collections.Generic;
-using PingPong3.Patterns.Decorator;
 using System.Timers;
 using PingPong3.Patterns.Observer;
-using PingPong3.Forms;
 using PingPong3.Patterns.Command;
+using PingPong3.Forms;
 using PingPong3.Patterns.Template;
 
 namespace PingPong3
 {
-    public partial class Form2 : GoalTemplate, IObserver
+    //public partial class Form1 : PongForm, IObserver
+    public partial class ClassicForm1 :  GoalTemplate, IObserver
     {
-        #region variables
+        #region Variables
         HubConnection connection;
 
         //---------
         public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
-        private string LOG_SENDER = "P2";
+        private string LOG_SENDER = "P1";
         //---------
 
         //--Observer---
@@ -40,30 +41,26 @@ namespace PingPong3
 
         private const int BaseBallSpeed = 2;
 
-        //private string _racketMode1;
-
         private MovingWall _player1, _player2;
+
         private HubItem _titleScreen;
 
         private Random _random;
-        private int RandomNum = 1;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
         private PowerUpFactory MakePowerUpPositive = new PositivePowerUpFactory();
         private PowerUpFactory MakePowerUpNegative = new NegativePowerUpFactory();
-        //private bool _PowerUpExists = true;
+
 
         private WallFactory WallFactory = new WallFactory();
 
-        //private int playerSelfScore;
-        //private int playerOtherScore;
 
-        private PowerUp SimplePowerUp;
+        private bool _isGameRunning;
 
-        //private static RacketStyle defaultRacket = new DefaultRacketMode();
-        //private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
-        //private static RacketStyle devRacket = new RacketMode2(normalRacket);
+
+        private int _currentBallX;
+
 
         private LevelDirector levelDirector;
         private ClassicLevelBuilder classicLevelBuilder;
@@ -71,32 +68,28 @@ namespace PingPong3
         private FrenzyLevelBuilder frenzyLevelBuilder;
         private LevelData levelData;
 
+
         private CertainSound WinSound = new CertainSound("Win");
         private CertainSound HitSound = new CertainSound("Hit");
         private CertainSound ScoreSound = new CertainSound("Score");
         private CertainSound MissSound = new CertainSound("Miss");
         #endregion
 
-
-        #region Form2 Constructor
-        public Form2()
+        #region FormConstructor
+        public ClassicForm1()
         {
             _level = 7;
             playerSelfScore = 0;
             playerOtherScore = 0;
-            _playerSelfIndex = 1;
+            _playerSelfIndex = 0;
 
-            //--template--
             _racketMode1 = "default";
-            //defaultRacket = new DefaultRacketMode();
-            //normalRacket = new RacketMode1(defaultRacket);
-            //devRacket = new RacketMode2(normalRacket);
-            _PowerUpExists = true;
+            //TODO: different from form1
+            _PowerUpExists = false;
 
             InitializeComponent();
 
-
-            gameLogger.Write(LOG_SENDER,"start");
+            gameLogger.Write(LOG_SENDER, "start");
 
             #region SignalRconnection
             connection = new HubConnectionBuilder()
@@ -115,20 +108,29 @@ namespace PingPong3
             Load += Form1_Load;
 
             _commandController = new GameController();
+            
         }
         #endregion
 
-        #region gameplay methods
-
+        #region GameplayMethods
         private void BeginGame()
         {
-            lblScore1.BackColor = Color.Transparent;
-            lblScore2.BackColor = Color.Transparent;
-            label4.BackColor = Color.Transparent;
             _isGameRunning = true;
+            _commandController.Run(new BallResetCommand(this));
+            
+            _racketMode1 = "default";
+            RacketSkinSender(defaultRacket.GetSkin());
+            _PowerUpExists = true;
 
+            
+            //ResetBall();
+            
         }
-
+        //private void EndGame()
+        //{
+        //    _isGameRunning = false;
+        //    pbTitleScreen.Show();
+        //}
         #endregion
 
         #region Events
@@ -153,8 +155,12 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder);
-            levelData = frenzyLevelBuilder.GetResult();
+
+            //TODO: different from form1
+            levelDirector.ConstructWalls(classicLevelBuilder);
+            levelData = classicLevelBuilder.GetResult();
+            //levelDirector.ConstructWalls(frenzyLevelBuilder);
+            //levelData = frenzyLevelBuilder.GetResult();
 
             _random = new Random();
             _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
@@ -165,23 +171,15 @@ namespace PingPong3
             {
                 Velocity = new Point(2, 5)
             };
-            if (_PowerUpExists)
-            {
-                
-                SendPowerUpChange(_random.Next(2));
-                if (RandomNum.Equals(1))
-                {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-                }
-                else
-                {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
-                }
-            }
-            _titleScreen = new HubItem();
-            _titleScreen.Position = new Point(0, 0);
-            _titleScreen.Width = ScreenWidth;
-            _titleScreen.Height = ScreenHeight;
+
+
+            
+
+            _titleScreen = new HubItem { 
+                Position = new Point(0, 0),
+                Width = ScreenWidth,
+                Height = ScreenHeight
+            };
         }
         private void LoadGraphicsContent()
         {
@@ -189,8 +187,9 @@ namespace PingPong3
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-
-            // --------- BRIDGE PATTERN -------------
+            // ----------- BRIDGE PATTERN ----------------
+            //Form's background picture
+            //pbTitleScreen.Load(path + "Fondo.png");
             setBackgroundTheme();
             pbTitleScreen.Load(this.background.setBackgroundTheme());
 
@@ -208,25 +207,17 @@ namespace PingPong3
             _player2.Texture = pbPlayer2;
             pbPlayer2.BackColor = Color.Transparent;
 
+            foreach(Wall w in levelData.walls)
+            {
+                pbTitleScreen.Controls.Add(w.Texture);
+            }
+
+
             pbBall.Load(path + "Ball.png");
             pbTitleScreen.Controls.Add(pbBall);
             _ball.Texture = pbBall;
             pbBall.BackColor = Color.Transparent;
 
-            foreach (Wall w in levelData.walls)
-            {
-                pbTitleScreen.Controls.Add(w.Texture);
-            }
-            if (_PowerUpExists)
-            {
-                SimplePowerUp.Texture.Load(path + SimplePowerUp.image);
-                pbTitleScreen.Controls.Add(SimplePowerUp.Texture);
-            }
-            else
-            {
-                pbTitleScreen.Controls.Remove(SimplePowerUp.Texture);
-                //SimplePowerUp.Texture.Dispose();
-            }
         }
         private void UpdateScene()
         {
@@ -238,6 +229,7 @@ namespace PingPong3
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
+                //CheckMapWallCollision();
                 foreach (Wall w in levelData.walls)
                 {
                     if (w is MovingWall)
@@ -247,24 +239,18 @@ namespace PingPong3
                 }
             }
         }
-        private bool _isGameRunning;
         private void DrawScene()
         {
             if (_isGameRunning)
             {
+                //TODO: P1 move command
                 _player1.Draw();
                 _player2.Draw();
+                //TODO: ball move command
                 _ball.Draw();
 
-                if (_PowerUpExists)
-                {
-                    SimplePowerUp.Draw();
-                }
-                else
-                {
-                    SimplePowerUp.Remove();
-                }
 
+                //Obsserver draws
                 foreach (Wall w in levelData.walls)
                 {
                     w.Draw();
@@ -280,47 +266,50 @@ namespace PingPong3
         #region Mechanics
         private void UpdatePlayer()
         {
-            String path = System.IO.Directory.GetCurrentDirectory();
-            path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-            path = path + "Images\\";
-            //--------P2
-            if (Keyboard.IsKeyDown(Key.Down))
+            
+            //------P1
+            if (Keyboard.IsKeyDown(Key.S))
             {
-                if (_player2.Texture.Bottom >= ScreenHeight)
-                    _player2.Velocity = new Point(0, 0);
+                if (_player1.Texture.Bottom >= ScreenHeight)//ScreenHeight/2;
+                    //TODO: command change p1 velocity
+                    _player1.Velocity = new Point(0, 0);
                 else
                 {
+                    //if (_ball.Player1Hit && !_PowerUpExists)
                     if (!_PowerUpExists)
                     {
+                        //TODO: racket mode
                         switch (_racketMode1)
                         {
                             case "+normal":
-                                _player2.Velocity = new Point(0, _player2.CurrentSpeed + normalRacket.GetSpeed());
+                                _player1.Velocity = new Point(0, _player1.CurrentSpeed + normalRacket.GetSpeed());
                                 break;
                             case "-normal":
-                                _player2.Velocity = new Point(0, _player2.CurrentSpeed - normalRacket.GetSpeed());
+                                _player1.Velocity = new Point(0, _player1.CurrentSpeed - normalRacket.GetSpeed());
                                 break;
                             case "dev":
-                                _player2.Velocity = new Point(0, _player2.CurrentSpeed + devRacket.GetSpeed());
+                                _player1.Velocity = new Point(0, _player1.CurrentSpeed + devRacket.GetSpeed());
                                 break;
                             default:
-                                _player2.Velocity = new Point(0, _player2.CurrentSpeed);
+                                _player1.Velocity = new Point(0, _player1.CurrentSpeed);
                                 break;
                         }
+
                     }
                     else
                     {
-                        _player2.Velocity = new Point(0, _player2.CurrentSpeed);
+                        _player1.Velocity = new Point(0, _player1.CurrentSpeed);
                     }
                 }
-                   
-                _player2.Move();
-                SendPlayer2Position(_player2.Position);
+                    
+                    
+                _player1.Move();
+                SendPlayer1Position(_player1.Position);
             }
-            else if (Keyboard.IsKeyDown(Key.Up))
+            else if (Keyboard.IsKeyDown(Key.W))
             {
-                if (_player2.Texture.Top <= 0)
-                    _player2.Velocity = new Point(0, 0);
+                if (_player1.Texture.Top <= 0)
+                    _player1.Velocity = new Point(0, 0);
                 else
                 {
                     if (!_PowerUpExists)
@@ -328,31 +317,31 @@ namespace PingPong3
                         switch (_racketMode1)
                         {
                             case "+normal":
-                                _player2.Velocity = new Point(0, -_player2.CurrentSpeed - normalRacket.GetSpeed());
+                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed - normalRacket.GetSpeed());
                                 break;
                             case "-normal":
                                 _player1.Velocity = new Point(0, -_player1.CurrentSpeed + normalRacket.GetSpeed());
                                 break;
                             case "dev":
-                                _player2.Velocity = new Point(0, -_player2.CurrentSpeed - devRacket.GetSpeed());
+                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed - devRacket.GetSpeed());
                                 break;
                             default:
-                                _player2.Velocity = new Point(0, -_player2.CurrentSpeed);
+                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed);
                                 break;
-
                         }
                     }
                     else
                     {
-                        _player2.Velocity = new Point(0, -_player2.CurrentSpeed);
+                        _player1.Velocity = new Point(0, -_player1.CurrentSpeed);
                     }
                 }
-                  
-                _player2.Move();
-                SendPlayer2Position(_player2.Position);
+                   
+                _player1.Move();
+                SendPlayer1Position(_player1.Position);
             }
             if (!_PowerUpExists)
             {
+                //TODO: loops around here
                 switch (_racketMode1)
                 {
                     case "+normal":
@@ -373,35 +362,30 @@ namespace PingPong3
             {
                 RacketSkinSender(defaultRacket.GetSkin());
             }
-            if (Keyboard.IsKeyDown(Key.NumPad1))
+            if (Keyboard.IsKeyDown(Key.D1))
             {
                 _racketMode1 = "default";
-       
             }
-            if (Keyboard.IsKeyDown(Key.NumPad2))
+            if (Keyboard.IsKeyDown(Key.D2))
             {
                 _racketMode1 = "+normal";
-          
             }
-            if (Keyboard.IsKeyDown(Key.NumPad3))
+            if (Keyboard.IsKeyDown(Key.D3))
             {
                 _racketMode1 = "dev";
-              
             }
             //Undo last command
-            if (Keyboard.IsKeyDown(Key.D5))
+            if (Keyboard.IsKeyDown(Key.D4))
             {
                 _commandController.Undo();
             }
         }
-        //private void RacketSkinSender(string picture)
-        //{
-        //    String path = System.IO.Directory.GetCurrentDirectory();
-        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-        //    path = path + "Images\\";
-
-        //    SendRacketSkin2(path + picture + ".png");
-        //}
+        private void PowerUpMaking()
+        {
+            _PowerUpExists = true;
+            int randomPowerUp = _random.Next(2);
+            SendPowerUpChange(randomPowerUp);
+        }
         private void RacketSkinReseter()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
@@ -418,18 +402,8 @@ namespace PingPong3
         /// <param name="e"></param>
         private void DisplayTimeEvent(object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("Hiiiiiii " + _PowerUpExists);
             if (!_PowerUpExists)
-            _PowerUpExists = false; //cia true
-            
-        }
-        private void ResetBall()
-        {
-            //_commandController.Run(new BallResetCommand(this));
-            _racketMode1 = "default";
-            //RacketSkinReseter();
-            RacketSkinSender(defaultRacket.GetSkin());
-            _PowerUpExists = true;
+                _PowerUpExists = true;
         }
         public override int GenerateBallX()
         {
@@ -454,7 +428,6 @@ namespace PingPong3
         #endregion
 
         #region Collision
-        private int _currentBallX;
         private void CheckWallCollision()
         {
             if (pbBall.Bottom >= ScreenHeight)
@@ -465,24 +438,8 @@ namespace PingPong3
             {
                 _ball.Velocity = new Point(_currentBallX, BaseBallSpeed);
             }
-            if (_PowerUpExists)
-            {
-                if (_ball.LeftUpCorner.X < SimplePowerUp.RightUpCorner.X &&
-                    _ball.LeftBottomCorner.Y > SimplePowerUp.RightUpCorner.Y &&
-                    _ball.LeftUpCorner.Y < SimplePowerUp.RightBottomCorner.Y &&
-                    _ball.RightUpCorner.X > SimplePowerUp.LeftUpCorner.X)
-                {
-                    Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 2");
-                    //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
-                    _PowerUpExists = false;
-                    //activate timer here and _PowerUpExists = true;
-                    _racketMode1 = SimplePowerUp.name;
-                    myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
-                    myTimer.Interval = 5000; // 1000 ms is one second
-                    myTimer.Enabled = true; ;
 
-                }
-            }
+            
             foreach (Wall w in levelData.walls)
             {
                 if (_ball.LeftUpCorner.X < w.RightUpCorner.X &&
@@ -496,24 +453,25 @@ namespace PingPong3
                         SendBallVelocityDirection2(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
                 }
             }
+            
         }
         private void CheckWallOut()
         {
-            //P2 goals
-            if (pbBall.Left < 0)
+            //P1 goals
+            if (pbBall.Right > ScreenWidth)
             {
                 GoalProcess();
                 //ResetBall();
 
-                lblScore2.Text = playerSelfScore.ToString();
+                lblScore1.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
 
 
 
-                //playerOtherScore += 1;
-                //lblScore2.Text = playerOtherScore.ToString();
-                //gameLogger.Write(LOG_SENDER,"score");
-                //SendScoreSignal(playerOtherScore, _playerSelfIndex);
+                //playerSelfScore += 1;
+                //lblScore1.Text = playerSelfScore.ToString();
+                //gameLogger.Write(LOG_SENDER, "score");
+                //SendScoreSignal(playerSelfScore, _playerSelfIndex);
             }
         }
         private void CheckPaddleCollision()
@@ -523,7 +481,7 @@ namespace PingPong3
                 _ball.LeftUpCorner.Y < _player1.RightBottomCorner.Y)
             {
                 SendBallVelocityDirection1(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
-                SendPlayer1HitBool(false);
+                SendPlayer1HitBool(true);
             }
 
             if (_ball.RightUpCorner.X > _player2.LeftUpCorner.X &&
@@ -531,7 +489,21 @@ namespace PingPong3
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
-                SendPlayer1HitBool(false);
+                SendPlayer1HitBool(true);
+            }
+        }
+        #endregion
+
+        #region TestSignalR
+        private async void SendMessage(string message)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendMessage", "aa", message);
+            }
+            catch (Exception ex)
+            {
+                gameLogger.Write(LOG_SENDER, ex.Message);
             }
         }
         #endregion
@@ -541,38 +513,30 @@ namespace PingPong3
         {
             connection.On<int>("RecievePowerUpChange", (powerUp) =>
             {
-                RandomNum = powerUp;
-                //if (powerUp.Equals(1))
-                //{
-                //    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
-                //}
-                //else
-                //{
-                //    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
-                //}
-                //thePowerUp = PowerUp.Equals(random);
+                ////thePowerUp = PowerUp.Equals(random);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
+                //Console.WriteLine("Plauyer 1 " + Player1Hit);
                 _ball.Player1Hit = Player1Hit;
             });
             connection.On<string>("RecieveRacketSkin", (racket) =>
             {
+                //Console.WriteLine(racket);
                 pbPlayer1.Load(racket);
             });
             connection.On<string>("RecieveRacketSkin2", (racket) =>
             {
+                //Console.WriteLine(racket);
                 pbPlayer2.Load(racket);
             });
             connection.On<int, int>("ReceivePlayer2Position", (x, y) =>
             {
-                var newPosition = new Point(x, y);
-                _player2.Position = newPosition;
+                _player2.Position = new Point(x, y);
             });
             connection.On<int, int>("ReceivePlayer1Position", (x, y) =>
             {
-                var newPosition = new Point(x, y);
-                _player1.Position = newPosition;
+                _player1.Position = new Point(x, y);
             });
             connection.On<int>("ReceiveStartSignal", (mode) =>
             {
@@ -591,13 +555,14 @@ namespace PingPong3
                 {
                     playerSelfScore = score;
                     lblScore1.Text = playerSelfScore.ToString();
-                    //MissSound.RequestSound();
+                    //ScoreSound.RequestSound();
                 }
                 else
                 {
                     playerOtherScore = score;
+                    playerOtherScore = score;
                     lblScore2.Text = playerOtherScore.ToString();
-                    //ScoreSound.RequestSound();
+                    //MissSound.RequestSound();
                 }
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection1", (positionX, positionY, velocityX, velocityY) =>
@@ -625,6 +590,7 @@ namespace PingPong3
             try
             {
                 await connection.StartAsync();
+                //connectButton.Visible = false;
             }
             catch (Exception ex)
             {
@@ -653,6 +619,7 @@ namespace PingPong3
                 Console.WriteLine(ex.Message);
             }
         }
+        
         public override async void SendRacketSkin(string racket)
         {
             try
@@ -683,7 +650,7 @@ namespace PingPong3
             }
             catch (Exception ex)
             {
-                gameLogger.Write(LOG_SENDER, ex.Message);
+                //messagesList.Items.Add(ex.Message);
             }
         }
         private async void SendPlayer1Position(Point playerPosition)
@@ -694,7 +661,7 @@ namespace PingPong3
             }
             catch (Exception ex)
             {
-                gameLogger.Write(LOG_SENDER, ex.Message);
+                //messagesList.Items.Add(ex.Message);
             }
         }
         private async void SendStartSignal(GameMode gameMode)
@@ -705,7 +672,7 @@ namespace PingPong3
             }
             catch (Exception ex)
             {
-                gameLogger.Write(LOG_SENDER, ex.Message);
+                //messagesList.Items.Add(ex.Message);
             }
         }
         private async void SendResetBallSignal(int velocityX, int velocityY)
@@ -764,6 +731,7 @@ namespace PingPong3
         {
             
         }
+
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (!_isGameRunning)
@@ -772,7 +740,16 @@ namespace PingPong3
                 //BeginGame();                
             }   
         }
+
+        private void pbWall_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
         #endregion
+
+        #region ObserverImplementation
 
         public void setServer(Subject server)
         {
@@ -792,23 +769,24 @@ namespace PingPong3
             _currentBallX = velocityX;
         }
 
+        #endregion
+
         #region TemplateImplementation
         public override bool NeedToRemovePowers()
         {
-            return true;
+            return false;
         }
 
         public override bool NeedToLimitPoints()
         {
-            return false;
+            return true;
         }
         #endregion
 
         public override void setBackgroundTheme()
         {
+            //this.background = new DynamicBackground();
             this.background = new ClassicBackground();
         }
-
-
     }
 }
