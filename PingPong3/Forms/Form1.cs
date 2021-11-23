@@ -23,7 +23,6 @@ using PingPong3.Patterns.Template;
 namespace PingPong3
 {
     //public partial class Form1 : PongForm, IObserver
-    //BUGBUG: change inherits
     public partial class Form1 :  GoalTemplate, IObserver
     {
         #region Variables
@@ -96,9 +95,9 @@ namespace PingPong3
 
             //--template--
             _racketMode1 = "default";
-            defaultRacket = new DefaultRacketMode();
-            normalRacket = new RacketMode1(defaultRacket);
-            devRacket = new RacketMode2(normalRacket);
+            //defaultRacket = new DefaultRacketMode();
+            //normalRacket = new RacketMode1(defaultRacket);
+            //devRacket = new RacketMode2(normalRacket);
             _PowerUpExists = true;
 
             InitializeComponent();
@@ -386,7 +385,7 @@ namespace PingPong3
             }
             if (!_PowerUpExists)
             {
-                //TODO: Last edit. loops around here
+                //TODO: loops around here
                 switch (_racketMode1)
                 {
                     case "+normal":

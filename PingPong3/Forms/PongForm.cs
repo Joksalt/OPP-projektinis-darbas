@@ -22,9 +22,12 @@ namespace PingPong3.Forms
         protected Background background;
         //----template---
         public string _racketMode1;
-        public RacketStyle defaultRacket;
-        public RacketMode1 normalRacket;
-        public RacketMode2 devRacket;
+        public static RacketStyle defaultRacket = new DefaultRacketMode();
+        public static RacketStyle normalRacket = new RacketMode1(defaultRacket);
+        public static RacketStyle devRacket = new RacketMode2(normalRacket);
+        //public RacketStyle defaultRacket;
+        //public RacketMode1 normalRacket;
+        //public RacketMode2 devRacket;
         public bool _PowerUpExists;
 
         public abstract int GenerateBallX();

@@ -21,7 +21,7 @@ using PingPong3.Forms;
 
 namespace PingPong3
 {
-    //TODO: Inherit GoalTemplate
+    //TODO: Inherit GoalTemplate instead of PongForm
     public partial class ClassicForm1 : PongForm, IObserver
     {
         #region Variables

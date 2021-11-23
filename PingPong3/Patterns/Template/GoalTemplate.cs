@@ -17,14 +17,24 @@ namespace PingPong3.Patterns.Template
             ResetBall();
             if (NeedToRemovePowers())
             {
-                _racketMode1 = "default";
-                ////RacketSkinReseter();
-                RacketSkinSender(defaultRacket.GetSkin());
-                ////PowerUpMaking();
-                //Console.WriteLine("b" + _PowerUpExists);
-                _PowerUpExists = true;
-                //Console.WriteLine("a" + _PowerUpExists);
+                //TODO: Continue from here. Make power up reset method here.
+
+
+                //_racketMode1 = "default";
+                ////////////RacketSkinReseter();
+                //RacketSkinSender(defaultRacket.GetSkin());
+                /////////////PowerUpMaking();
+                //_PowerUpExists = true;
             }
+            //if (NeedToLimitGame)
+            //{
+            ////Hook method for classic game mode
+            //    if(score1 || score2 >= 10)
+            //    {
+            //        SendScoreSignal(0, 0);
+            //        SendScoreSignal(1, 0);
+            //    }
+            //}
         }
 
         protected void IncreaseScore()

@@ -87,9 +87,9 @@ namespace PingPong3
 
             //--template--
             _racketMode1 = "default";
-            defaultRacket = new DefaultRacketMode();
-            normalRacket = new RacketMode1(defaultRacket);
-            devRacket = new RacketMode2(normalRacket);
+            //defaultRacket = new DefaultRacketMode();
+            //normalRacket = new RacketMode1(defaultRacket);
+            //devRacket = new RacketMode2(normalRacket);
             _PowerUpExists = true;
 
             InitializeComponent();
