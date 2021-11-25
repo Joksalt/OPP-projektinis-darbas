@@ -15,10 +15,11 @@ namespace PingPong3.Patterns.Template
         {
             IncreaseScore();
             ResetBall();
+            
             if (NeedToRemovePowers())
             {
                 //TODO: Continue from here. Make power up reset method here.
-
+                RacketPowerUpReseter();
 
                 //_racketMode1 = "default";
                 ////////////RacketSkinReseter();
