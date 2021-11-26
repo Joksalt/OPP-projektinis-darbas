@@ -19,10 +19,7 @@ namespace PingPong3.Patterns.AbstractFactory
             Texture.BackColor = Color.Transparent;
             Velocity = new Point(1, 0);
         }
-        ~NegativeSpeedPowerUp()
-        {
 
-        }
         //public override void Activate()
         //{
         //    target.CurrentSpeed = target.CurrentSpeed - 5;

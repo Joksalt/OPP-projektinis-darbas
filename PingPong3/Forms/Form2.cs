@@ -40,12 +40,13 @@ namespace PingPong3
 
         private const int BaseBallSpeed = 2;
 
-        //private string _racketMode1;
+        //private string _racketMode2;
 
         private MovingWall _player1, _player2;
         private HubItem _titleScreen;
 
-        //private Random _random;
+        private Random _random;
+        private int RandomNum = 1;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
@@ -86,7 +87,7 @@ namespace PingPong3
             _playerSelfIndex = 1;
 
             //--template--
-            _racketMode1 = "default";
+            _racketMode2 = "default";
             //defaultRacket = new DefaultRacketMode();
             //normalRacket = new RacketMode1(defaultRacket);
             //devRacket = new RacketMode2(normalRacket);
@@ -166,7 +167,16 @@ namespace PingPong3
             };
             if (_PowerUpExists)
             {
-                SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                
+                SendPowerUpChange(_random.Next(2));
+                if (RandomNum.Equals(1))
+                {
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                }
+                else
+                {
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                }
             }
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
@@ -282,7 +292,7 @@ namespace PingPong3
                 {
                     if (!_PowerUpExists)
                     {
-                        switch (_racketMode1)
+                        switch (_racketMode2)
                         {
                             case "+normal":
                                 _player2.Velocity = new Point(0, _player2.CurrentSpeed + normalRacket.GetSpeed());
@@ -291,7 +301,8 @@ namespace PingPong3
                                 _player2.Velocity = new Point(0, _player2.CurrentSpeed - normalRacket.GetSpeed());
                                 break;
                             case "dev":
-                                _player2.Velocity = new Point(0, _player2.CurrentSpeed + devRacket.GetSpeed());
+                                //_player2.Velocity = new Point(0, _player2.CurrentSpeed + devRacket.GetSpeed());
+                                _player2.Velocity = new Point(0, _player2.CurrentSpeed);
                                 break;
                             default:
                                 _player2.Velocity = new Point(0, _player2.CurrentSpeed);
@@ -315,7 +326,7 @@ namespace PingPong3
                 {
                     if (!_PowerUpExists)
                     {
-                        switch (_racketMode1)
+                        switch (_racketMode2)
                         {
                             case "+normal":
                                 _player2.Velocity = new Point(0, -_player2.CurrentSpeed - normalRacket.GetSpeed());
@@ -324,7 +335,8 @@ namespace PingPong3
                                 _player1.Velocity = new Point(0, -_player1.CurrentSpeed + normalRacket.GetSpeed());
                                 break;
                             case "dev":
-                                _player2.Velocity = new Point(0, -_player2.CurrentSpeed - devRacket.GetSpeed());
+                                //_player2.Velocity = new Point(0, -_player2.CurrentSpeed - devRacket.GetSpeed());
+                                _player2.Velocity = new Point(0, -_player2.CurrentSpeed);
                                 break;
                             default:
                                 _player2.Velocity = new Point(0, -_player2.CurrentSpeed);
@@ -341,42 +353,40 @@ namespace PingPong3
                 _player2.Move();
                 SendPlayer2Position(_player2.Position);
             }
-            if (!_PowerUpExists)
-            {
-                switch (_racketMode1)
+                switch (_racketMode2)
                 {
                     case "+normal":
                         RacketSkinSender(normalRacket.GetSkin());
+                        _player2.CurrentSpeed = normalRacket.GetSpeed();
                         break;
                     case "-normal":
                         RacketSkinSender(devRacket.GetSkin());
+                        _player2.CurrentSpeed = (normalRacket.GetSpeed() - defaultRacket.GetSpeed());
                         break;
                     case "dev":
                         RacketSkinSender(devRacket.GetSkin());
+                        _player2.CurrentSpeed = devRacket.GetSpeed();
                         break;
                     default:
                         RacketSkinSender(defaultRacket.GetSkin());
+                        _player2.CurrentSpeed = defaultRacket.GetSpeed();
                         break;
                 }
-            }
-            else
-            {
-                RacketSkinSender(defaultRacket.GetSkin());
-            }
             if (Keyboard.IsKeyDown(Key.NumPad1))
             {
-                _racketMode1 = "default";
-       
+                _racketMode2 = "default";
             }
             if (Keyboard.IsKeyDown(Key.NumPad2))
             {
-                _racketMode1 = "+normal";
-          
+                _racketMode2 = "+normal";
             }
             if (Keyboard.IsKeyDown(Key.NumPad3))
             {
-                _racketMode1 = "dev";
-              
+                _racketMode2 = "-normal";
+            }
+            if (Keyboard.IsKeyDown(Key.NumPad9))
+            {
+                _racketMode2 = "dev";
             }
             //Undo last command
             if (Keyboard.IsKeyDown(Key.D5))
@@ -384,23 +394,23 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
-        //private void RacketSkinSender(string picture)
-        //{
-        //    String path = System.IO.Directory.GetCurrentDirectory();
-        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-        //    path = path + "Images\\";
-
-        //    SendRacketSkin2(path + picture + ".png");
-        //}
-        private void RacketSkinReseter()
+        private void RacketSkinSender(string picture)
         {
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-            SendRacketSkin(path + "Paddle1" + ".png");
-            SendRacketSkin2(path + "Paddle1" + ".png");
+            SendRacketSkin2(path + picture + ".png");
         }
+        //private void RacketSkinReseter()
+        //{
+        //    String path = System.IO.Directory.GetCurrentDirectory();
+        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+        //    path = path + "Images\\";
+
+        //    SendRacketSkin(path + "Paddle1" + ".png");
+        //    SendRacketSkin2(path + "Paddle1" + ".png");
+        //}
         /// <summary>
         /// Tiemr to spawn power ups. Now not in use. Add in later
         /// </summary>
@@ -410,13 +420,13 @@ namespace PingPong3
         {
             Console.WriteLine("Hiiiiiii " + _PowerUpExists);
             if (!_PowerUpExists)
-            _PowerUpExists = true;
+            _PowerUpExists = false; //cia true
             
         }
         private void ResetBall()
         {
             //_commandController.Run(new BallResetCommand(this));
-            _racketMode1 = "default";
+            _racketMode2 = "default";
             //RacketSkinReseter();
             RacketSkinSender(defaultRacket.GetSkin());
             _PowerUpExists = true;
@@ -462,14 +472,17 @@ namespace PingPong3
                     _ball.LeftUpCorner.Y < SimplePowerUp.RightBottomCorner.Y &&
                     _ball.RightUpCorner.X > SimplePowerUp.LeftUpCorner.X)
                 {
-                    Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 2");
-                    //if() // Patikrint koks power upas ir pagal tai siust info/ tai adapteris cia gali but 
+                    if (!_ball.Player1Hit)
+                    {
+                        Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 2");
+                        _racketMode2 = SimplePowerUp.name;
+                    }
                     _PowerUpExists = false;
                     //activate timer here and _PowerUpExists = true;
-                    _racketMode1 = SimplePowerUp.name;
                     myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
                     myTimer.Interval = 5000; // 1000 ms is one second
                     myTimer.Enabled = true; ;
+
 
                 }
             }
@@ -529,8 +542,9 @@ namespace PingPong3
         #region SignalRMessages
         private async void connectButton_Click(object sender, EventArgs e)
         {
-            connection.On<string>("RecievePowerUpChange", (powerUp) =>
+            connection.On<int>("RecievePowerUpChange", (powerUp) =>
             {
+                RandomNum = powerUp;
                 //if (powerUp.Equals(1))
                 //{
                 //    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
@@ -653,7 +667,7 @@ namespace PingPong3
                 Console.WriteLine(ex.Message);
             }
         }
-        private async void SendRacketSkin2(string racket)
+        public override async void SendRacketSkin2(string racket)
         {
             try
             {

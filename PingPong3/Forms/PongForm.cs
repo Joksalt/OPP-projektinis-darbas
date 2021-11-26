@@ -22,7 +22,7 @@ namespace PingPong3.Forms
         public int _playerSelfIndex;
         protected Background background;
         //----template---
-        public string _racketMode1;
+        public string _racketMode1, _racketMode2;
         public static RacketStyle defaultRacket = new DefaultRacketMode();
         public static RacketStyle normalRacket = new RacketMode1(defaultRacket);
         public static RacketStyle devRacket = new RacketMode2(normalRacket);
@@ -36,6 +36,7 @@ namespace PingPong3.Forms
         public abstract void notifyResetBallSignal(int velocityX, int velocityY);
         public abstract void SendScoreSignal(int score, int player);
         public abstract void SendRacketSkin(string racket);
+        public abstract void SendRacketSkin2(string racket);
 
         public Background Background
         {
@@ -48,13 +49,25 @@ namespace PingPong3.Forms
         }
 
         //---template--
-        public void RacketSkinSender(string picture)
+        public void RacketPowerUpReseter()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-            SendRacketSkin(path + picture + ".png");
+            SendRacketSkin(path + "Paddle1" + ".png");
+            SendRacketSkin2(path + "Paddle1" + ".png");
+            _racketMode1 = "default";
+            _racketMode2 = "default";
         }
+        //public void RacketSkinSender(string picture)
+        //{
+        //    String path = System.IO.Directory.GetCurrentDirectory();
+        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+        //    path = path + "Images\\";
+
+        //    SendRacketSkin(path + picture + ".png");
+        //    //SendRacketSkin2(path + picture + ".png");
+        //}
     }
 }

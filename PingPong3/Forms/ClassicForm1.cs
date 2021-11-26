@@ -386,14 +386,22 @@ namespace PingPong3
             int randomPowerUp = _random.Next(2);
             SendPowerUpChange(randomPowerUp);
         }
-        private void RacketSkinReseter()
+        //private void RacketSkinReseter()
+        //{
+        //    String path = System.IO.Directory.GetCurrentDirectory();
+        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
+        //    path = path + "Images\\";
+
+        //    SendRacketSkin(path + "Paddle1" + ".png");
+        //    SendRacketSkin2(path + "Paddle1" + ".png");
+        //}
+        private void RacketSkinSender(string picture)
         {
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-            SendRacketSkin(path + "Paddle1" + ".png");
-            SendRacketSkin2(path + "Paddle1" + ".png");
+            SendRacketSkin(path + picture + ".png");
         }
         /// <summary>
         /// Tiemr to spawn power ups. Now not in use. Add in later
@@ -631,7 +639,7 @@ namespace PingPong3
                 Console.WriteLine(ex.Message);
             }
         }
-        private async void SendRacketSkin2(string racket)
+        public override async void SendRacketSkin2(string racket)
         {
             try
             {
