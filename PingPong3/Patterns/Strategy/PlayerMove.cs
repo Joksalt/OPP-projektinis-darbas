@@ -11,7 +11,10 @@ namespace PingPong3.Patterns.Strategy
 {
     public class PlayerMove : Move
     {
-        MovingWall movingWall;
+        public PlayerMove(int i)
+        {
+            movingWall = new MovingWall(i);
+        }
         public PlayerMove(Wall wall)
         {
             movingWall = wall as MovingWall;

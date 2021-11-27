@@ -11,7 +11,10 @@ namespace PingPong3.Patterns.Strategy
 {
     public class MoveVertically : Move
     {
-        MovingWall movingWall;
+        public MoveVertically(int i)
+        {
+            movingWall = new MovingWall(i);
+        }
         public MoveVertically(Wall wall)
         {
             movingWall = wall as MovingWall;

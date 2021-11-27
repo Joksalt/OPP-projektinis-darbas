@@ -18,15 +18,15 @@ namespace PingPong3.Patterns.Factory
         public int End { get; set; }
         public MovingWall(int i)
         {
-            Position = new Point(500, 500);
+            Position = new Point(50, 50);
             Texture = new PictureBox();
             Texture.Name = "pbWall" + i.ToString();
-            Texture.Size = new Size(100, 10);
+            Texture.Size = new Size(20, 10);
             Texture.BackColor = Color.White;
 
-            Start = 0;
+            Start = 10;
             End = 100;
-            Velocity = new Point(1, 0);
+            Velocity = new Point(1, 1);
         }
         public override Wall SetData(Point position, Size size, Color color, int start, int end, Point speed)
         {
