@@ -60,14 +60,5 @@ namespace PingPong3.Forms
             _racketMode1 = "default";
             _racketMode2 = "default";
         }
-        //public void RacketSkinSender(string picture)
-        //{
-        //    String path = System.IO.Directory.GetCurrentDirectory();
-        //    path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-        //    path = path + "Images\\";
-
-        //    SendRacketSkin(path + picture + ".png");
-        //    //SendRacketSkin2(path + picture + ".png");
-        //}
     }
 }
