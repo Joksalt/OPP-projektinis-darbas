@@ -8,7 +8,7 @@ using PingPong3.Patterns.Factory;
 
 namespace PingPong3.Patterns.Builder
 {
-    class AdvancedLevelBuilder : LevelBuilder
+    public class AdvancedLevelBuilder : LevelBuilder
     {
         private LevelData levelData = new LevelData();
         public override void BuildMovingWalls()

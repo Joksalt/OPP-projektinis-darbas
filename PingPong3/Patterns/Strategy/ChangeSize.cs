@@ -11,8 +11,10 @@ namespace PingPong3.Patterns.Strategy
 {
     public class ChangeSize : Move
     {
-        MovingWall movingWall;
-
+        public ChangeSize(int i)
+        {
+            movingWall = new MovingWall(i);
+        }
         public ChangeSize(Wall wall)
         {
             movingWall = wall as MovingWall;
@@ -24,23 +26,23 @@ namespace PingPong3.Patterns.Strategy
 
             if (movingWall.Texture.Size.Width < movingWall.Start)
             {
-                movingWall.Texture.Size = new Size(movingWall.Start, movingWall.Texture.Size.Height);
+                movingWall.Texture.Size = new Size(movingWall.Start, movingWall.Texture.Size.Height-1);
                 movingWall.Velocity = new Point(-movingWall.Velocity.X, -movingWall.Velocity.Y);
             }
             else if (movingWall.Texture.Size.Height < movingWall.Start)
             {
-                movingWall.Texture.Size = new Size(movingWall.Texture.Size.Width, movingWall.Start);
+                movingWall.Texture.Size = new Size(movingWall.Texture.Size.Width-1, movingWall.Start);
                 movingWall.Velocity = new Point(-movingWall.Velocity.X, -movingWall.Velocity.Y);
             }
 
             if (movingWall.Texture.Size.Width > movingWall.End)
             {
-                movingWall.Texture.Size = new Size(movingWall.End, movingWall.Texture.Size.Height);
+                movingWall.Texture.Size = new Size(movingWall.End, movingWall.Texture.Size.Height-1);
                 movingWall.Velocity = new Point(-movingWall.Velocity.X, -movingWall.Velocity.Y);
             }
             else if (movingWall.Texture.Size.Height > movingWall.End)
             {
-                movingWall.Texture.Size = new Size(movingWall.Texture.Size.Width, movingWall.End);
+                movingWall.Texture.Size = new Size(movingWall.Texture.Size.Width-1, movingWall.End);
                 movingWall.Velocity = new Point(-movingWall.Velocity.X, -movingWall.Velocity.Y);
             }
         }

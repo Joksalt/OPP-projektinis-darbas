@@ -9,9 +9,12 @@ using System.Windows.Forms;
 
 namespace PingPong3.Patterns.Strategy
 {
-    class MoveHorizontally : Move
+    public class MoveHorizontally : Move
     {
-        MovingWall movingWall;
+        public MoveHorizontally(int i)
+        {
+            movingWall = new MovingWall(i);
+        }
         public MoveHorizontally(Wall wall)
         {
              movingWall = wall as MovingWall;

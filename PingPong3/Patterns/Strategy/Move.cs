@@ -10,6 +10,7 @@ namespace PingPong3.Patterns.Strategy
 {
     public abstract class Move
     {
+        public MovingWall movingWall;
         public abstract void MoveAction();
     }
 }

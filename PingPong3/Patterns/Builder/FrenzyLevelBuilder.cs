@@ -9,7 +9,7 @@ using PingPong3.Patterns.Strategy;
 
 namespace PingPong3.Patterns.Builder
 {
-    class FrenzyLevelBuilder : LevelBuilder
+    public class FrenzyLevelBuilder : LevelBuilder
     {
         private LevelData levelData = new LevelData();
         public override void BuildMovingWalls()

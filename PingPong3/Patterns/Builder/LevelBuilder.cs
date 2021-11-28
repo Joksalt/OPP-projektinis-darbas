@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Builder
 {
-    abstract class LevelBuilder
+    public abstract class LevelBuilder
     {
         public abstract void BuildStaticWalls();
         public abstract void BuildMovingWalls();
