@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Timers;
 using PingPong3.Patterns.Observer;
 using PingPong3.Patterns.Command;
+using PingPong3.Patterns.Facade;
 using PingPong3.Forms;
 
 namespace PingPong3
@@ -25,6 +26,9 @@ namespace PingPong3
     {
         #region Variables
         HubConnection connection;
+
+        // Facade variable
+        Facade facade = new Facade();
 
         //---------
         public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
@@ -408,11 +412,7 @@ namespace PingPong3
                     _PowerUpExists = false;
 
                     // --- PROTOTYPE PATTERN ---
-                    BallItem ballShallowCopy = (BallItem)_ball.ShallowCopy();
-                    BallItem ballDeepCopy = (BallItem)_ball.DeepCopy();
-                    Console.WriteLine($"This is original Ball. Hash code - {_ball.GetHashCode()}");
-                    Console.WriteLine($"This is a shallow copy of ball. Hash code - {ballShallowCopy.GetHashCode()}");
-                    Console.WriteLine($"This is a deep copy of ball. Hash code {ballDeepCopy.GetHashCode()}");
+                    facade.DemoPrototype(this);
                 }
             }
             

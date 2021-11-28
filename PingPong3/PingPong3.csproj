@@ -176,6 +176,7 @@
     <Compile Include="Patterns\Decorator\RacketMode1.cs" />
     <Compile Include="Patterns\Decorator\RacketMode2.cs" />
     <Compile Include="Patterns\Decorator\RacketStyle.cs" />
+    <Compile Include="Patterns\Facade\Facade.cs" />
     <Compile Include="Patterns\Factory\StaticWall.cs" />
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
