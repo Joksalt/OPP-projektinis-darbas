@@ -13,21 +13,16 @@ namespace PingPong3.Patterns.Factory.Tests
 {
     public class FactoryTests
     {
-        [Fact()]
-        public void WallFactory_ShouldCreateStaticWall()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void WallFactory_ShouldCreateStaticAndMovingWall(int value)
         {
             WallFactory factory = new WallFactory();
            
-            Assert.NotNull(factory.MakeWall(0));
+            Assert.NotNull(factory.MakeWall(value));
         }
 
-        [Fact()]
-        public void WallFactory_ShouldCreateMovingWall()
-        {
-            WallFactory factory = new WallFactory();
-            
-            Assert.NotNull(factory.MakeWall(1));
-        }
 
         [Fact()]
         public void WallFactory_ShouldntCreateWall()
