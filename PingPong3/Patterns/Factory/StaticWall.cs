@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PingPong3.Patterns.Factory
 {
-    class StaticWall : Wall
+    public class StaticWall : Wall
     {
         public StaticWall(int i)
         {

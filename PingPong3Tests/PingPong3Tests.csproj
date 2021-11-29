@@ -78,15 +78,25 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
+    <Compile Include="Patterns\AbstractFactory\AbstractFactoryTests.cs" />
     <Compile Include="Patterns\Bridge\BridgeTests.cs" />
     <Compile Include="Patterns\Builder\BuilderTests.cs" />
     <Compile Include="Patterns\Command\ScoreIncreaseCommandTests.cs" />
+    <Compile Include="Patterns\Decorator\DecoratorTests.cs" />
+    <Compile Include="Patterns\Factory\FactoryTests.cs" />
     <Compile Include="Patterns\Prototype\PrototypeTests.cs" />
     <Compile Include="Patterns\Strategy\StrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="bin\Debug\PingPong3.exe.config" />
+    <None Include="bin\Debug\PingPong3Tests.dll.config" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\PingPong3Tests.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\PingPong3Tests.csproj.CopyComplete" />
+    <None Include="obj\Debug\PingPong3Tests.csproj.CoreCompileInputs.cache" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -98,7 +108,77 @@
       <Name>PingPong3</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Castle.Core.dll" />
+    <Content Include="bin\Debug\Castle.Core.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Connections.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Http.Connections.Client.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Http.Connections.Common.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Client.Core.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Client.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Client.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Common.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Common.xml" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.dll" />
+    <Content Include="bin\Debug\Microsoft.AspNetCore.SignalR.Protocols.Json.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.dll" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Logging.dll" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Logging.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Options.dll" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Options.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="bin\Debug\Moq.dll" />
+    <Content Include="bin\Debug\Moq.xml" />
+    <Content Include="bin\Debug\netstandard.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\PingPong3.exe" />
+    <Content Include="bin\Debug\PingPong3.pdb" />
+    <Content Include="bin\Debug\PingPong3Tests.dll" />
+    <Content Include="bin\Debug\PingPong3Tests.pdb" />
+    <Content Include="bin\Debug\System.Buffers.dll" />
+    <Content Include="bin\Debug\System.Buffers.xml" />
+    <Content Include="bin\Debug\System.IO.Pipelines.dll" />
+    <Content Include="bin\Debug\System.IO.Pipelines.xml" />
+    <Content Include="bin\Debug\System.Memory.dll" />
+    <Content Include="bin\Debug\System.Memory.xml" />
+    <Content Include="bin\Debug\System.Numerics.Vectors.dll" />
+    <Content Include="bin\Debug\System.Numerics.Vectors.xml" />
+    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="bin\Debug\System.Threading.Channels.dll" />
+    <Content Include="bin\Debug\System.Threading.Channels.xml" />
+    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.dll" />
+    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.xml" />
+    <Content Include="bin\Debug\xunit.abstractions.dll" />
+    <Content Include="bin\Debug\xunit.assert.dll" />
+    <Content Include="bin\Debug\xunit.assert.xml" />
+    <Content Include="bin\Debug\xunit.core.dll" />
+    <Content Include="bin\Debug\xunit.core.xml" />
+    <Content Include="bin\Debug\xunit.execution.desktop.dll" />
+    <Content Include="bin\Debug\xunit.execution.desktop.xml" />
+    <Content Include="bin\Debug\xunit.runner.reporters.net452.dll" />
+    <Content Include="bin\Debug\xunit.runner.utility.net452.dll" />
+    <Content Include="bin\Debug\xunit.runner.visualstudio.testadapter.dll" />
+    <Content Include="obj\Debug\PingPong3Tests.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\PingPong3Tests.dll" />
+    <Content Include="obj\Debug\PingPong3Tests.pdb" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
