@@ -79,6 +79,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Patterns\Builder\BuilderTests.cs" />
+    <Compile Include="Patterns\Command\BallResetCommandTests.cs" />
     <Compile Include="Patterns\Command\ScoreIncreaseCommandTests.cs" />
     <Compile Include="Patterns\Strategy\StrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

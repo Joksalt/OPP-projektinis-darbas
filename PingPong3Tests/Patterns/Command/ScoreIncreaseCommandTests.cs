@@ -15,10 +15,13 @@ namespace PingPong3.Patterns.Command.Tests
         [Fact()]
         public void Undo_CommandListNotEmpty_ShouldLowerScore()
         {
+            //Arrange
             PongForm form1 = new Form1();
             form1._commandController.Run(new ScoreIncreaseCommand(form1));
             form1._commandController.Run(new ScoreIncreaseCommand(form1));
+            //Act
             form1._commandController.Undo();
+            //Assert
             Assert.Equal(1, form1.playerSelfScore);
         }
 
