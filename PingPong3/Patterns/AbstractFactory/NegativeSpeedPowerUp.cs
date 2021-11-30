@@ -26,7 +26,7 @@ namespace PingPong3.Patterns.AbstractFactory
         //}
         public override void MakePowerUp()
         {
-            image = "PowerUpNegative.png";
+            image = "PowerUp.png";
             name = "-normal";
             Console.WriteLine("Making power up " + name);
         }

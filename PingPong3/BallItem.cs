@@ -25,11 +25,11 @@ namespace PingPong3
         public IPrototype DeepCopy()
         {
             BallItem ballItemDeepCopy = new BallItem(this.Position, this.Velocity, this.Texture);
-            ballItemDeepCopy.SetOrigin();
-            ballItemDeepCopy.SetLeftUpCorner();
-            ballItemDeepCopy.SetRightUpCorner();
-            ballItemDeepCopy.SetLeftBottomCorner();
-            ballItemDeepCopy.SetRightBottomCorner();
+            //ballItemDeepCopy.SetOrigin();
+            //ballItemDeepCopy.SetLeftUpCorner();
+            //ballItemDeepCopy.SetRightUpCorner();
+            //ballItemDeepCopy.SetLeftBottomCorner();
+            //ballItemDeepCopy.SetRightBottomCorner();
             return ballItemDeepCopy;
         }
 
