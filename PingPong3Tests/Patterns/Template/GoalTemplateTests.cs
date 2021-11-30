@@ -35,7 +35,6 @@ namespace PingPong3.Patterns.Template.Tests
             var form1 = new Mock<GoalTemplate>();
             form1.SetupAllProperties();
             form1.Object.playerSelfScore = 2;
-            //stub
             form1.Setup(x => x.NeedToLimitPoints()).Returns(true);
             form1.Setup(f => f.SendScoreSignal(It.IsAny<int>(), It.IsAny<int>()))
                 .Callback((int score, int id) => {
