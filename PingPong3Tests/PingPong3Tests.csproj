@@ -82,11 +82,13 @@
     <Compile Include="Patterns\AbstractFactory\AbstractFactoryTests.cs" />
     <Compile Include="Patterns\Bridge\BridgeTests.cs" />
     <Compile Include="Patterns\Builder\BuilderTests.cs" />
+    <Compile Include="Patterns\Command\BallResetCommandTests.cs" />
     <Compile Include="Patterns\Command\ScoreIncreaseCommandTests.cs" />
     <Compile Include="Patterns\Decorator\DecoratorTests.cs" />
     <Compile Include="Patterns\Factory\FactoryTests.cs" />
     <Compile Include="Patterns\Prototype\PrototypeTests.cs" />
     <Compile Include="Patterns\Strategy\StrategyTests.cs" />
+    <Compile Include="Patterns\Template\GoalTemplateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

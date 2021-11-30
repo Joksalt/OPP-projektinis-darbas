@@ -43,6 +43,11 @@ namespace PingPong3.Patterns.Template
             _commandController.Run(new ScoreIncreaseCommand(this));
         }
 
+        public void SendScoreSignal()
+        {
+            throw new NotImplementedException();
+        }
+
         protected void ResetBall()
         {
             _commandController.Run(new BallResetCommand(this));
