@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PingPong3.Forms;
 using System.Drawing;
+using Moq;
 
 namespace PingPong3.Patterns.Command.Tests
 {
@@ -20,8 +21,15 @@ namespace PingPong3.Patterns.Command.Tests
             int firstVelocityX = form1.GenerateBallX();
             int firstVelocityY = form1.GenerateBallY();
             form1._ball.Velocity = new Point(firstVelocityX, firstVelocityY);
-            //form1._ball.Velocity = new Point(form1.GenerateBallX(), form1.GenerateBallY());
-            form1._commandController.Run(new BallResetCommand(form1));
+            var realReset = new BallResetCommand(form1);
+
+            //var resetCommand = new Mock<BallResetCommand>();
+            //resetCommand.SetupAllProperties();
+            //resetCommand.Object = realReset;
+            //resetCommand.Setup(x => x.Execute(2, 2)).Returns(4);
+
+            form1._commandController.Run(realReset);
+            //form1._commandController.Run(resetCommand.Object);
 
             form1._commandController.Undo();
 
