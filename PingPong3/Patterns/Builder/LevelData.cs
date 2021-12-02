@@ -9,7 +9,7 @@ namespace PingPong3.Patterns.Builder
 {
     public class LevelData
     {
-        string levelName;
+        //string levelName;
         public List<Wall> walls;
         public LevelData()
         {
