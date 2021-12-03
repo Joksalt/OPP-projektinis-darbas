@@ -102,7 +102,7 @@ namespace PingPong3
 
             //--template--
             //_racketMode1 = "default";
-            racket1.PickState("default");
+            racket1.RequestState("default");
             //defaultRacket = new DefaultRacketMode();
             //normalRacket = new RacketMode1(defaultRacket);
             //devRacket = new RacketMode2(normalRacket);
@@ -140,7 +140,7 @@ namespace PingPong3
             _commandController.Run(new BallResetCommand(this));
             
             //_racketMode1 = "default";
-            racket1.PickState("default");
+            racket1.RequestState("default");
             RacketSkinSender(defaultRacket.GetSkin());
             _PowerUpExists = true;
 
@@ -346,25 +346,25 @@ namespace PingPong3
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 //_racketMode1 = "default";
-                racket1.PickState("default");
+                racket1.RequestState("default");
                 ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D2))
             {
                 //_racketMode1 = "+normal";
-                racket1.PickState("+normal");
+                racket1.RequestState("+normal");
                 ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D3))
             {
                 //_racketMode1 = "-normal";
-                racket1.PickState("-normal");
+                racket1.RequestState("-normal");
                 ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D9))
             {
                 //_racketMode1 = "dev";
-                racket1.PickState("dev");
+                racket1.RequestState("dev");
                 ChangeRacketSpeed(racket1);
             }
             //Undo last command
@@ -373,7 +373,7 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
-        private void ChangeRacketSpeed(Racket racket1)
+        public void ChangeRacketSpeed(Racket racket1)
         {
             //TODO: loops around here
             switch (racket1.Mode)
@@ -529,10 +529,11 @@ namespace PingPong3
                     _ball.LeftUpCorner.Y < SimplePowerUp.RightBottomCorner.Y &&
                     _ball.RightUpCorner.X > SimplePowerUp.LeftUpCorner.X)
                 {
+                    Console.WriteLine("Player 1 ball bool " + _ball.Player1Hit);
                     if (_ball.Player1Hit)
                     {
                         Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 1");
-                        racket1.PickState("dev");
+                        racket1.RequestState(SimplePowerUp.name);
                         ChangeRacketSpeed(racket1);
                         //racket1.PickState(SimplePowerUp.name);
 
@@ -597,7 +598,7 @@ namespace PingPong3
                 _ball.RightUpCorner.Y < _player2.LeftBottomCorner.Y)
             {
                 SendBallVelocityDirection2(_ball.Position.X, _ball.Position.Y, GenerateBallX(), GenerateBallY());
-                SendPlayer1HitBool(true);
+                SendPlayer1HitBool(false);
             }
         }
         #endregion

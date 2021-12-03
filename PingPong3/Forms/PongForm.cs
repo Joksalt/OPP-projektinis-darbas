@@ -62,8 +62,8 @@ namespace PingPong3.Forms
             SendRacketSkin2(path + "Paddle1" + ".png");
             //_racketMode1 = "default";
             //_racketMode2 = "default";
-            racket1.PickState("default");
-            racket2.PickState("default");
+            racket1.RequestState("default");
+            racket2.RequestState("default");
         }
     }
 }

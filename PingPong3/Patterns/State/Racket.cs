@@ -33,7 +33,7 @@ namespace PingPong3.Patterns.State
             get { return state; }
             set { state = value; }
         }
-        public void PickState(string newMode)
+        public void RequestState(string newMode)
         {
             state.PickState(newMode);
             Console.WriteLine(" State  = {0}", this.State.GetType().Name);
