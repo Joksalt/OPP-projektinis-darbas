@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PingPong3.Patterns.Decorator;
+using PingPong3.Patterns.State;
 
 namespace PingPong3.Forms
 {
@@ -23,6 +24,8 @@ namespace PingPong3.Forms
         protected Background background;
         //----template---
         public string _racketMode1, _racketMode2;
+        public Racket racket1 = new Racket("PlayerRacket1");
+        public Racket racket2 = new Racket("PlayerRacket2");
         public static RacketStyle defaultRacket = new DefaultRacketMode();
         public static RacketStyle normalRacket = new RacketMode1(defaultRacket);
         public static RacketStyle devRacket = new RacketMode2(normalRacket);
@@ -57,8 +60,10 @@ namespace PingPong3.Forms
 
             SendRacketSkin(path + "Paddle1" + ".png");
             SendRacketSkin2(path + "Paddle1" + ".png");
-            _racketMode1 = "default";
-            _racketMode2 = "default";
+            //_racketMode1 = "default";
+            //_racketMode2 = "default";
+            racket1.PickState("default");
+            racket2.PickState("default");
         }
     }
 }

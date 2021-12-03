@@ -20,6 +20,7 @@ using PingPong3.Patterns.Command;
 using PingPong3.Patterns.Facade;
 using PingPong3.Forms;
 using PingPong3.Patterns.Template;
+using PingPong3.Patterns.State;
 
 namespace PingPong3
 {
@@ -69,6 +70,7 @@ namespace PingPong3
 
         private bool _isGameRunning;
         //private string _racketMode1;
+        //private Racket racket1 = new Racket("Player1");
 
         private int _currentBallX;
 
@@ -99,7 +101,8 @@ namespace PingPong3
             _playerSelfIndex = 0;
 
             //--template--
-            _racketMode1 = "default";
+            //_racketMode1 = "default";
+            racket1.PickState("default");
             //defaultRacket = new DefaultRacketMode();
             //normalRacket = new RacketMode1(defaultRacket);
             //devRacket = new RacketMode2(normalRacket);
@@ -136,7 +139,8 @@ namespace PingPong3
             _isGameRunning = true;
             _commandController.Run(new BallResetCommand(this));
             
-            _racketMode1 = "default";
+            //_racketMode1 = "default";
+            racket1.PickState("default");
             RacketSkinSender(defaultRacket.GetSkin());
             _PowerUpExists = true;
 
@@ -338,46 +342,58 @@ namespace PingPong3
                 _player1.Move();
                 SendPlayer1Position(_player1.Position);
             }
-                //TODO: loops around here
-                switch (_racketMode1)
-                {
-                    case "+normal":
-                        RacketSkinSender(normalRacket.GetSkin());
-                        _player1.CurrentSpeed = normalRacket.GetSpeed();
-                        break;
-                    case "-normal":
-                        RacketSkinSender(devRacket.GetSkin());
-                        _player1.CurrentSpeed = (normalRacket.GetSpeed() - defaultRacket.GetSpeed());
-                        break;
-                    case "dev":
-                        RacketSkinSender(devRacket.GetSkin());
-                        _player1.CurrentSpeed = devRacket.GetSpeed();
-                        break;
-                    default:
-                        RacketSkinSender(defaultRacket.GetSkin());
-                        _player1.CurrentSpeed = defaultRacket.GetSpeed();
-                        break;
-                }
+                
             if (Keyboard.IsKeyDown(Key.D1))
             {
-                _racketMode1 = "default";
+                //_racketMode1 = "default";
+                racket1.PickState("default");
+                ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D2))
             {
-                _racketMode1 = "+normal";
+                //_racketMode1 = "+normal";
+                racket1.PickState("+normal");
+                ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D3))
             {
-                _racketMode1 = "-normal";
+                //_racketMode1 = "-normal";
+                racket1.PickState("-normal");
+                ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D9))
             {
-                _racketMode1 = "dev";
+                //_racketMode1 = "dev";
+                racket1.PickState("dev");
+                ChangeRacketSpeed(racket1);
             }
             //Undo last command
             if (Keyboard.IsKeyDown(Key.D4))
             {
                 _commandController.Undo();
+            }
+        }
+        private void ChangeRacketSpeed(Racket racket1)
+        {
+            //TODO: loops around here
+            switch (racket1.Mode)
+            {
+                case "+normal":
+                    RacketSkinSender(normalRacket.GetSkin());
+                    _player1.CurrentSpeed = normalRacket.GetSpeed();
+                    break;
+                case "-normal":
+                    RacketSkinSender(devRacket.GetSkin());
+                    _player1.CurrentSpeed = (normalRacket.GetSpeed() - defaultRacket.GetSpeed());
+                    break;
+                case "dev":
+                    RacketSkinSender(devRacket.GetSkin());
+                    _player1.CurrentSpeed = devRacket.GetSpeed();
+                    break;
+                default:
+                    RacketSkinSender(defaultRacket.GetSkin());
+                    _player1.CurrentSpeed = defaultRacket.GetSpeed();
+                    break;
             }
         }
         private void PowerUpMaking()
@@ -516,7 +532,9 @@ namespace PingPong3
                     if (_ball.Player1Hit)
                     {
                         Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 1");
-                        _racketMode1 = SimplePowerUp.name;
+                        racket1.PickState("dev");
+                        ChangeRacketSpeed(racket1);
+                        //racket1.PickState(SimplePowerUp.name);
 
                     }
                     _PowerUpExists = false;

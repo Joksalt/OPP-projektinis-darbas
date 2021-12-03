@@ -199,6 +199,12 @@
     <Compile Include="Patterns\Observer\Subject.cs" />
     <Compile Include="Patterns\Prototype\IPrototype.cs" />
     <Compile Include="Patterns\Singleton_logger\Logger.cs" />
+    <Compile Include="Patterns\State\Blue2State.cs" />
+    <Compile Include="Patterns\State\PurpleState.cs" />
+    <Compile Include="Patterns\State\BlueState.cs" />
+    <Compile Include="Patterns\State\WhiteState.cs" />
+    <Compile Include="Patterns\State\Racket.cs" />
+    <Compile Include="Patterns\State\State.cs" />
     <Compile Include="Patterns\Strategy\ChangeSize.cs" />
     <Compile Include="Patterns\Strategy\MoveHorizontally.cs" />
     <Compile Include="Patterns\Strategy\Move.cs" />
