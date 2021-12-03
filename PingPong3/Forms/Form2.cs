@@ -46,7 +46,7 @@ namespace PingPong3
         private MovingWall _player1, _player2;
         private HubItem _titleScreen;
 
-        private Random _random;
+        private Random randomSeed;
         private int RandomNum = 1;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
@@ -73,7 +73,6 @@ namespace PingPong3
         private FrenzyLevelBuilder frenzyLevelBuilder;
         private LevelData levelData;
 
-        private CertainSound WinSound = new CertainSound("Win");
         private CertainSound HitSound = new CertainSound("Hit");
         private CertainSound ScoreSound = new CertainSound("Score");
         private CertainSound MissSound = new CertainSound("Miss");
@@ -159,7 +158,7 @@ namespace PingPong3
             levelDirector.ConstructWalls(frenzyLevelBuilder);
             levelData = frenzyLevelBuilder.GetResult();
 
-            _random = new Random();
+            randomSeed = new Random();
             _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
             _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
@@ -171,7 +170,7 @@ namespace PingPong3
             if (_PowerUpExists)
             {
                 
-                SendPowerUpChange(_random.Next(2));
+                SendPowerUpChange(randomSeed.Next(2));
                 if (RandomNum.Equals(1))
                 {
                     SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
@@ -424,7 +423,7 @@ namespace PingPong3
         {
             _level += 1;
             int velocityX = _level;
-            if (_random.Next(2) == 0)
+            if (randomSeed.Next(2) == 0)
             {
                 velocityX *= -1;
             }
@@ -433,8 +432,8 @@ namespace PingPong3
         public override int GenerateBallY()
         {
             _level += (int).5;
-            int velocityY = _random.Next(0, _level);
-            if (_random.Next(2) == 0)
+            int velocityY = randomSeed.Next(0, _level);
+            if (randomSeed.Next(2) == 0)
             {
                 velocityY *= -1;
             }
@@ -474,8 +473,6 @@ namespace PingPong3
                     myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent); //timer for power up spawning later
                     myTimer.Interval = 5000; // 1000 ms is one second
                     myTimer.Enabled = true; ;
-
-
                 }
             }
             foreach (Wall w in levelData.walls)
@@ -576,6 +573,7 @@ namespace PingPong3
             connection.On<int, int>("ReceiveResetBallSignal", (velocityX, velocityY) =>
             {
                 _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
+                _level = 7;
                 _ball.Velocity = new Point(velocityX, velocityY);
 
                 _currentBallX = velocityX;
@@ -782,6 +780,7 @@ namespace PingPong3
         public void updateResetBallSignal(int velocityX, int velocityY)
         {
             _ball.Position = new Point(ScreenWidth / 2, ScreenHeight / 2);
+            _level = 7;
             _ball.Velocity = new Point(velocityX, velocityY);
 
             _currentBallX = velocityX;

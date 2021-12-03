@@ -19,6 +19,7 @@ using PingPong3.Patterns.Observer;
 using PingPong3.Forms;
 using PingPong3.Patterns.Command;
 using PingPong3.Patterns.Template;
+using PingPong3.Patterns.ChainOfCommand;
 
 namespace PingPong3
 {
@@ -44,7 +45,7 @@ namespace PingPong3
         private MovingWall _player1, _player2;
         private HubItem _titleScreen;
 
-        private Random _random;
+        private Random randomSeed;
 
         private System.Timers.Timer myTimer = new System.Timers.Timer();
 
@@ -64,6 +65,9 @@ namespace PingPong3
         private CertainSound HitSound = new CertainSound("Hit");
         private CertainSound ScoreSound = new CertainSound("Score");
         private CertainSound MissSound = new CertainSound("Miss");
+
+        private HeartHandler p1HeartHandler, p1SecondHandler, p1FinalHandler, p2HeartHandler, p2SecondHandler, p2FinalHandler;
+        private HeartItem p1H1, p1H2, p1H3, p2H1, p2H2, p2H3;
         #endregion
 
 
@@ -110,9 +114,13 @@ namespace PingPong3
         {
             lblScore1.BackColor = Color.Transparent;
             lblScore2.BackColor = Color.Transparent;
+            lblScore1.Hide();
+            lblScore2.Hide();
+            label4.Hide();
+            connectButton.Hide();
+            startButton.Hide();
             label4.BackColor = Color.Transparent;
             _isGameRunning = true;
-
         }
 
         #endregion
@@ -139,10 +147,13 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
+
             levelDirector.ConstructWalls(classicLevelBuilder);
             levelData = classicLevelBuilder.GetResult();
 
-            _random = new Random();
+            InitializeHearts();
+
+            randomSeed = new Random();
             _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
             _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
@@ -156,17 +167,37 @@ namespace PingPong3
             _titleScreen.Width = ScreenWidth;
             _titleScreen.Height = ScreenHeight;
         }
+        private void InitializeHearts()
+        {
+            p1HeartHandler = new FirstHeartHandler();
+            p1SecondHandler = new SecondHeartHandler();
+            p1FinalHandler = new FinalHeartHandler();
+            p1SecondHandler.SetSuccessor(p1FinalHandler);
+            p1HeartHandler.SetSuccessor(p1SecondHandler);
+
+            p2HeartHandler = new FirstHeartHandler();
+            p2SecondHandler = new SecondHeartHandler();
+            p2FinalHandler = new FinalHeartHandler();
+            p2SecondHandler.SetSuccessor(p2FinalHandler);
+            p2HeartHandler.SetSuccessor(p2SecondHandler);
+
+            p1H1 = new HeartItem("p1H1");
+            p1H2 = new HeartItem("p1H2");
+            p1H3 = new HeartItem("p1H3");
+
+            p2H1 = new HeartItem("p2H1");
+            p2H2 = new HeartItem("p2H2");
+            p2H3 = new HeartItem("p2H3");
+        }
         private void LoadGraphicsContent()
         {
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-
             // --------- BRIDGE PATTERN -------------
             setBackgroundTheme();
             pbTitleScreen.Load(this.background.setBackgroundTheme());
-
 
             _titleScreen.Texture = pbTitleScreen;
             pbTitleScreen.BackColor = Color.Transparent;
@@ -190,6 +221,18 @@ namespace PingPong3
             {
                 pbTitleScreen.Controls.Add(w.Texture);
             }
+
+            SetHeartData();
+        }
+        private void SetHeartData()
+        {
+            p1FinalHandler.SetData(pbTitleScreen, p1H1, this, 30);
+            p1SecondHandler.SetData(pbTitleScreen, p1H2, this, 80);
+            p1HeartHandler.SetData(pbTitleScreen, p1H3, this, 130);
+
+            p2FinalHandler.SetData(pbTitleScreen, p2H1, this, ScreenWidth - 130);
+            p2SecondHandler.SetData(pbTitleScreen, p2H2, this, ScreenWidth - 80);
+            p2HeartHandler.SetData(pbTitleScreen, p2H3, this, ScreenWidth - 30);
         }
         private void UpdateScene()
         {
@@ -219,11 +262,17 @@ namespace PingPong3
                 _player2.Draw();
                 _ball.Draw();
 
-
                 foreach (Wall w in levelData.walls)
                 {
                     w.Draw();
                 }
+
+                p1H1.Draw();
+                p1H2.Draw();
+                p1H3.Draw();
+                p2H1.Draw();
+                p2H2.Draw();
+                p2H3.Draw();
             }
             else
             {
@@ -390,7 +439,7 @@ namespace PingPong3
         {
             _level += 1;
             int velocityX = _level;
-            if (_random.Next(2) == 0)
+            if (randomSeed.Next(2) == 0)
             {
                 velocityX *= -1;
             }
@@ -399,8 +448,8 @@ namespace PingPong3
         public override int GenerateBallY()
         {
             _level += (int).5;
-            int velocityY = _random.Next(0, _level);
-            if (_random.Next(2) == 0)
+            int velocityY = randomSeed.Next(0, _level);
+            if (randomSeed.Next(2) == 0)
             {
                 velocityY *= -1;
             }
@@ -511,13 +560,15 @@ namespace PingPong3
                 if (player == 0)
                 {
                     playerSelfScore = score;
-                    lblScore1.Text = playerSelfScore.ToString();
+                    //lblScore1.Text = playerSelfScore.ToString();
+                    p2HeartHandler.HandleRequest(score);
                     //MissSound.RequestSound();
                 }
                 else
                 {
                     playerOtherScore = score;
-                    lblScore2.Text = playerOtherScore.ToString();
+                    //lblScore2.Text = playerOtherScore.ToString();
+                    p1HeartHandler.HandleRequest(score);
                     //ScoreSound.RequestSound();
                 }
             });
@@ -729,7 +780,5 @@ namespace PingPong3
         {
             this.background = new ClassicBackground();
         }
-
-
     }
 }

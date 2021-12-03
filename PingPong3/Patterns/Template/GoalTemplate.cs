@@ -48,7 +48,7 @@ namespace PingPong3.Patterns.Template
             throw new NotImplementedException();
         }
 
-        protected void ResetBall()
+        private void ResetBall()
         {
             _commandController.Run(new BallResetCommand(this));
         }
