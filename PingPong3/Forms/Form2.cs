@@ -333,25 +333,21 @@ namespace PingPong3
             {
                 racket2.RequestState("default");
                 ChangeRacketSpeed(racket2);
-                //_racketMode2 = "default";
             }
             if (Keyboard.IsKeyDown(Key.NumPad2))
             {
                 racket2.RequestState("+normal");
                 ChangeRacketSpeed(racket2);
-                //_racketMode2 = "+normal";
             }
             if (Keyboard.IsKeyDown(Key.NumPad3))
             {
                 racket2.RequestState("-normal");
                 ChangeRacketSpeed(racket2);
-                //_racketMode2 = "-normal";
             }
             if (Keyboard.IsKeyDown(Key.NumPad9))
             {
                 racket2.RequestState("dev");
                 ChangeRacketSpeed(racket2);
-                //_racketMode2 = "dev";
             }
             //Undo last command
             if (Keyboard.IsKeyDown(Key.D5))
@@ -359,10 +355,9 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
-        public void ChangeRacketSpeed(Racket racket1)
+        public void ChangeRacketSpeed(Racket racket2)
         {
-            //TODO: loops around here
-            switch (racket1.Mode)
+            switch (racket2.Mode)
             {
                 case "+normal":
                     RacketSkinSender(normalRacket.GetSkin());
@@ -495,6 +490,7 @@ namespace PingPong3
             if (pbBall.Left < 0)
             {
                 GoalProcess();
+                SendRacketSpeedChange(1);
                 //ResetBall();
 
                 lblScore2.Text = playerSelfScore.ToString();
@@ -543,6 +539,10 @@ namespace PingPong3
                 //    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
                 //}
                 //thePowerUp = PowerUp.Equals(random);
+            });
+            connection.On<int>("RecieveRacketSpeedChange", (s) =>
+            {
+                ChangeRacketSpeed(racket2);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
@@ -622,6 +622,17 @@ namespace PingPong3
             catch (Exception ex)
             {
                 gameLogger.Write(LOG_SENDER, ex.Message);
+            }
+        }
+        private async void SendRacketSpeedChange(int s)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendRacketSpeedChange", s);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
         private async void SendPowerUpChange(int powerUp)

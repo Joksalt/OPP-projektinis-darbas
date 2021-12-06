@@ -344,19 +344,16 @@ namespace PingPong3
                 
             if (Keyboard.IsKeyDown(Key.D1))
             {
-                //_racketMode1 = "default";
                 racket1.RequestState("default");
                 ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D2))
             {
-                //_racketMode1 = "+normal";
                 racket1.RequestState("+normal");
                 ChangeRacketSpeed(racket1);
             }
             if (Keyboard.IsKeyDown(Key.D3))
             {
-                //_racketMode1 = "-normal";
                 racket1.RequestState("-normal");
                 ChangeRacketSpeed(racket1);
             }
@@ -374,7 +371,6 @@ namespace PingPong3
         }
         public void ChangeRacketSpeed(Racket racket1)
         {
-            //TODO: loops around here
             switch (racket1.Mode)
             {
                 case "+normal":
@@ -569,6 +565,7 @@ namespace PingPong3
             if (pbBall.Right > ScreenWidth)
             {
                 GoalProcess();
+                SendRacketSpeedChange(1);
                 //ResetBall();
 
                 lblScore1.Text = playerSelfScore.ToString();
@@ -631,6 +628,10 @@ namespace PingPong3
                 //    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
                 //}
                 //thePowerUp = PowerUp.Equals(random);
+            });
+            connection.On<int>("RecieveRacketSpeedChange", (s) =>
+            {
+                ChangeRacketSpeed(racket1);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
@@ -710,6 +711,17 @@ namespace PingPong3
             catch (Exception ex)
             {
                 gameLogger.Write(LOG_SENDER, ex.Message);
+            }
+        }
+        private async void SendRacketSpeedChange(int s)
+        {
+            try
+            {
+                await connection.InvokeAsync("SendRacketSpeedChange", s);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
         private async void SendPowerUpChange(int powerUp)
