@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingPong3.Patterns.Mediator;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace PingPong3.Patterns.AbstractFactory
 {
     public class PositivePowerUpFactory : PowerUpFactory
     {
+
+
         protected override PowerUp MakePowerUp(int typeOfPowerup)
         {
             PowerUp thePowerUp = null;

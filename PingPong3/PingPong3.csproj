@@ -199,6 +199,9 @@
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
+    <Compile Include="Patterns\Mediator\Colleague.cs" />
+    <Compile Include="Patterns\Mediator\IMediator.cs" />
+    <Compile Include="Patterns\Mediator\MediatorImpl.cs" />
     <Compile Include="Patterns\Observer\IObserver.cs" />
     <Compile Include="Patterns\Observer\Server.cs" />
     <Compile Include="Patterns\Observer\Subject.cs" />
