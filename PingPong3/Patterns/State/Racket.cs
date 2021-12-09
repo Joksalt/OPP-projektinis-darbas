@@ -43,6 +43,7 @@ namespace PingPong3.Patterns.State
         public override void ReceiveMessage(string msg)
         {
             RequestState(msg);
+            mediator.BroadcastMessage(this, Mode);
         }
 
         public void RequestState(string newMode)

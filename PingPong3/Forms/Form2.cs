@@ -155,15 +155,16 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator);
+            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator, normalRacket, defaultRacket);
             levelData = frenzyLevelBuilder.GetResult();
 
             randomSeed = new Random();
-            _player1 = WallFactory.MakeWall(1, _mediator).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
 
-            _player2 = WallFactory.MakeWall(1, _mediator).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player2 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player2.SetMove(new PlayerMove(_player2));
+            _mediator.AddUser(_player2);
 
             _ball = new BallItem
             {
@@ -410,6 +411,24 @@ namespace PingPong3
             _PowerUpExists = false; //cia true
             
         }
+        public void ChangeRacketSkins(Racket racket)
+        {
+            switch (racket.Mode)
+            {
+                case "+normal":
+                    RacketSkinSender(normalRacket.GetSkin());
+                    break;
+                case "-normal":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                case "dev":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                default:
+                    RacketSkinSender(defaultRacket.GetSkin());
+                    break;
+            }
+        }
         private void ResetBall()
         {
             //_commandController.Run(new BallResetCommand(this));
@@ -464,9 +483,10 @@ namespace PingPong3
                     if (!_ball.Player1Hit)
                     {
                         Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 2");
-                        //racket2.RequestState(SimplePowerUp.name);
-                        ChangeRacketSpeed(racket2);
-                        //    _racketMode2 = SimplePowerUp.name;
+                        SimplePowerUp.SendPowerUpName();
+
+
+                        ChangeRacketSkins(racket2);
                     }
                     _PowerUpExists = false;
                     //activate timer here and _PowerUpExists = true;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PingPong3.Patterns.Strategy;
 using System.Windows.Forms;
 using PingPong3.Patterns.Mediator;
+using PingPong3.Patterns.Decorator;
 
 namespace PingPong3.Patterns.Factory
 {
@@ -17,7 +18,9 @@ namespace PingPong3.Patterns.Factory
         public Move move;
         public int Start { get; set; }
         public int End { get; set; }
-        public MovingWall(int i, IMediator medi) : base(medi)
+        RacketStyle NormalRacket { get; set; }
+        RacketStyle DefaultRacket { get; set; }
+        public MovingWall(int i, IMediator medi, RacketStyle normalRacket, RacketStyle defaultRacket) : base(medi)
         {
             Position = new Point(50, 50);
             Texture = new PictureBox();
@@ -28,6 +31,8 @@ namespace PingPong3.Patterns.Factory
             Start = 10;
             End = 100;
             Velocity = new Point(1, 1);
+            NormalRacket = normalRacket;
+            DefaultRacket = defaultRacket;
         }
         public override Wall SetData(Point position, Size size, Color color, int start, int end, Point speed)
         {
@@ -58,12 +63,23 @@ namespace PingPong3.Patterns.Factory
 
         public override void ReceiveMessage(string msg)
         {
-            throw new NotImplementedException();
+            switch (msg)
+            {
+                case "+normal":
+                    this.CurrentSpeed = NormalRacket.GetSpeed();
+                    break;
+                case "-normal":
+                    CurrentSpeed = (NormalRacket.GetSpeed() - DefaultRacket.GetSpeed());
+                    break;
+                default:
+                    CurrentSpeed = DefaultRacket.GetSpeed();
+                    break;
+            }
         }
 
         public override ColleagueType GetColleagueType()
         {
-            return ColleagueType.racket;
+            return ColleagueType.player;
         }
     }
 }
