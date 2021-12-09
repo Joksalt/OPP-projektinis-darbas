@@ -6,18 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PingPong3.Patterns.Factory;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
     class NegativeSpeedPowerUp : PowerUp
     {
-        public NegativeSpeedPowerUp()
+        public NegativeSpeedPowerUp(IMediator medi) : base(medi)
         {
             Position = new Point(500, 500);
             Texture = new PictureBox();
             Texture.Name = "pbPowerUp SpeedoNegativo";
             Texture.BackColor = Color.Transparent;
             Velocity = new Point(1, 0);
+        }
+
+        public override ColleagueType GetColleagueType()
+        {
+            return ColleagueType.powerUp;
         }
 
         //public override void Activate()
@@ -29,6 +35,16 @@ namespace PingPong3.Patterns.AbstractFactory
             image = "PowerUp.png";
             name = "-normal";
             Console.WriteLine("Making power up " + name);
+        }
+
+        public override void ReceiveMessage(string msg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SendMessage(string msg)
+        {
+            throw new NotImplementedException();
         }
         //public override void setTarget(MovingWall target)
         //{
