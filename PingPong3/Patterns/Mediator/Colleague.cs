@@ -9,7 +9,8 @@ namespace PingPong3.Patterns.Mediator
     public enum ColleagueType
     { 
         powerUp,
-        racket
+        racket,
+        player
     }
     //public abstract class Colleague
     public abstract class Colleague : GameItem

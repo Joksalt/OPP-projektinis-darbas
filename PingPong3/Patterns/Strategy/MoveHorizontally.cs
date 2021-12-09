@@ -7,14 +7,15 @@ using System.Drawing;
 using PingPong3.Patterns.Factory;
 using System.Windows.Forms;
 using PingPong3.Patterns.Mediator;
+using PingPong3.Patterns.Decorator;
 
 namespace PingPong3.Patterns.Strategy
 {
     public class MoveHorizontally : Move
     {
-        public MoveHorizontally(int i, IMediator medi)
+        public MoveHorizontally(int i, IMediator medi, RacketStyle normalRacket, RacketStyle defaultRacket)
         {
-            movingWall = new MovingWall(i, medi);
+            movingWall = new MovingWall(i, medi, normalRacket, defaultRacket);
         }
         public MoveHorizontally(Wall wall)
         {

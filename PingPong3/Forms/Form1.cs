@@ -176,13 +176,15 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator);
+            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator, normalRacket, defaultRacket);
             levelData = frenzyLevelBuilder.GetResult();
 
             randomSeed = new Random();
-            _player1 = WallFactory.MakeWall(1, _mediator).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
-            _player2 = WallFactory.MakeWall(1, _mediator).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _mediator.AddUser(_player1);
+
+            _player2 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player2.SetMove(new PlayerMove(_player2));
             _ball = new BallItem
             {
@@ -370,6 +372,7 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
+        
         public void ChangeRacketSpeed(Racket racket1)
         {
             switch (racket1.Mode)
@@ -405,6 +408,24 @@ namespace PingPong3
             path = path + "Images\\";
 
             SendRacketSkin(path + picture + ".png");
+        }
+        public void ChangeRacketSkins(Racket racket1)
+        {
+            switch (racket1.Mode)
+            {
+                case "+normal":
+                    RacketSkinSender(normalRacket.GetSkin());
+                    break;
+                case "-normal":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                case "dev":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                default:
+                    RacketSkinSender(defaultRacket.GetSkin());
+                    break;
+            }
         }
         //private void RacketSkinReseter()
         //{
@@ -532,8 +553,8 @@ namespace PingPong3
                         SimplePowerUp.SendPowerUpName();
 
 
-                        //racket1.RequestState(SimplePowerUp.name);
-                        ChangeRacketSpeed(racket1);
+                        ChangeRacketSkins(racket1);
+                        //ChangeRacketSpeed(racket1);
                         //racket1.PickState(SimplePowerUp.name);
 
                     }

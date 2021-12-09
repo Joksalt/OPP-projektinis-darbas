@@ -1,4 +1,5 @@
-﻿using PingPong3.Patterns.Mediator;
+﻿using PingPong3.Patterns.Decorator;
+using PingPong3.Patterns.Mediator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace PingPong3.Patterns.Builder
     public class ClassicLevelBuilder : LevelBuilder
     {
         private LevelData levelData = new LevelData();
-        public override void BuildMovingWalls(IMediator medi)
+        public override void BuildMovingWalls(IMediator medi, RacketStyle normalRacket, RacketStyle defaultRacket)
         {
             
         }
-        public override void BuildStaticWalls(IMediator medi)
+        public override void BuildStaticWalls(IMediator medi, RacketStyle normalRacket, RacketStyle defaultRacket)
         {
             
         }
