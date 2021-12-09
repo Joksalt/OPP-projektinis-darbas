@@ -176,13 +176,13 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder);
+            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator);
             levelData = frenzyLevelBuilder.GetResult();
 
             randomSeed = new Random();
-            _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1 = WallFactory.MakeWall(1, _mediator).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
-            _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player2 = WallFactory.MakeWall(1, _mediator).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player2.SetMove(new PlayerMove(_player2));
             _ball = new BallItem
             {
@@ -201,8 +201,8 @@ namespace PingPong3
                 }
                 _mediator.AddUser(SimplePowerUp);
             }
+            _mediator.AddUser(racket1);
 
-            
 
             _titleScreen = new HubItem { 
                 Position = new Point(0, 0),
@@ -529,7 +529,10 @@ namespace PingPong3
                     if (_ball.Player1Hit)
                     {
                         Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 1");
-                        racket1.RequestState(SimplePowerUp.name);
+                        SimplePowerUp.SendPowerUpName();
+
+
+                        //racket1.RequestState(SimplePowerUp.name);
                         ChangeRacketSpeed(racket1);
                         //racket1.PickState(SimplePowerUp.name);
 

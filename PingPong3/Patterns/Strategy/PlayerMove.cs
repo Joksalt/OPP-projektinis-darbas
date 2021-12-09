@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using System.Drawing;
 using PingPong3.Patterns.Factory;
 using System.Windows.Forms;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3.Patterns.Strategy
 {
     public class PlayerMove : Move
     {
-        public PlayerMove(int i)
+        public PlayerMove(int i, IMediator medi)
         {
-            movingWall = new MovingWall(i);
+            movingWall = new MovingWall(i, medi);
         }
         public PlayerMove(Wall wall)
         {

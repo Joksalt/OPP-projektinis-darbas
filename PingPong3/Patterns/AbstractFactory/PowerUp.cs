@@ -25,6 +25,16 @@ namespace PingPong3.Patterns.AbstractFactory
         {
             this.image = NewImage;
         }
+
+        public void SendPowerUpName()
+        {
+            mediator.BroadcastMessage(this, name);
+        }
+
+        //public override string SendMessage(String msg)
+        //{
+        //    return msg;
+        //}
         //public virtual PowerUp SetData(Point position)
         //{
         //    return null;

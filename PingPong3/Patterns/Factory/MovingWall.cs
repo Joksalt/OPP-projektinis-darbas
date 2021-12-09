@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PingPong3.Patterns.Strategy;
 using System.Windows.Forms;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3.Patterns.Factory
 {
@@ -16,7 +17,7 @@ namespace PingPong3.Patterns.Factory
         public Move move;
         public int Start { get; set; }
         public int End { get; set; }
-        public MovingWall(int i)
+        public MovingWall(int i, IMediator medi) : base(medi)
         {
             Position = new Point(50, 50);
             Texture = new PictureBox();
@@ -48,6 +49,21 @@ namespace PingPong3.Patterns.Factory
         {
             this.move = move;
             return this;
+        }
+
+        public override void SendMessage(string msg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ReceiveMessage(string msg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ColleagueType GetColleagueType()
+        {
+            return ColleagueType.racket;
         }
     }
 }
