@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Mediator
 {
+    public enum ColleagueType
+    { 
+        powerUp,
+        racket
+    }
     //public abstract class Colleague
     public abstract class Colleague : GameItem
     {
@@ -19,5 +24,6 @@ namespace PingPong3.Patterns.Mediator
         public abstract void SendMessage(String msg);
 
         public abstract void ReceiveMessage(String msg);
+        public abstract ColleagueType GetColleagueType();
     }
 }

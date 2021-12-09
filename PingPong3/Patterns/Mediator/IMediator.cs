@@ -8,7 +8,7 @@ namespace PingPong3.Patterns.Mediator
 {
     public interface IMediator
     {
-        void SetServer(Colleague user);
+        void AddUser(Colleague user);
 
         void BroadcastMessage(Colleague sender, String msg);
     }

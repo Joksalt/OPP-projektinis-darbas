@@ -21,6 +21,7 @@ using PingPong3.Patterns.Facade;
 using PingPong3.Forms;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3
 {
@@ -128,7 +129,6 @@ namespace PingPong3
             Load += Form1_Load;
 
             _commandController = new GameController();
-            
         }
         #endregion
 
@@ -193,12 +193,13 @@ namespace PingPong3
                 SendPowerUpChange(randomSeed.Next(2));
                 if (RandomNum.Equals(1))
                 {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
                 }
                 else
                 {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 }
+                _mediator.AddUser(SimplePowerUp);
             }
 
             

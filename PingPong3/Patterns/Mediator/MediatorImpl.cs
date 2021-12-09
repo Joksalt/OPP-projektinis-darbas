@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingPong3.Patterns.AbstractFactory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +12,20 @@ namespace PingPong3.Patterns.Mediator
         LinkedList<Colleague> players = new LinkedList<Colleague>();
 
         //teacher t? poweup p?
+        PowerUp ActivatedPowerUp;
 
         public void BroadcastMessage(Colleague sender, string msg)
         {
             throw new NotImplementedException();
         }
 
-        public void SetServer(Colleague user)
+        public void AddUser(Colleague user)
         {
-            throw new NotImplementedException();
+            if (user.GetColleagueType().Equals(ColleagueType.powerUp))
+            {
+                ActivatedPowerUp = (PowerUp)user;
+            }
+            
         }
     }
 }

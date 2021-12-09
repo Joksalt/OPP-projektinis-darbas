@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PingPong3.Patterns.Factory;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3.Patterns.AbstractFactory
 {
@@ -15,7 +16,7 @@ namespace PingPong3.Patterns.AbstractFactory
         //{
         //    target.CurrentSpeed = target.CurrentSpeed - 5;
         //}
-        public NegativeSoftnessPowerUp()
+        public NegativeSoftnessPowerUp(IMediator medi) : base(medi)
         {
             Position = new Point(450, 500);
             Texture = new PictureBox();
@@ -23,11 +24,27 @@ namespace PingPong3.Patterns.AbstractFactory
             Texture.BackColor = Color.Transparent;
             Velocity = new Point(1, 0);
         }
+
+        public override ColleagueType GetColleagueType()
+        {
+            return ColleagueType.powerUp;
+        }
+
         public override void MakePowerUp()
         {
             image = "PowerUp.png";
             name = "-Softness Power Up";
             Console.WriteLine("Making power up " + name);
+        }
+
+        public override void ReceiveMessage(string msg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SendMessage(string msg)
+        {
+            throw new NotImplementedException();
         }
         //public override void setTarget(MovingWall target)
         //{

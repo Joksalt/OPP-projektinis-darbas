@@ -173,11 +173,11 @@ namespace PingPong3
                 SendPowerUpChange(randomSeed.Next(2));
                 if (RandomNum.Equals(1))
                 {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
                 }
                 else
                 {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 }
             }
             _titleScreen = new HubItem();

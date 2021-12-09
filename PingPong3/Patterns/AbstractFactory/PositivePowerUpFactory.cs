@@ -12,22 +12,22 @@ namespace PingPong3.Patterns.AbstractFactory
     {
 
 
-        protected override PowerUp MakePowerUp(int typeOfPowerup)
+        protected override PowerUp MakePowerUp(int typeOfPowerup, IMediator medi)
         {
             PowerUp thePowerUp = null;
             if (typeOfPowerup.Equals(0))
             {
-                thePowerUp = new PositiveSplitPowerUp();
+                thePowerUp = new PositiveSplitPowerUp(medi);
                 //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
             else if (typeOfPowerup.Equals(1))
             {
-                thePowerUp = new PositiveSpeedPowerUp();
+                thePowerUp = new PositiveSpeedPowerUp(medi);
                 //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
             else if (typeOfPowerup.Equals(2))
             {
-                thePowerUp = new PositiveSoftnessPowerUp();
+                thePowerUp = new PositiveSoftnessPowerUp(medi);
                 //thePowerUp.SetData(new Point(100, 384), new Size(50, 50), Color.White); //later for random spawn position
             }
             return thePowerUp;

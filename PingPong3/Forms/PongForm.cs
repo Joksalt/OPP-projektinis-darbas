@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PingPong3.Patterns.Decorator;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3.Forms
 {
@@ -22,6 +23,8 @@ namespace PingPong3.Forms
         public int playerOtherScore;
         public int _playerSelfIndex;
         protected Background background;
+        //---mediator---
+        public IMediator _mediator = new MediatorImpl();
         //----template---
         public string _racketMode1, _racketMode2;
         public Racket racket1 = new Racket("PlayerRacket1");

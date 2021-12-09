@@ -21,6 +21,11 @@ namespace PingPong3.Patterns.AbstractFactory
             Velocity = new Point(1, 0);
         }
 
+        public override ColleagueType GetColleagueType()
+        {
+            return ColleagueType.powerUp;
+        }
+
         //public override void Activate()
         //{
         //    target.CurrentSpeed = target.CurrentSpeed + 50; ;
