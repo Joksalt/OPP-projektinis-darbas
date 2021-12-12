@@ -22,6 +22,7 @@ using PingPong3.Forms;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
 using PingPong3.Patterns.Mediator;
+using PingPong3.Patterns.Visitor;
 
 namespace PingPong3
 {
@@ -218,11 +219,16 @@ namespace PingPong3
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path = path + "Images\\";
 
-            // ----------- BRIDGE PATTERN ----------------
-            //Form's background picture
-            //pbTitleScreen.Load(path + "Fondo.png");
-            setBackgroundTheme();
-            pbTitleScreen.Load(this.background.setBackgroundTheme());
+            //// ----------- BRIDGE PATTERN ----------------
+            ////Form's background picture
+            ////pbTitleScreen.Load(path + "Fondo.png");
+            //setBackgroundTheme();
+            //pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+            //--Visitor---
+            _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+            //TODO: Visitor bckg
+            pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
 
 
             _titleScreen.Texture = pbTitleScreen;
