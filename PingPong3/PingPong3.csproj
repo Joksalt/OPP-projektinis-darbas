@@ -225,6 +225,7 @@
     <Compile Include="Patterns\Visitor\IFormRepresentationElement.cs" />
     <Compile Include="Patterns\Visitor\IVisitorPowerUp.cs" />
     <Compile Include="Patterns\Visitor\VisitorNoPowerUp.cs" />
+    <Compile Include="Patterns\Visitor\VisitorPositiveSpeedPowerUp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\StartForm.cs">

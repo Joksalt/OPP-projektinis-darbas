@@ -25,13 +25,15 @@ namespace PingPong3.Forms
         public int _playerSelfIndex;
         protected Background background;
         //---mediator---
-        public static IMediator _mediator = new MediatorImpl();
+        public IMediator _mediator;
         //--Visitor--
         public static IFormRepresentationElement _backgroundRepresentation = new BackgroundRepresentationElement();
         //----template---
         public string _racketMode1, _racketMode2;
-        public Racket racket1 = new Racket("PlayerRacket1", _mediator);
-        public Racket racket2 = new Racket("PlayerRacket2", _mediator);
+        //public Racket racket1 = new Racket("PlayerRacket1", _mediator);
+        //public Racket racket2 = new Racket("PlayerRacket2", _mediator);
+        public Racket racket1;
+        public Racket racket2;
         public static RacketStyle defaultRacket = new DefaultRacketMode();
         public static RacketStyle normalRacket = new RacketMode1(defaultRacket);
         public static RacketStyle devRacket = new RacketMode2(normalRacket);
@@ -70,6 +72,6 @@ namespace PingPong3.Forms
             //_racketMode2 = "default";
             racket1.RequestState("default");
             racket2.RequestState("default");
-        }
+        }        
     }
 }
