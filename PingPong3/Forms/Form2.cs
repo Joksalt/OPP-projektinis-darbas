@@ -20,6 +20,8 @@ using PingPong3.Forms;
 using PingPong3.Patterns.Command;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Visitor;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3
 {
@@ -87,6 +89,11 @@ namespace PingPong3
             playerOtherScore = 0;
             _playerSelfIndex = 1;
 
+            //--mediator
+            _mediator = new MediatorImpl();
+            racket1 = new Racket("PlayerRacket1", _mediator);
+            racket2 = new Racket("PlayerRacket2", _mediator);
+
             //--template--
             //_racketMode2 = "default";
             racket2.RequestState("default");
@@ -97,6 +104,7 @@ namespace PingPong3
 
             InitializeComponent();
 
+            
 
             gameLogger.Write(LOG_SENDER,"start");
 
@@ -174,6 +182,7 @@ namespace PingPong3
             {
                 
                 SendPowerUpChange(randomSeed.Next(2));
+                //SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 if (RandomNum.Equals(1))
                 {
                     SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
@@ -198,9 +207,14 @@ namespace PingPong3
             path = path + "Images\\";
 
 
-            // --------- BRIDGE PATTERN -------------
-            setBackgroundTheme();
-            pbTitleScreen.Load(this.background.setBackgroundTheme());
+            //// --------- BRIDGE PATTERN -------------
+            //setBackgroundTheme();
+            //pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+            //--Visitor---
+            _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+            //TODO: Visitor bckg
+            pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
 
 
             _titleScreen.Texture = pbTitleScreen;
@@ -429,6 +443,25 @@ namespace PingPong3
                     break;
             }
         }
+        public void ChangeBackgroundByPowerUp(Racket racket1)
+        {
+            switch (racket1.Mode)
+            {
+                case "+normal":
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorPositiveSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+                case "-normal":
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNegativeSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+                default:
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+                    //TODO: Visitor bckg
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+            }
+        }
         private void ResetBall()
         {
             //_commandController.Run(new BallResetCommand(this));
@@ -487,6 +520,7 @@ namespace PingPong3
 
 
                         ChangeRacketSkins(racket2);
+                        ChangeBackgroundByPowerUp(racket2);
                     }
                     _PowerUpExists = false;
                     //activate timer here and _PowerUpExists = true;
@@ -568,6 +602,7 @@ namespace PingPong3
             connection.On<int>("RecieveRacketSpeedChange", (s) =>
             {
                 ChangeRacketSpeed(racket2);
+                ChangeBackgroundByPowerUp(racket2);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
