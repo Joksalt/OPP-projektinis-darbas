@@ -182,6 +182,7 @@ namespace PingPong3
             {
                 
                 SendPowerUpChange(randomSeed.Next(2));
+                //SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 if (RandomNum.Equals(1))
                 {
                     SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
@@ -206,9 +207,14 @@ namespace PingPong3
             path = path + "Images\\";
 
 
-            // --------- BRIDGE PATTERN -------------
-            setBackgroundTheme();
-            pbTitleScreen.Load(this.background.setBackgroundTheme());
+            //// --------- BRIDGE PATTERN -------------
+            //setBackgroundTheme();
+            //pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+            //--Visitor---
+            _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+            //TODO: Visitor bckg
+            pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
 
 
             _titleScreen.Texture = pbTitleScreen;
@@ -446,7 +452,8 @@ namespace PingPong3
                     pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
                     break;
                 case "-normal":
-                    //TODO: Visitor negativeSpeed
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNegativeSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
                     break;
                 default:
                     _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());

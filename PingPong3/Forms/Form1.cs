@@ -201,6 +201,7 @@ namespace PingPong3
             if (_PowerUpExists)
             {
                 SendPowerUpChange(randomSeed.Next(2));
+                //SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 if (RandomNum.Equals(1))
                 {
                     SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
@@ -431,7 +432,8 @@ namespace PingPong3
                     pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
                     break;
                 case "-normal":
-                    //TODO: Visitor negativeSpeed
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNegativeSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
                     break;
                 default:
                     _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
