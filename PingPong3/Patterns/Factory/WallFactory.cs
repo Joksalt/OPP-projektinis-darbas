@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using PingPong3.Patterns.Strategy;
 using System.Drawing;
 using System.Windows.Forms;
+using PingPong3.Patterns.Mediator;
+using PingPong3.Patterns.Decorator;
 
 namespace PingPong3.Patterns.Factory
 {
@@ -14,12 +16,12 @@ namespace PingPong3.Patterns.Factory
         //1024, 768
         private int WallCount = 0;
 
-        public Wall MakeWall(int Number)
+        public Wall MakeWall(int Number, IMediator medi, RacketStyle normalRacket, RacketStyle defaultRacket)
         {
             if (Number == 0)
-                return new StaticWall(WallCount++);
+                return new StaticWall(WallCount++, medi);
             else if (Number == 1)
-                return new MovingWall(WallCount++);
+                return new MovingWall(WallCount++, medi, normalRacket, defaultRacket);
             else return null;
         }
     }

@@ -21,6 +21,9 @@ using PingPong3.Patterns.Facade;
 using PingPong3.Forms;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Mediator;
+using PingPong3.Patterns.Visitor;
+using PingPong3.Patterns.Proxy;
 using PingPong3.Patterns.Memento;
 
 namespace PingPong3
@@ -94,6 +97,9 @@ namespace PingPong3
         private CertainSound HitSound = new CertainSound("Hit");
         private CertainSound ScoreSound = new CertainSound("Score");
         private CertainSound MissSound = new CertainSound("Miss");
+
+        // ----- Proxy pattern ------
+        private SoundProxy soundProxy = new SoundProxy();
         #endregion
 
         #region FormConstructor
@@ -104,6 +110,11 @@ namespace PingPong3
             playerOtherScore = 0;
             _playerSelfIndex = 0;
 
+            //--mediator
+            _mediator = new MediatorImpl();
+            racket1 = new Racket("PlayerRacket1", _mediator);
+            racket2 = new Racket("PlayerRacket2", _mediator);
+
             //--template--
             //_racketMode1 = "default";
             racket1.RequestState("default");
@@ -111,6 +122,8 @@ namespace PingPong3
             //normalRacket = new RacketMode1(defaultRacket);
             //devRacket = new RacketMode2(normalRacket);
             _PowerUpExists = true;
+
+            
 
             InitializeComponent();
 
@@ -133,7 +146,6 @@ namespace PingPong3
             Load += Form1_Load;
 
             _commandController = new GameController();
-            
         }
         #endregion
 
@@ -182,13 +194,15 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder);
+            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator, normalRacket, defaultRacket);
             levelData = frenzyLevelBuilder.GetResult();
 
             randomSeed = new Random();
-            _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
-            _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _mediator.AddUser(_player1);
+
+            _player2 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player2.SetMove(new PlayerMove(_player2));
             _ball = new BallItem
             {
@@ -197,15 +211,18 @@ namespace PingPong3
             if (_PowerUpExists)
             {
                 SendPowerUpChange(randomSeed.Next(2));
+                //SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 if (RandomNum.Equals(1))
                 {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
                 }
                 else
                 {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 }
+                _mediator.AddUser(SimplePowerUp);
             }
+            _mediator.AddUser(racket1);
 
 
             _titleScreen = new HubItem { 
@@ -220,11 +237,16 @@ namespace PingPong3
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path += "Images\\";
 
-            // ----------- BRIDGE PATTERN ----------------
-            //Form's background picture
-            //pbTitleScreen.Load(path + "Fondo.png");
-            setBackgroundTheme();
-            pbTitleScreen.Load(this.background.setBackgroundTheme());
+            //// ----------- BRIDGE PATTERN ----------------
+            ////Form's background picture
+            ////pbTitleScreen.Load(path + "Fondo.png");
+            //setBackgroundTheme();
+            //pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+            //--Visitor---
+            _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+            //TODO: Visitor bckg
+            pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
 
 
             _titleScreen.Texture = pbTitleScreen;
@@ -391,6 +413,7 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
+        
         public void ChangeRacketSpeed(Racket racket1)
         {
             switch (racket1.Mode)
@@ -426,6 +449,43 @@ namespace PingPong3
             path = path + "Images\\";
 
             SendRacketSkin(path + picture + ".png");
+        }
+        public void ChangeBackgroundByPowerUp(Racket racket1)
+        {
+            switch (racket1.Mode)
+            {
+                case "+normal":
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorPositiveSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+                case "-normal":
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNegativeSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+                default:
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+                    //TODO: Visitor bckg
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+            }
+        }
+        public void ChangeRacketSkins(Racket racket1)
+        {
+            switch (racket1.Mode)
+            {
+                case "+normal":
+                    RacketSkinSender(normalRacket.GetSkin());
+                    break;
+                case "-normal":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                case "dev":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                default:
+                    RacketSkinSender(defaultRacket.GetSkin());
+                    break;
+            }
         }
         //private void RacketSkinReseter()
         //{
@@ -516,8 +576,12 @@ namespace PingPong3
                     if (_ball.Player1Hit)
                     {
                         Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 1");
-                        racket1.RequestState(SimplePowerUp.name);
-                        ChangeRacketSpeed(racket1);
+                        SimplePowerUp.SendPowerUpName();
+
+
+                        ChangeRacketSkins(racket1);
+                        ChangeBackgroundByPowerUp(racket1);
+                        //ChangeRacketSpeed(racket1);
                         //racket1.PickState(SimplePowerUp.name);
 
                     }
@@ -620,6 +684,7 @@ namespace PingPong3
             connection.On<int>("RecieveRacketSpeedChange", (s) =>
             {
                 ChangeRacketSpeed(racket1);
+                ChangeBackgroundByPowerUp(racket1);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {
@@ -678,7 +743,8 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
-                HitSound.RequestSound();
+                //HitSound.RequestSound();
+                soundProxy.RequestSound("Hit");
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection2", (positionX, positionY, velocityX, velocityY) =>
             {
@@ -689,7 +755,8 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
-                HitSound.RequestSound();
+                //HitSound.RequestSound();
+                soundProxy.RequestSound("Hit");
             });
             try
             {

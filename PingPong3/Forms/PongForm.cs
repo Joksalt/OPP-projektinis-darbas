@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PingPong3.Patterns.Decorator;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Mediator;
+using PingPong3.Patterns.Visitor;
 
 namespace PingPong3.Forms
 {
@@ -22,9 +24,16 @@ namespace PingPong3.Forms
         public int playerOtherScore;
         public int _playerSelfIndex;
         protected Background background;
+        //---mediator---
+        public IMediator _mediator;
+        //--Visitor--
+        public static IFormRepresentationElement _backgroundRepresentation = new BackgroundRepresentationElement();
         //----template---
-        public Racket racket1 = new Racket("PlayerRacket1");
-        public Racket racket2 = new Racket("PlayerRacket2");
+        
+        //public Racket racket1 = new Racket("PlayerRacket1", _mediator);
+        //public Racket racket2 = new Racket("PlayerRacket2", _mediator);
+        public Racket racket1;
+        public Racket racket2;
         public static RacketStyle defaultRacket = new DefaultRacketMode();
         public static RacketStyle normalRacket = new RacketMode1(defaultRacket);
         public static RacketStyle devRacket = new RacketMode2(normalRacket);
@@ -61,6 +70,6 @@ namespace PingPong3.Forms
             SendRacketSkin2(path + "Paddle1" + ".png");
             racket1.RequestState("default");
             racket2.RequestState("default");
-        }
+        }        
     }
 }

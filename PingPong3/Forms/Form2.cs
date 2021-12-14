@@ -20,6 +20,8 @@ using PingPong3.Forms;
 using PingPong3.Patterns.Command;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Visitor;
+using PingPong3.Patterns.Mediator;
 using PingPong3.Patterns.Memento;
 
 namespace PingPong3
@@ -92,6 +94,11 @@ namespace PingPong3
             playerOtherScore = 0;
             _playerSelfIndex = 1;
 
+            //--mediator
+            _mediator = new MediatorImpl();
+            racket1 = new Racket("PlayerRacket1", _mediator);
+            racket2 = new Racket("PlayerRacket2", _mediator);
+
             //--template--
             //_racketMode2 = "default";
             racket2.RequestState("default");
@@ -102,6 +109,7 @@ namespace PingPong3
 
             InitializeComponent();
 
+            
 
             gameLogger.Write(LOG_SENDER,"start");
 
@@ -161,14 +169,17 @@ namespace PingPong3
             classicLevelBuilder = new ClassicLevelBuilder();
             advancedLevelBuilder = new AdvancedLevelBuilder();
             frenzyLevelBuilder = new FrenzyLevelBuilder();
-            levelDirector.ConstructWalls(frenzyLevelBuilder);
+            levelDirector.ConstructWalls(frenzyLevelBuilder, _mediator, normalRacket, defaultRacket);
             levelData = frenzyLevelBuilder.GetResult();
 
             randomSeed = new Random();
-            _player1 = WallFactory.MakeWall(1).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+            _player1 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player1.SetMove(new PlayerMove(_player1));
-            _player2 = WallFactory.MakeWall(1).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
+
+            _player2 = WallFactory.MakeWall(1, _mediator, normalRacket, defaultRacket).SetData(new Point(ScreenWidth - 30, ScreenHeight / 2), new Size(30, 180), Color.White, 0, 0, new Point(0, 0)) as MovingWall;
             _player2.SetMove(new PlayerMove(_player2));
+            _mediator.AddUser(_player2);
+
             _ball = new BallItem
             {
                 Velocity = new Point(2, 5)
@@ -177,15 +188,19 @@ namespace PingPong3
             {
                 
                 SendPowerUpChange(randomSeed.Next(2));
+                //SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 if (RandomNum.Equals(1))
                 {
-                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpPositive.OrderPowerUp(1, _mediator);
                 }
                 else
                 {
-                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1);
+                    SimplePowerUp = MakePowerUpNegative.OrderPowerUp(1, _mediator);
                 }
+                _mediator.AddUser(SimplePowerUp);
             }
+            _mediator.AddUser(racket2);
+
             _titleScreen = new HubItem();
             _titleScreen.Position = new Point(0, 0);
             _titleScreen.Width = ScreenWidth;
@@ -198,9 +213,14 @@ namespace PingPong3
             path = path + "Images\\";
 
 
-            // --------- BRIDGE PATTERN -------------
-            setBackgroundTheme();
-            pbTitleScreen.Load(this.background.setBackgroundTheme());
+            //// --------- BRIDGE PATTERN -------------
+            //setBackgroundTheme();
+            //pbTitleScreen.Load(this.background.setBackgroundTheme());
+
+            //--Visitor---
+            _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+            //TODO: Visitor bckg
+            pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
 
 
             _titleScreen.Texture = pbTitleScreen;
@@ -426,6 +446,43 @@ namespace PingPong3
             _PowerUpExists = false; //cia true
             
         }
+        public void ChangeRacketSkins(Racket racket)
+        {
+            switch (racket.Mode)
+            {
+                case "+normal":
+                    RacketSkinSender(normalRacket.GetSkin());
+                    break;
+                case "-normal":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                case "dev":
+                    RacketSkinSender(devRacket.GetSkin());
+                    break;
+                default:
+                    RacketSkinSender(defaultRacket.GetSkin());
+                    break;
+            }
+        }
+        public void ChangeBackgroundByPowerUp(Racket racket1)
+        {
+            switch (racket1.Mode)
+            {
+                case "+normal":
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorPositiveSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+                case "-normal":
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNegativeSpeedPowerUp());
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+                default:
+                    _backgroundRepresentation.AcceptRepresentationVisitor(new VisitorNoPowerUp());
+                    //TODO: Visitor bckg
+                    pbTitleScreen.Load(_backgroundRepresentation.ReturnBackground().setBackgroundTheme());
+                    break;
+            }
+        }
         private void ResetBall()
         {
             //_commandController.Run(new BallResetCommand(this));
@@ -480,9 +537,11 @@ namespace PingPong3
                     if (!_ball.Player1Hit)
                     {
                         Console.WriteLine("OWW SHIT YOU HIT A POWER UP Player 2");
-                        racket2.RequestState(SimplePowerUp.name);
-                        ChangeRacketSpeed(racket2);
-                        //    _racketMode2 = SimplePowerUp.name;
+                        SimplePowerUp.SendPowerUpName();
+
+
+                        ChangeRacketSkins(racket2);
+                        ChangeBackgroundByPowerUp(racket2);
                     }
                     _PowerUpExists = false;
                     //activate timer here and _PowerUpExists = true;
@@ -564,6 +623,7 @@ namespace PingPong3
             connection.On<int>("RecieveRacketSpeedChange", (s) =>
             {
                 ChangeRacketSpeed(racket2);
+                ChangeBackgroundByPowerUp(racket2);
             });
             connection.On<bool>("RecievePlayer1HitBool", (Player1Hit) =>
             {

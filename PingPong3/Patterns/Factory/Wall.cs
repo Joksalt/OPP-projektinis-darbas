@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using PingPong3.Patterns.Strategy;
+using PingPong3.Patterns.Mediator;
 
 namespace PingPong3.Patterns.Factory
 {
-    public abstract class Wall : GameItem
+    public abstract class Wall : Colleague
     {
+        public Wall(IMediator medi) : base(medi)
+        {
+
+        }
         public virtual Wall SetData()
         {
             return null;
