@@ -12,8 +12,8 @@ namespace PingPong3.Patterns.Bridge
         {
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-            path = path + "Images\\";
-            path = path + "Fondo.png";
+            path += "Images\\";
+            path += "Fondo.png";
             return path;
         }
     }

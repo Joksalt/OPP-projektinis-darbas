@@ -23,7 +23,6 @@ namespace PingPong3.Forms
         public int _playerSelfIndex;
         protected Background background;
         //----template---
-        public string _racketMode1, _racketMode2;
         public Racket racket1 = new Racket("PlayerRacket1");
         public Racket racket2 = new Racket("PlayerRacket2");
         public static RacketStyle defaultRacket = new DefaultRacketMode();
@@ -60,8 +59,6 @@ namespace PingPong3.Forms
 
             SendRacketSkin(path + "Paddle1" + ".png");
             SendRacketSkin2(path + "Paddle1" + ".png");
-            //_racketMode1 = "default";
-            //_racketMode2 = "default";
             racket1.RequestState("default");
             racket2.RequestState("default");
         }

@@ -21,6 +21,7 @@ using PingPong3.Patterns.Facade;
 using PingPong3.Forms;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Memento;
 
 namespace PingPong3
 {
@@ -75,6 +76,10 @@ namespace PingPong3
         private int _currentBallX;
 
         private PowerUp SimplePowerUp;
+
+        private Originator o = new Originator();
+        private Caretaker c = new Caretaker();
+        private bool pause;
 
         private LevelDirector levelDirector;
         private ClassicLevelBuilder classicLevelBuilder;
@@ -136,6 +141,7 @@ namespace PingPong3
         private void BeginGame()
         {
             _isGameRunning = true;
+            pause = false;
             _commandController.Run(new BallResetCommand(this));
             
             //_racketMode1 = "default";
@@ -201,7 +207,6 @@ namespace PingPong3
                 }
             }
 
-            
 
             _titleScreen = new HubItem { 
                 Position = new Point(0, 0),
@@ -213,7 +218,7 @@ namespace PingPong3
         {
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
-            path = path + "Images\\";
+            path += "Images\\";
 
             // ----------- BRIDGE PATTERN ----------------
             //Form's background picture
@@ -262,8 +267,23 @@ namespace PingPong3
         {
             if (_isGameRunning)
             {
-                UpdatePlayer();
-                _ball.Update();
+                //Game Pause (without walls just to show Memento)
+                if (Keyboard.IsKeyToggled(Key.Escape))
+                {
+                    if (pause)
+                    {
+                        o.SetMemento(c.Memento);
+                    }
+                    else
+                    {
+                        o.Ball = _ball;
+                        o.Player1 = _player1;
+                        o.Player2 = _player2;
+                        c.Memento = o.CreateMemento();
+                        UpdatePlayer();
+                        _ball.Update();
+                    }
+                }
 
                 CheckWallCollision();
                 CheckWallOut();
@@ -276,6 +296,9 @@ namespace PingPong3
                         (w as MovingWall).Move();
                     }
                 }
+
+                
+               
             }
         }
         private void DrawScene()
@@ -359,7 +382,6 @@ namespace PingPong3
             }
             if (Keyboard.IsKeyDown(Key.D9))
             {
-                //_racketMode1 = "dev";
                 racket1.RequestState("dev");
                 ChangeRacketSpeed(racket1);
             }
@@ -424,44 +446,10 @@ namespace PingPong3
             if (!_PowerUpExists)
                 _PowerUpExists = false;
         }
-        //private void ResetBall()
-        //{
-        //    _racketMode1 = "default";
-        //    //RacketSkinReseter();
-        //    RacketSkinSender(defaultRacket.GetSkin());
-        //    //PowerUpMaking();
-        //    Console.WriteLine("b" + _PowerUpExists);
-        //    _PowerUpExists = true;
-        //    Console.WriteLine("a" + _PowerUpExists);
-
-        //}
-        //private void ResetBall()
-        //{
-        //    _racketMode1 = "default";
-        //    //RacketSkinReseter();
-        //    RacketSkinSender(defaultRacket.GetSkin());
-        //    //PowerUpMaking();
-        //    Console.WriteLine("b"+_PowerUpExists);
-        //    _PowerUpExists = true;
-        //    Console.WriteLine("a"+_PowerUpExists);
-
-        //}
         public override int GenerateBallX()
         {
             _level += 1;
             int velocityX = _level;
-            //switch (_racketMode1)
-            //{
-            //    case "normal":
-            //        velocityX = normalRacket.GetSoftness();
-            //        break;
-            //    case "dev":
-            //        velocityX = mediumRacket.GetSoftness();
-            //        break;
-            //    default:
-            //        velocityX = defaultRacket.GetSoftness();
-            //        break;
-            //}
             if (randomSeed.Next(2) == 0)
             {
                 velocityX *= -1;

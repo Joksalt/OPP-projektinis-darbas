@@ -19,10 +19,12 @@ namespace PingPong3.Patterns.Factory
         public MovingWall(int i)
         {
             Position = new Point(50, 50);
-            Texture = new PictureBox();
-            Texture.Name = "pbWall" + i.ToString();
-            Texture.Size = new Size(20, 10);
-            Texture.BackColor = Color.White;
+            Texture = new PictureBox
+            {
+                Name = "pbWall" + i.ToString(),
+                Size = new Size(20, 10),
+                BackColor = Color.White
+            };
 
             Start = 10;
             End = 100;

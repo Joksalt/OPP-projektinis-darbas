@@ -20,6 +20,7 @@ using PingPong3.Forms;
 using PingPong3.Patterns.Command;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
+using PingPong3.Patterns.Memento;
 
 namespace PingPong3
 {
@@ -62,6 +63,10 @@ namespace PingPong3
         //private Racket racket2 = new Racket("Player2");
 
         private PowerUp SimplePowerUp;
+
+        private Originator o = new Originator();
+        private Caretaker c = new Caretaker();
+        private bool pause;
 
         //private static RacketStyle defaultRacket = new DefaultRacketMode();
         //private static RacketStyle normalRacket = new RacketMode1(defaultRacket);
@@ -128,6 +133,7 @@ namespace PingPong3
             lblScore2.BackColor = Color.Transparent;
             label4.BackColor = Color.Transparent;
             _isGameRunning = true;
+            pause = false;
 
         }
 
@@ -234,8 +240,23 @@ namespace PingPong3
         {
             if (_isGameRunning)
             {
-                UpdatePlayer();
-                _ball.Update();
+                // Game Pause (without walls just to show Memento)
+                if (Keyboard.IsKeyToggled(Key.Escape))
+                {
+                    if (pause)
+                    {
+                        o.SetMemento(c.Memento);
+                    }
+                    else
+                    {
+                        o.Ball = _ball;
+                        o.Player1 = _player1;
+                        o.Player2 = _player2;
+                        c.Memento = o.CreateMemento();
+                        UpdatePlayer();
+                        _ball.Update();
+                    }
+                }
 
                 CheckWallCollision();
                 CheckWallOut();
