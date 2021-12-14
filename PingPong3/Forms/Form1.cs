@@ -80,8 +80,8 @@ namespace PingPong3
 
         private PowerUp SimplePowerUp;
 
-        private Originator o = new Originator();
-        private Caretaker c = new Caretaker();
+        private PauseOriginator PauseOriginator = new PauseOriginator();
+        private PauseCaretaker PauseCaretaker = new PauseCaretaker();
         private bool pause;
 
         private LevelDirector levelDirector;
@@ -294,14 +294,14 @@ namespace PingPong3
                 {
                     if (pause)
                     {
-                        o.SetMemento(c.Memento);
+                        PauseOriginator.SetMemento(PauseCaretaker.Memento);
                     }
                     else
                     {
-                        o.Ball = _ball;
-                        o.Player1 = _player1;
-                        o.Player2 = _player2;
-                        c.Memento = o.CreateMemento();
+                        PauseOriginator.Ball = _ball;
+                        PauseOriginator.Player1 = _player1;
+                        PauseOriginator.Player2 = _player2;
+                        PauseCaretaker.Memento = PauseOriginator.CreateMemento();
                         UpdatePlayer();
                         _ball.Update();
                     }

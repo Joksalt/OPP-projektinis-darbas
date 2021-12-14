@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Memento
 {
-    public class Originator
+    public class PauseOriginator
     {
         MovingWall player1, player2;
         BallItem ball;

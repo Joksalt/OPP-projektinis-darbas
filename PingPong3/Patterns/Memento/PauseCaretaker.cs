@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingPong3.Patterns.Memento
 {
-    public class Caretaker
+    public class PauseCaretaker
     {
         Memento memento;
         public Memento Memento
