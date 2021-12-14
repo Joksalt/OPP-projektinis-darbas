@@ -206,6 +206,9 @@
     <Compile Include="Patterns\Observer\Server.cs" />
     <Compile Include="Patterns\Observer\Subject.cs" />
     <Compile Include="Patterns\Prototype\IPrototype.cs" />
+    <Compile Include="Patterns\Proxy\ISound.cs" />
+    <Compile Include="Patterns\Proxy\RealSound.cs" />
+    <Compile Include="Patterns\Proxy\SoundProxy.cs" />
     <Compile Include="Patterns\Singleton_logger\Logger.cs" />
     <Compile Include="Patterns\State\Blue2State.cs" />
     <Compile Include="Patterns\State\PurpleState.cs" />

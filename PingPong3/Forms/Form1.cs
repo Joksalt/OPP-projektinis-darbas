@@ -23,6 +23,7 @@ using PingPong3.Patterns.Template;
 using PingPong3.Patterns.State;
 using PingPong3.Patterns.Mediator;
 using PingPong3.Patterns.Visitor;
+using PingPong3.Patterns.Proxy;
 
 namespace PingPong3
 {
@@ -91,6 +92,9 @@ namespace PingPong3
         private CertainSound HitSound = new CertainSound("Hit");
         private CertainSound ScoreSound = new CertainSound("Score");
         private CertainSound MissSound = new CertainSound("Miss");
+
+        // ----- Proxy pattern ------
+        private SoundProxy soundProxy = new SoundProxy();
         #endregion
 
         #region FormConstructor
@@ -750,7 +754,8 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
-                HitSound.RequestSound();
+                //HitSound.RequestSound();
+                soundProxy.RequestSound("Hit");
             });
             connection.On<int, int, int, int>("ReceiveBallVelocityDirection2", (positionX, positionY, velocityX, velocityY) =>
             {
@@ -761,7 +766,8 @@ namespace PingPong3
                 }
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
-                HitSound.RequestSound();
+                //HitSound.RequestSound();
+                soundProxy.RequestSound("Hit");
             });
             try
             {
