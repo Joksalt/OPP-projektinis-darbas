@@ -199,6 +199,10 @@
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
+    <Compile Include="Patterns\Iterator\IIterableCollection.cs" />
+    <Compile Include="Patterns\Iterator\IIterator.cs" />
+    <Compile Include="Patterns\Iterator\LevelDataCollection.cs" />
+    <Compile Include="Patterns\Iterator\LevelDataIterator.cs" />
     <Compile Include="Patterns\Mediator\Colleague.cs" />
     <Compile Include="Patterns\Mediator\IMediator.cs" />
     <Compile Include="Patterns\Mediator\MediatorImpl.cs" />
