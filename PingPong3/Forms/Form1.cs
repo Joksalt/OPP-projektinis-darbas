@@ -24,6 +24,7 @@ using PingPong3.Patterns.State;
 using PingPong3.Patterns.Mediator;
 using PingPong3.Patterns.Visitor;
 using PingPong3.Patterns.Proxy;
+using PingPong3.Patterns.Iterator;
 
 namespace PingPong3
 {
@@ -256,10 +257,19 @@ namespace PingPong3
             _player2.Texture = pbPlayer2;
             pbPlayer2.BackColor = Color.Transparent;
 
-            foreach(Wall w in levelData.walls)
+            // ----- Iterator pattern -------
+            
+            IIterator frenzyLevelWallsIterator = new LevelDataIterator(levelData.walls);
+
+            while (frenzyLevelWallsIterator.HasNext())
             {
-                pbTitleScreen.Controls.Add(w.Texture);
+                pbTitleScreen.Controls.Add((PictureBox)frenzyLevelWallsIterator.GetNext());
             }
+
+            //foreach(Wall w in levelData.walls)
+            //{
+            //    pbTitleScreen.Controls.Add(w.Texture);
+            //}
 
             if (_PowerUpExists)
             {
