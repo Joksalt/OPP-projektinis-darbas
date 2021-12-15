@@ -87,7 +87,6 @@ namespace PingPong3
             playerOtherScore = 0;
             _playerSelfIndex = 0;
 
-            _racketMode1 = "default";
             //TODO: different from form1
             _PowerUpExists = false;
 
@@ -122,7 +121,6 @@ namespace PingPong3
             _isGameRunning = true;
             _commandController.Run(new BallResetCommand(this));
             
-            _racketMode1 = "default";
             RacketSkinSender(defaultRacket.GetSkin());
             _PowerUpExists = true;
 
@@ -316,31 +314,8 @@ namespace PingPong3
                     _player1.Velocity = new Point(0, 0);
                 else
                 {
-                    //if (_ball.Player1Hit && !_PowerUpExists)
-                    if (!_PowerUpExists)
-                    {
-                        //TODO: racket mode
-                        switch (_racketMode1)
-                        {
-                            case "+normal":
-                                _player1.Velocity = new Point(0, _player1.CurrentSpeed + normalRacket.GetSpeed());
-                                break;
-                            case "-normal":
-                                _player1.Velocity = new Point(0, _player1.CurrentSpeed - normalRacket.GetSpeed());
-                                break;
-                            case "dev":
-                                _player1.Velocity = new Point(0, _player1.CurrentSpeed + devRacket.GetSpeed());
-                                break;
-                            default:
-                                _player1.Velocity = new Point(0, _player1.CurrentSpeed);
-                                break;
-                        }
 
-                    }
-                    else
-                    {
                         _player1.Velocity = new Point(0, _player1.CurrentSpeed);
-                    }
                 }
                     
                     
@@ -353,68 +328,16 @@ namespace PingPong3
                     _player1.Velocity = new Point(0, 0);
                 else
                 {
-                    if (!_PowerUpExists)
-                    {
-                        switch (_racketMode1)
-                        {
-                            case "+normal":
-                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed - normalRacket.GetSpeed());
-                                break;
-                            case "-normal":
-                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed + normalRacket.GetSpeed());
-                                break;
-                            case "dev":
-                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed - devRacket.GetSpeed());
-                                break;
-                            default:
-                                _player1.Velocity = new Point(0, -_player1.CurrentSpeed);
-                                break;
-                        }
-                    }
-                    else
-                    {
+                   
                         _player1.Velocity = new Point(0, -_player1.CurrentSpeed);
-                    }
+               
                 }
                    
                 _player1.Move();
                 SendPlayer1Position(_player1.Position);
             }
-            if (!_PowerUpExists)
-            {
-                //TODO: loops around here
-                switch (_racketMode1)
-                {
-                    case "+normal":
-                        RacketSkinSender(normalRacket.GetSkin());
-                        break;
-                    case "-normal":
-                        RacketSkinSender(devRacket.GetSkin());
-                        break;
-                    case "dev":
-                        RacketSkinSender(devRacket.GetSkin());
-                        break;
-                    default:
-                        RacketSkinSender(defaultRacket.GetSkin());
-                        break;
-                }
-            }
-            else
-            {
+            
                 RacketSkinSender(defaultRacket.GetSkin());
-            }
-            if (Keyboard.IsKeyDown(Key.D1))
-            {
-                _racketMode1 = "default";
-            }
-            if (Keyboard.IsKeyDown(Key.D2))
-            {
-                _racketMode1 = "+normal";
-            }
-            if (Keyboard.IsKeyDown(Key.D3))
-            {
-                _racketMode1 = "dev";
-            }
             //Undo last command
             if (Keyboard.IsKeyDown(Key.D4))
             {

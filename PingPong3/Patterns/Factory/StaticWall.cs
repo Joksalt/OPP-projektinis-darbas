@@ -14,10 +14,12 @@ namespace PingPong3.Patterns.Factory
         public StaticWall(int i, IMediator medi) : base(medi)
         {
             Position = new Point(500, 500);
-            Texture = new PictureBox();
-            Texture.Name = "pbWall" + i.ToString();
-            Texture.Size = new Size(100, 10);
-            Texture.BackColor = Color.White;
+            Texture = new PictureBox
+            {
+                Name = "pbWall" + i.ToString(),
+                Size = new Size(100, 10),
+                BackColor = Color.White
+            };
         }
 
         public override ColleagueType GetColleagueType()
