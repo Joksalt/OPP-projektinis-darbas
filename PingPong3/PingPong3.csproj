@@ -206,9 +206,9 @@
     <Compile Include="Patterns\Mediator\Colleague.cs" />
     <Compile Include="Patterns\Mediator\IMediator.cs" />
     <Compile Include="Patterns\Mediator\MediatorImpl.cs" />
-    <Compile Include="Patterns\Memento\Caretaker.cs" />
+    <Compile Include="Patterns\Memento\PauseCaretaker.cs" />
     <Compile Include="Patterns\Memento\Memento.cs" />
-    <Compile Include="Patterns\Memento\Originator.cs" />
+    <Compile Include="Patterns\Memento\PauseOriginator.cs" />
     <Compile Include="Patterns\Observer\IObserver.cs" />
     <Compile Include="Patterns\Observer\Server.cs" />
     <Compile Include="Patterns\Observer\Subject.cs" />
