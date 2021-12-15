@@ -138,6 +138,12 @@
     <Compile Include="Forms\ClassicForm1.Designer.cs">
       <DependentUpon>ClassicForm1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DevConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DevConsole.Designer.cs">
+      <DependentUpon>DevConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Form2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,12 +189,25 @@
     <Compile Include="Patterns\ChainOfCommand\FirstHeartHandler.cs" />
     <Compile Include="Patterns\ChainOfCommand\HeartHandler.cs" />
     <Compile Include="Patterns\ChainOfCommand\HeartItem.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\BinOpNode.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Error.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Interpreter.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\InterpretResult.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Node.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Number.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\NumberNode.cs" />
     <Compile Include="Patterns\ChainOfCommand\SecondHeartHandler.cs" />
     <Compile Include="Patterns\Command\GameController.cs" />
     <Compile Include="Patterns\Command\BallResetCommand.cs" />
     <Compile Include="Patterns\Command\ICommand.cs" />
     <Compile Include="Patterns\Command\MoveCommand.cs" />
     <Compile Include="Patterns\Command\ScoreIncreaseCommand.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Lexer.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Parser.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\LexResult.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\ParseResult.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\Token.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\UnOpNode.cs" />
     <Compile Include="Patterns\Decorator\RacketDecorator.cs" />
     <Compile Include="Patterns\Decorator\DefaultRacketMode.cs" />
     <Compile Include="Patterns\Decorator\RacketMode1.cs" />
@@ -251,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ClassicForm1.resx">
       <DependentUpon>ClassicForm1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DevConsole.resx">
+      <DependentUpon>DevConsole.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>

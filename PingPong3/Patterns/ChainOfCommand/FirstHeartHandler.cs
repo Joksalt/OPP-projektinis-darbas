@@ -30,7 +30,5 @@ namespace PingPong3.Patterns.ChainOfCommand
             else
                 successor.HandleRequest(i);
         }
-
-        
     }
 }
