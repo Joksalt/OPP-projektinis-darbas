@@ -20,12 +20,13 @@ using PingPong3.Patterns.Command;
 using PingPong3.Forms;
 using PingPong3.Patterns.Template;
 using PingPong3.Patterns.ChainOfCommand;
+using System.Runtime.InteropServices;
 
 namespace PingPong3
 {
-    //public partial class Form1 : PongForm, IObserver
     public partial class ClassicForm1 :  GoalTemplate, IObserver
     {
+
         #region Variables
         HubConnection connection;
 
@@ -610,7 +611,6 @@ namespace PingPong3
                 else
                 {
                     playerOtherScore = score;
-                    playerOtherScore = score;//Excuse me, wtf? -Symuciakas
                     //lblScore2.Text = playerOtherScore.ToString();
                     p1HeartHandler.HandleRequest(score);
                     //MissSound.RequestSound();

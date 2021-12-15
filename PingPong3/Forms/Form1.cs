@@ -34,6 +34,8 @@ namespace PingPong3
         // Facade variable
         Facade facade = new Facade();
 
+        DevConsole devConsole = new DevConsole();
+
         //---------
         public static LoggerSingleton gameLogger = LoggerSingleton.LoggerInstance;
         private string LOG_SENDER = "P1";
@@ -363,6 +365,12 @@ namespace PingPong3
                 //_racketMode1 = "dev";
                 racket1.RequestState("dev");
                 ChangeRacketSpeed(racket1);
+
+                if (devConsole.IsDisposed || !devConsole.Visible)
+                {
+                    devConsole = new DevConsole();
+                    devConsole.Show();
+                }
             }
             //Undo last command
             if (Keyboard.IsKeyDown(Key.D4))

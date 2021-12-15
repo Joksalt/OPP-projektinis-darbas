@@ -26,7 +26,7 @@ namespace PingPong3.Patterns.ChainOfCommand
         public override void HandleRequest(int i)
         {
             heart.Remove();
-            form.Close();
+            //form.Close();
         }
     }
 }
