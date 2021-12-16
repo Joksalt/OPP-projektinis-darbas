@@ -26,6 +26,7 @@ using PingPong3.Patterns.Visitor;
 using PingPong3.Patterns.Proxy;
 using PingPong3.Patterns.Memento;
 using PingPong3.Patterns.Iterator;
+using PingPong3.Patterns.Flyweight;
 
 namespace PingPong3
 {
@@ -82,6 +83,9 @@ namespace PingPong3
         private int _currentBallX;
 
         private PowerUp SimplePowerUp;
+
+        // ------ Flyweight pattern ------- 
+        ImageFactory imageFactory = new ImageFactory();
 
         private PauseOriginator PauseOriginator = new PauseOriginator();
         private PauseCaretaker PauseCaretaker = new PauseCaretaker();
@@ -281,8 +285,10 @@ namespace PingPong3
 
             if (_PowerUpExists)
             {
-                
-                SimplePowerUp.Texture.Load(path + SimplePowerUp.image);
+
+                // ------- Flyweight design pattern -------
+                //SimplePowerUp.Texture.Load(path + SimplePowerUp.image);
+                SimplePowerUp.Texture.Load(imageFactory.GetImagePath("PowerUp"));
                 pbTitleScreen.Controls.Add(SimplePowerUp.Texture);
             }
             else
