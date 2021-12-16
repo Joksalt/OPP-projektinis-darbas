@@ -573,7 +573,7 @@ namespace PingPong3
                 SendRacketSpeedChange(1);
                 //ResetBall();
 
-                lblScore2.Text = playerSelfScore.ToString();
+                //lblScore2.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
 
 
@@ -663,14 +663,14 @@ namespace PingPong3
             {
                 if (player == 0)
                 {
-                    playerSelfScore = score;
-                    lblScore1.Text = playerSelfScore.ToString();
+                    playerOtherScore = score;
+                    lblScore1.Text = playerOtherScore.ToString();
                     //MissSound.RequestSound();
                 }
                 else
                 {
-                    playerOtherScore = score;
-                    lblScore2.Text = playerOtherScore.ToString();
+                    playerSelfScore = score;
+                    lblScore2.Text = playerSelfScore.ToString();
                     //ScoreSound.RequestSound();
                 }
             });
@@ -695,6 +695,29 @@ namespace PingPong3
                 _ball.Velocity = new Point(_currentBallX, velocityY);
                 _ball.Position = new Point(positionX, positionY);
                 //HitSound.RequestSound();
+            });
+            //Symuciakas
+            connection.On<int, int>("ReceivePlayerSize", (size, player) =>
+            {
+                if (player == 0)
+                {
+                    _player1.Texture.Size = new Size(_player1.Texture.Size.Width, size);
+                }
+                else
+                {
+                    _player2.Texture.Size = new Size(_player2.Texture.Size.Width, size);
+                }
+            });
+            connection.On<int, int>("ReceivePlayerSpeed", (speed, player) =>
+            {
+                if (player == 0)
+                {
+                    _player1.CurrentSpeed = speed;
+                }
+                else
+                {
+                    _player2.CurrentSpeed = speed;
+                }
             });
             try
             {

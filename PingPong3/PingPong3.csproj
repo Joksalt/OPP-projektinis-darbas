@@ -190,6 +190,7 @@
     <Compile Include="Patterns\ChainOfCommand\HeartHandler.cs" />
     <Compile Include="Patterns\ChainOfCommand\HeartItem.cs" />
     <Compile Include="Patterns\CompositeInterpreter\BinOpNode.cs" />
+    <Compile Include="Patterns\CompositeInterpreter\CommandNode.cs" />
     <Compile Include="Patterns\CompositeInterpreter\Error.cs" />
     <Compile Include="Patterns\CompositeInterpreter\Interpreter.cs" />
     <Compile Include="Patterns\CompositeInterpreter\InterpretResult.cs" />

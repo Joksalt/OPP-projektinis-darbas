@@ -46,6 +46,10 @@ namespace PingPong3.Patterns.CompositeInterpreter
                 {
                     tokens.Add(make_number());
                 }
+                else if(Token.LETTERS.Contains(current_char))
+                {
+                    tokens.Add(make_identifier());
+                }
                 else if (current_char == '+')
                 {
                     tokens.Add(new Token(Token.TT_PLUS));
@@ -74,6 +78,11 @@ namespace PingPong3.Patterns.CompositeInterpreter
                 else if (current_char == ')')
                 {
                     tokens.Add(new Token(Token.TT_RPAREN));
+                    advance();
+                }
+                else if (current_char == '=')
+                {
+                    tokens.Add(new Token(Token.TT_EQ));
                     advance();
                 }
                 else
@@ -108,6 +117,26 @@ namespace PingPong3.Patterns.CompositeInterpreter
                 return new Token(Token.TT_INT, int.Parse(num_str));
             else
                 return new Token(Token.TT_FLOAT, float.Parse(num_str));
+        }
+        public Token make_identifier()
+        {
+            String str = "";
+            while (current_char != '\0' && (Token.LETTERS + Token.DIGITS).Contains(current_char))
+            {
+                str += current_char;
+                advance();
+            }
+            if(Token.PLAYERS.Contains(str))
+            {
+                if(str.Contains("1"))
+                    return new Token(Token.TT_PLAYER, 1);
+                else
+                    return new Token(Token.TT_PLAYER, 2);
+            }
+            else
+            {
+                return new Token(Token.TT_IDENTIFIER, str);
+            }
         }
     }
 }
