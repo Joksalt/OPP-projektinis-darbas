@@ -74,5 +74,14 @@ namespace SignalRChat.Hubs
         {
             await Clients.All.SendAsync("ReceiveBallVelocityDirection2", positionX, positionY, velocityX, velocityY);
         }
+        //Symuciakas
+        public async Task SendPlayerSize(int size, int player)
+        {
+            await Clients.All.SendAsync("ReceivePlayerSize", size, player);
+        }
+        public async Task SendPlayerSpeed(int speed, int player)
+        {
+            await Clients.All.SendAsync("ReceivePlayerSpeed", speed, player);
+        }
     }
 }

@@ -336,9 +336,6 @@ namespace PingPong3
                         (w as MovingWall).Move();
                     }
                 }
-
-                
-               
             }
         }
         private void DrawScene()
@@ -437,7 +434,6 @@ namespace PingPong3
                 _commandController.Undo();
             }
         }
-        
         public void ChangeRacketSpeed(Racket racket1)
         {
             switch (racket1.Mode)
@@ -644,7 +640,7 @@ namespace PingPong3
                 SendRacketSpeedChange(1);
                 //ResetBall();
 
-                lblScore1.Text = playerSelfScore.ToString();
+                //lblScore1.Text = playerSelfScore.ToString();
                 gameLogger.Write(LOG_SENDER, "score");
 
 
@@ -753,7 +749,6 @@ namespace PingPong3
                 else
                 {
                     playerOtherScore = score;
-                    playerOtherScore = score;
                     lblScore2.Text = playerOtherScore.ToString();
                     MissSound.RequestSound();
                 }
@@ -781,6 +776,29 @@ namespace PingPong3
                 _ball.Position = new Point(positionX, positionY);
                 //HitSound.RequestSound();
                 soundProxy.RequestSound("Hit");
+            });
+            //Symuciakas
+            connection.On<int, int>("ReceivePlayerSize", (size, player) =>
+            {
+                if (player == 0)
+                {
+                    _player1.Texture.Size = new Size(_player1.Texture.Size.Width, size);
+                }
+                else
+                {
+                    _player2.Texture.Size = new Size(_player2.Texture.Size.Width, size);
+                }
+            });
+            connection.On<int, int>("ReceivePlayerSpeed", (speed, player) =>
+            {
+                if (player == 0)
+                {
+                    _player1.CurrentSpeed = speed;
+                }
+                else
+                {
+                    _player2.CurrentSpeed = speed;
+                }
             });
             try
             {
@@ -825,7 +843,6 @@ namespace PingPong3
                 Console.WriteLine(ex.Message);
             }
         }
-        
         public override async void SendRacketSkin(string racket)
         {
             try

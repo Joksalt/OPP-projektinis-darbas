@@ -19,7 +19,7 @@ namespace PingPong3.Patterns.CompositeInterpreter
         }
         public ParseResult parse()
         {
-            ParseResult res = expression();
+            ParseResult res = command();
             if(res.error == null && current_token.type != Token.TT_EOF)
             {
                 return res.failure(new Error("Invalid syntax error: ", "Expected '+', '-', '*' or '/'"));
@@ -103,6 +103,33 @@ namespace PingPong3.Patterns.CompositeInterpreter
                 left = new BinOpNode(left, op_tok, right);
             }
             return parseResult.success(left);
+        }
+        public ParseResult command()
+        {
+            ParseResult parseResult = new ParseResult();
+            if (current_token.type == Token.TT_PLAYER)
+            {
+                Token player = current_token;
+                advance();
+                if (current_token.type != Token.TT_IDENTIFIER || !Token.IDENTIFIERS.Contains(current_token.value))
+                    return parseResult.failure(new Error("Invalid syntax error: ", "Expected an identifier"));
+                Token identifier = current_token;
+                advance();
+                if(current_token.type != Token.TT_EQ)
+                    return parseResult.failure(new Error("Invalid syntax error: ", "Expected '='"));
+                advance();
+                Node expr = parseResult.register(expression());
+                if (parseResult.error != null)
+                    return parseResult;
+                return parseResult.success(new CommandNode(player, identifier, expr));
+            }
+            else
+            {
+                Node expr = parseResult.register(expression());
+                if (parseResult.error != null)
+                    return parseResult;
+                return parseResult.success(expr);
+            }
         }
     }
 }

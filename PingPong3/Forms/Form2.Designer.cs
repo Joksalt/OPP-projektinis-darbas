@@ -164,7 +164,7 @@
             this.Controls.Add(this.pbTitleScreen);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form2";
-            this.Text = "Form1";
+            this.Text = "Form2";
             ((System.ComponentModel.ISupportInitialize)(this.pbTitleScreen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBall)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayer1)).EndInit();
