@@ -218,6 +218,7 @@
     <Compile Include="Patterns\Factory\MovingWall.cs" />
     <Compile Include="Patterns\Factory\Wall.cs" />
     <Compile Include="Patterns\Factory\WallFactory.cs" />
+    <Compile Include="Patterns\Flyweight\ImageFactory.cs" />
     <Compile Include="Patterns\Iterator\IIterableCollection.cs" />
     <Compile Include="Patterns\Iterator\IIterator.cs" />
     <Compile Include="Patterns\Iterator\LevelDataCollection.cs" />
