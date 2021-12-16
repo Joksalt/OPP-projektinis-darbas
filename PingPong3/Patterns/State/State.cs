@@ -12,7 +12,6 @@ namespace PingPong3.Patterns.State
         protected string mode;
         protected int speed;
         protected int softness;
-        // Properties
         public Racket Racket
         {
             get { return racket; }

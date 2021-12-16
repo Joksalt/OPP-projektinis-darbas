@@ -8,7 +8,6 @@ namespace PingPong3.Patterns.State
 {
     public class PurpleState : State
     {
-        // Overloaded constructors
         public PurpleState(State state)
             : this(state.Mode, state.Racket, state.Speed, state.Softness)
         {

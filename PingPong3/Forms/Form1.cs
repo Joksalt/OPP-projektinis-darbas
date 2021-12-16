@@ -299,24 +299,33 @@ namespace PingPong3
         {
             if (_isGameRunning)
             {
+                UpdatePlayer();
+                _ball.Update();
                 //Game Pause (without walls just to show Memento)
-                if (Keyboard.IsKeyToggled(Key.Escape))
+                if (Keyboard.IsKeyDown(Key.Escape))
                 {
                     if (pause)
                     {
                         PauseOriginator.SetMemento(PauseCaretaker.Memento);
+                        Console.WriteLine(PauseOriginator.Player1.Position);
+                        _ball = PauseOriginator.Ball;
+                        _player1 = PauseOriginator.Player1;
+                        _player2 = PauseOriginator.Player2;
+                        pause = false;
                     }
                     else
                     {
+                        Console.WriteLine("Creating memento...");
                         PauseOriginator.Ball = _ball;
                         PauseOriginator.Player1 = _player1;
                         PauseOriginator.Player2 = _player2;
                         PauseCaretaker.Memento = PauseOriginator.CreateMemento();
-                        UpdatePlayer();
-                        _ball.Update();
+                        Console.WriteLine(PauseOriginator.Player1.Position);
+                        pause = true;
                     }
+                    
                 }
-
+                
                 CheckWallCollision();
                 CheckWallOut();
                 CheckPaddleCollision();
@@ -430,19 +439,20 @@ namespace PingPong3
             {
                 case "+normal":
                     RacketSkinSender(normalRacket.GetSkin());
-                    _player1.CurrentSpeed = normalRacket.GetSpeed();
+                    _player1.CurrentSpeed = racket2.Speed;
                     break;
                 case "-normal":
                     RacketSkinSender(devRacket.GetSkin());
-                    _player1.CurrentSpeed = (normalRacket.GetSpeed() - defaultRacket.GetSpeed());
+                    //_player1.CurrentSpeed = (normalRacket.GetSpeed() - defaultRacket.GetSpeed());
+                    _player1.CurrentSpeed = racket2.Speed;
                     break;
                 case "dev":
                     RacketSkinSender(devRacket.GetSkin());
-                    _player1.CurrentSpeed = devRacket.GetSpeed();
+                    _player1.CurrentSpeed = racket2.Speed;
                     break;
                 default:
                     RacketSkinSender(defaultRacket.GetSkin());
-                    _player1.CurrentSpeed = defaultRacket.GetSpeed();
+                    _player1.CurrentSpeed = racket2.Speed;
                     break;
             }
         }

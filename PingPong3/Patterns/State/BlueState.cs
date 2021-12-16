@@ -8,7 +8,6 @@ namespace PingPong3.Patterns.State
 {
     public class BlueState : State
     {
-        // Constructor
         public BlueState(State state)
         {
             this.mode = state.Mode;

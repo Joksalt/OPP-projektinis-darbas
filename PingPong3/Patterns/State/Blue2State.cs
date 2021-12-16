@@ -8,7 +8,6 @@ namespace PingPong3.Patterns.State
 {
     public class Blue2State : State
     {
-        // Constructor
         public Blue2State(State state)
         {
             this.mode = state.Mode;
@@ -19,8 +18,8 @@ namespace PingPong3.Patterns.State
         }
         private void Initialize()
         {
-            softness = -10;
-            speed = -10;
+            softness = 10;
+            speed = 10;
         }
         public override void PickState(string newMode)
         {
