@@ -14,7 +14,7 @@ namespace PingPong3.Patterns.Flyweight
         {
             if (cache.ContainsKey(key))
                 return cache[key];
-            o neeee klaida padariau
+            //patvvarkiau
             String path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("bin\\Debug"));
             path += "Images\\";
